@@ -58,8 +58,8 @@
 
           <!-- Methods -->
           <div class="kyc-methods">
-            <!-- Aadhaar eKYC (featured) -->
-            <div class="method-card method-card--aadhaar">
+            <!-- Aadhaar eKYC (featured, selected by default) -->
+            <div class="method-card method-card--aadhaar is-selected" data-method="aadhaar">
               <div class="method-card__row method-card__row--icon">
                 <img
                   class="method-card__aadhaar-logo"
@@ -73,7 +73,7 @@
               </div>
               <div class="method-card__row">
                 <p class="method-card__aadhaar-title">Aadhaar eKYC</p>
-                <button type="button" class="btn btn-primary kyc-start-btn">
+                <button type="button" class="btn btn-primary kyc-start-btn method-card__cta">
                   Start KYC
                   <i data-lucide="arrow-right"></i>
                 </button>
@@ -81,30 +81,42 @@
             </div>
 
             <!-- PAN Card -->
-            <a href="#" class="method-card method-card--center method-card--pan">
+            <div class="method-card method-card--center method-card--pan" data-method="pan" role="button" tabindex="0">
               <span class="method-card__icon">
                 <img src="../assets/img/ashoka-emblem.png" alt="" />
               </span>
               <p class="method-card__title">PAN Card</p>
-            </a>
+              <button type="button" class="btn btn-primary kyc-start-btn method-card__cta">
+                Start KYC
+                <i data-lucide="arrow-right"></i>
+              </button>
+            </div>
 
             <!-- Document Upload -->
-            <a href="#" class="method-card method-card--center method-card--doc">
+            <div class="method-card method-card--center method-card--doc" data-method="document" role="button" tabindex="0">
               <span class="method-card__icon">
                 <span class="method-card__icon-box">
                   <img src="../assets/img/doc-icon.svg" alt="" />
                 </span>
               </span>
               <p class="method-card__title">Document Upload</p>
-            </a>
+              <button type="button" class="btn btn-primary kyc-start-btn method-card__cta">
+                Start KYC
+                <i data-lucide="arrow-right"></i>
+              </button>
+            </div>
 
             <!-- Face Scan -->
-            <a href="#" class="method-card method-card--center method-card--face">
+            <div class="method-card method-card--center method-card--face" data-method="face" role="button" tabindex="0">
               <span class="method-card__icon">
                 <img src="../assets/img/face-scan.svg" alt="" style="width: 40px; height: 40px" />
               </span>
               <p class="method-card__title">Face Scan</p>
-            </a>
+              <button type="button" class="btn btn-primary kyc-start-btn method-card__cta">
+                Start KYC
+                <i data-lucide="arrow-right"></i>
+              </button>
+            </div>
           </div>
 
           <!-- Info toast -->
@@ -126,8 +138,28 @@
       </div>
     </div>
 
+    <!-- ============ Allow camera access modal ============ -->
+    <div class="modal-backdrop kyc-modal" id="kyc-modal" role="dialog" aria-modal="true" aria-labelledby="kyc-modal-title">
+      <div class="modal modal-confirmation">
+        <div class="modal-header no-border">
+          <div class="modal-header-icon modal-header-icon--brand">
+            <i data-lucide="camera"></i>
+          </div>
+          <h2 class="modal-title" id="kyc-modal-title">Allow camera access</h2>
+        </div>
+        <div class="modal-body">
+          We will use your device camera to capture your face and verify your identity securely.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-modal-close>Deny</button>
+          <button type="button" class="btn btn-primary" id="kyc-allow-camera">Allow Camera</button>
+        </div>
+      </div>
+    </div>
+
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="../assets/atlas/atlas.js"></script>
     <script src="../js/app.js"></script>
+    <script src="../js/kyc-landing.js"></script>
   </body>
 </html>

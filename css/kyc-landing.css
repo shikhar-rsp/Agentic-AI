@@ -281,4 +281,94 @@
   }
   .kyc-info .toast-description { color: var(--color-neutral-600); }
   .kyc-info .toast-body { align-items: flex-start; }
+
+  /* ---- Card selection + revealed "Start KYC" CTA ---------------------- */
+  /* CTA is hidden until its card is selected */
+  .method-card__cta { display: none; }
+  .method-card.is-selected .method-card__cta { display: inline-flex; }
+
+  /* Centered cards reveal a full-width CTA below the title */
+  .method-card--center .method-card__cta {
+    width: 100%;
+    margin-top: 8px;
+    justify-content: center;
+  }
+
+  /* Selected highlight for the non-featured cards */
+  .method-card--center { cursor: pointer; border: 1.5px solid transparent; }
+  .method-card--pan.is-selected,
+  .method-card--doc.is-selected,
+  .method-card--face.is-selected {
+    border-color: var(--color-blue-600);
+  }
+  .method-card--center:focus-visible {
+    outline: 2px solid var(--color-blue-600);
+    outline-offset: 2px;
+  }
+
 }
+
+/* ===========================================================================
+   Modal overrides — intentionally UNLAYERED.
+   The design system's modal.css is unlayered, and unlayered rules always beat
+   @layer rules. So these overrides live outside @layer app; since this file is
+   linked after atlas.css they win the normal cascade on equal specificity.
+   =========================================================================== */
+
+/* Override DS backdrop to match Figma scrim (lighter, no blur) */
+.kyc-modal.modal-backdrop {
+    background: rgba(26, 26, 26, 0.36);
+    backdrop-filter: none;
+    padding-inline: 16px;
+  }
+  /* Let the confirmation modal size to its content on mobile */
+  .kyc-modal .modal-confirmation {
+    width: 100%;
+    max-width: 370px;
+    height: auto;
+    border-radius: 16px;
+  }
+  .kyc-modal .modal-header {
+    height: auto;
+    padding: 20px 20px 0;
+    gap: 4px;
+  }
+  .kyc-modal .modal-body {
+    height: auto;
+    padding: 8px 20px 0;
+    text-align: center;
+  }
+  .kyc-modal .modal-footer {
+    height: auto;
+    padding: 20px;
+    gap: 12px;
+    justify-content: center;
+  }
+  .kyc-modal .modal-footer .btn {
+    flex: 1 0 0;
+    width: auto;
+  }
+
+  /* Brand-blue featured icon circle (DS ships success/error/info only) */
+  .modal-header-icon--brand {
+    background: var(--color-blue-50);
+    color: var(--color-blue-600);
+    margin-bottom: 12px;
+  }
+  .modal-header-icon--brand .lucide,
+  .modal-header-icon--brand [data-lucide] { width: 24px; height: 24px; }
+
+  .kyc-modal .modal-title {
+    font-family: 'Rubik', sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: var(--color-neutral-800);
+    height: auto;
+  }
+  .kyc-modal .modal-body {
+    font-family: 'Rubik', sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--color-neutral-600);
+  }
