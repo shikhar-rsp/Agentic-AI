@@ -1,0 +1,21 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Logs
+*.log
+npm-debug.log*
+
+# Node (only if tooling is ever added; the site itself is static)
+node_modules/
+
+# Build / deploy artifacts
+dist/
+.cache/
+.vercel/
+
+# Claude agent worktrees
+.claude/

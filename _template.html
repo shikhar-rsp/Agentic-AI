@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bajaj eKYC — {{PAGE_TITLE}}</title>
+
+    <!-- Rubik: the typeface the Atlas design system base layer expects -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Atlas design system (vendored bundle: tokens + base + all components) -->
+    <link rel="stylesheet" href="assets/atlas/atlas.css" />
+
+    <!-- Project-specific layout / overrides only -->
+    <link rel="stylesheet" href="css/app.css" />
+  </head>
+  <body>
+    <!-- ============================================================
+         PAGE CONTENT GOES HERE.
+         Use Atlas component markup, e.g.:
+           <button class="btn btn-primary">Continue</button>
+         Interactive components (otp-group, form-field, segmented-control,
+         tile, bl-tabs-list) auto-initialize via atlas.js — no manual wiring.
+         ============================================================ -->
+
+    <main class="ekyc-shell">
+      <!-- replace per screen -->
+    </main>
+
+    <!-- Lucide icons (Atlas base layer styles [data-lucide] / .lucide) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Atlas JS bundle: self-boots on DOMContentLoaded + MutationObserver -->
+    <script src="assets/atlas/atlas.js"></script>
+
+    <!-- Project glue (icon render, page wiring) -->
+    <script src="js/app.js"></script>
+  </body>
+</html>
