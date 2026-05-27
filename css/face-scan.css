@@ -1,0 +1,140 @@
+/* =========================================================================
+   Face Scan capture screen — full-bleed dark camera viewport + white footer.
+   Reuses the DS .toast .toast-info for the footer note; everything else is
+   token-driven layout.
+   ========================================================================= */
+
+@layer app {
+  .facescan-page {
+    width: 100%;
+    max-width: 402px;
+    margin-inline: auto;
+    min-height: 100vh;
+    background: var(--color-neutral-0);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ---- Dark camera area ---- */
+  .facescan-camera {
+    flex: 1;
+    min-height: 600px;
+    position: relative;
+    overflow: hidden;
+    background: #333; /* camera viewport — intentional literal */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 24px;
+  }
+
+  .facescan-topbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 16px;
+  }
+
+  .facescan-iconbtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 8px;
+    background: transparent;
+    border: none;
+    color: var(--color-neutral-0);
+    cursor: pointer;
+  }
+  .facescan-iconbtn .lucide,
+  .facescan-iconbtn [data-lucide] { width: 24px; height: 24px; }
+  .facescan-iconbtn--bordered {
+    background: var(--color-neutral-0);
+    border: 1px solid var(--color-neutral-300);
+    color: var(--color-neutral-700);
+  }
+
+  /* "Auto capture is on" pill */
+  .facescan-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--color-blue-standard-600);
+    color: var(--color-neutral-0);
+    padding: 4px 12px;
+    border-radius: 256px;
+    font: 400 14px/20px 'Rubik', sans-serif;
+  }
+  .facescan-pill .lucide,
+  .facescan-pill [data-lucide] { width: 16px; height: 16px; }
+
+  /* Oval face guide */
+  .facescan-oval {
+    width: 240px;
+    height: 300px;
+    margin: auto;
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    border-radius: 50%;
+  }
+
+  /* Bottom guidance block */
+  .facescan-bottom {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding-inline: 16px;
+  }
+  .facescan-guide {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .facescan-title {
+    margin: 0;
+    font: 500 20px/24px 'Rubik', sans-serif;
+    color: var(--color-neutral-0);
+    text-align: center;
+  }
+  .facescan-hint {
+    margin: 0;
+    width: 100%;
+    background: #1e1e1e; /* dark chip — intentional literal */
+    color: var(--color-neutral-0);
+    border-radius: 12px;
+    padding: 8px;
+    font: 400 14px/20px 'Rubik', sans-serif;
+    text-align: center;
+  }
+  .facescan-flip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--color-neutral-0);
+    border: 1px solid var(--color-neutral-300);
+    border-radius: 8px;
+    padding: 12px 20px;
+    color: var(--color-neutral-600);
+    font: 400 16px/24px 'Rubik', sans-serif;
+    cursor: pointer;
+  }
+  .facescan-flip .lucide,
+  .facescan-flip [data-lucide] { width: 24px; height: 24px; }
+
+  /* ---- White footer toast ---- */
+  .facescan-footer {
+    background: var(--color-neutral-0);
+    padding: 32px 16px;
+  }
+  .facescan-footer .toast { align-items: flex-start; }
+  .facescan-footer .toast-title {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--color-neutral-800);
+  }
+}

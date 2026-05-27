@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bajaj eKYC — Face Scan</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../assets/atlas/atlas.css" />
+    <link rel="stylesheet" href="../css/app.css" />
+    <link rel="stylesheet" href="../css/face-scan.css" />
+  </head>
+  <body>
+    <div class="facescan-page">
+      <!-- ============ Dark camera viewport ============ -->
+      <div class="facescan-camera">
+        <!-- Top controls -->
+        <div class="facescan-topbar">
+          <a class="facescan-iconbtn" href="kyc-landing.html" aria-label="Close">
+            <i data-lucide="x"></i>
+          </a>
+          <button type="button" class="facescan-iconbtn facescan-iconbtn--bordered" aria-label="Help">
+            <i data-lucide="help-circle"></i>
+          </button>
+        </div>
+
+        <!-- Auto capture status pill -->
+        <span class="facescan-pill">
+          <i data-lucide="zap"></i>
+          Auto capture is on
+        </span>
+
+        <!-- Face guide -->
+        <div class="facescan-oval" aria-hidden="true"></div>
+
+        <!-- Title, hint, flip -->
+        <div class="facescan-bottom">
+          <div class="facescan-guide">
+            <p class="facescan-title">Face Scan</p>
+            <p class="facescan-hint">Make sure you're in well-lit area with plain background</p>
+          </div>
+          <button type="button" class="facescan-flip">
+            <i data-lucide="switch-camera"></i>
+            Flip Camera
+          </button>
+        </div>
+      </div>
+
+      <!-- ============ White footer ============ -->
+      <div class="facescan-footer">
+        <div class="toast toast-info" role="status">
+          <span class="toast-icon"><i data-lucide="info"></i></span>
+          <div class="toast-body">
+            <div class="toast-content">
+              <p class="toast-title">
+                Look directly at the camera and keep your face within the circle frame
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="../assets/atlas/atlas.js"></script>
+    <script src="../js/app.js"></script>
+  </body>
+</html>

@@ -56,12 +56,11 @@
       if (e.key === 'Escape') closeModal();
     });
 
-    // Allow Camera — placeholder until the next screen exists.
+    // Allow Camera -> Face Scan capture screen.
     const allow = document.getElementById('kyc-allow-camera');
     if (allow) {
       allow.addEventListener('click', () => {
-        // TODO: navigate to the capture screen when built.
-        closeModal();
+        window.location.href = 'face-scan.html';
       });
     }
   }
