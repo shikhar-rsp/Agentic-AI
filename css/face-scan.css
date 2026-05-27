@@ -76,6 +76,26 @@
     margin: auto;
     border: 1.5px solid rgba(255, 255, 255, 0.85);
     border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+  }
+  /* Camera feed, clipped to the oval — hidden until a face is detected */
+  .facescan-oval__feed {
+    display: none;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 72% 35%; /* show the off-centre face from the sample */
+  }
+
+  /* Misaligned / error state: red ring + visible feed + error hint */
+  .facescan-camera--error .facescan-oval {
+    border: 3px solid var(--color-red-600);
+  }
+  .facescan-camera--error .facescan-oval__feed {
+    display: block;
   }
 
   /* Bottom guidance block */
