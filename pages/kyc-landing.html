@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bajaj eKYC — Complete Your KYC Verification</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Rubik:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../assets/atlas/atlas.css" />
+    <link rel="stylesheet" href="../css/app.css" />
+    <link rel="stylesheet" href="../css/kyc-landing.css" />
+  </head>
+  <body>
+    <div class="kyc-page">
+      <!-- ============ Header ============ -->
+      <header class="kyc-header">
+        <div class="kyc-header__row">
+          <img class="kyc-logo" src="../assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+          <div class="kyc-avatar">
+            <img src="../assets/img/agent-avatar.jpg" alt="Support agent" />
+            <span class="kyc-avatar__dot" aria-hidden="true"></span>
+          </div>
+        </div>
+        <span class="badge badge-sm badge-light badge-red">
+          <i data-lucide="alert-circle" style="width: 16px; height: 16px"></i>
+          Link expires in 12hr 32mins
+        </span>
+      </header>
+
+      <!-- ============ Blue hero ============ -->
+      <section class="kyc-hero">
+        <h1 class="kyc-hero__title">Complete Your KYC Verification</h1>
+        <p class="kyc-hero__subtitle">Choose a KYC verification method below to proceed.</p>
+      </section>
+
+      <!-- ============ White panel ============ -->
+      <div class="kyc-panel-wrap">
+        <div class="kyc-panel">
+          <!-- Assistance toggle -->
+          <div class="kyc-assist">
+            <input
+              type="checkbox"
+              class="kyc-switch"
+              id="assist-toggle"
+              aria-label="I need assistance completing KYC"
+            />
+            <label class="kyc-assist__text" for="assist-toggle">
+              <span class="kyc-assist__title">I need assistance completing KYC</span>
+              <span class="kyc-assist__hint">Enable agent assisted mode with audio consent</span>
+            </label>
+          </div>
+
+          <!-- Methods -->
+          <div class="kyc-methods">
+            <!-- Aadhaar eKYC (featured) -->
+            <div class="method-card method-card--aadhaar">
+              <div class="method-card__row method-card__row--icon">
+                <img
+                  class="method-card__aadhaar-logo"
+                  src="../assets/img/aadhaar-logo.png"
+                  alt="Aadhaar"
+                />
+                <span class="badge badge-sm badge-solid badge-amber">
+                  <i data-lucide="zap" style="width: 14px; height: 14px"></i>
+                  Fastest
+                </span>
+              </div>
+              <div class="method-card__row">
+                <p class="method-card__aadhaar-title">Aadhaar eKYC</p>
+                <button type="button" class="btn btn-primary kyc-start-btn">
+                  Start KYC
+                  <i data-lucide="arrow-right"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- PAN Card -->
+            <a href="#" class="method-card method-card--center method-card--pan">
+              <span class="method-card__icon">
+                <img src="../assets/img/ashoka-emblem.png" alt="" />
+              </span>
+              <p class="method-card__title">PAN Card</p>
+            </a>
+
+            <!-- Document Upload -->
+            <a href="#" class="method-card method-card--center method-card--doc">
+              <span class="method-card__icon">
+                <span class="method-card__icon-box">
+                  <img src="../assets/img/doc-icon.svg" alt="" />
+                </span>
+              </span>
+              <p class="method-card__title">Document Upload</p>
+            </a>
+
+            <!-- Face Scan -->
+            <a href="#" class="method-card method-card--center method-card--face">
+              <span class="method-card__icon">
+                <img src="../assets/img/face-scan.svg" alt="" style="width: 40px; height: 40px" />
+              </span>
+              <p class="method-card__title">Face Scan</p>
+            </a>
+          </div>
+
+          <!-- Info toast -->
+          <div class="toast toast-info kyc-info" role="status">
+            <span class="toast-icon"><i data-lucide="info"></i></span>
+            <div class="toast-body">
+              <div class="toast-content">
+                <p class="toast-title">Before proceeding with KYC, you will need:</p>
+                <p class="toast-description">
+                  Your Aadhaar number or VID will be required for Aadhaar eKYC with mobile
+                  verification. For PAN-based verification, your PAN number and address proof will be
+                  required. If you choose document upload, please keep your original physical
+                  documents ready for verification.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="../assets/atlas/atlas.js"></script>
+    <script src="../js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,284 @@
+/* =========================================================================
+   KYC Landing (mobile) — page-specific layout.
+   Components (.btn, .badge, .toast) come from the Atlas design system.
+   Everything here is composition/layout built on design-system tokens.
+   ========================================================================= */
+
+@layer app {
+  /* ---- Mobile frame ---------------------------------------------------- */
+  .kyc-page {
+    width: 100%;
+    max-width: 402px;
+    margin-inline: auto;
+    min-height: 100vh;
+    background: var(--color-neutral-50);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* ---- Header ---------------------------------------------------------- */
+  .kyc-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--color-neutral-0);
+    box-shadow: 0 1px 2px rgba(10, 13, 18, 0.1), 0 1px 1px rgba(10, 13, 18, 0.06);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .kyc-header__row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .kyc-logo {
+    height: 40px;
+    width: auto;
+    flex: 1 0 0;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  .kyc-avatar {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 200px;
+    flex-shrink: 0;
+  }
+  .kyc-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 200px;
+    object-fit: cover;
+  }
+  .kyc-avatar__dot {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-lime-600);
+    border: 1.5px solid var(--color-neutral-0);
+  }
+
+  /* ---- Blue hero ------------------------------------------------------- */
+  .kyc-hero {
+    background: linear-gradient(180deg, var(--color-blue-600) 0%, var(--color-blue-900) 100%);
+    border-bottom: 1px solid var(--color-neutral-200);
+    padding: 16px 16px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .kyc-hero__title {
+    margin: 0;
+    font-family: 'Familjen Grotesk', 'Rubik', sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 32px;
+    color: var(--color-neutral-0);
+  }
+  .kyc-hero__subtitle {
+    margin: 0;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--color-neutral-0);
+  }
+
+  /* ---- White panel (overlaps hero) ------------------------------------ */
+  .kyc-panel-wrap {
+    padding: 0 16px 48px;
+    margin-top: -48px;
+    position: relative;
+    z-index: 1;
+  }
+  .kyc-panel {
+    background: var(--color-neutral-0);
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(10, 13, 18, 0.05);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* ---- Assistance toggle card ----------------------------------------- */
+  .kyc-assist {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid var(--color-neutral-200);
+    border-radius: 8px;
+    background: var(--color-neutral-0);
+  }
+  .kyc-assist__text { display: flex; flex-direction: column; }
+  .kyc-assist__title {
+    margin: 0;
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-800);
+  }
+  .kyc-assist__hint {
+    margin: 0;
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-600);
+  }
+
+  /* Switch (off state) */
+  .kyc-switch {
+    appearance: none;
+    flex-shrink: 0;
+    width: 36px;
+    height: 20px;
+    border-radius: 12px;
+    background: var(--color-neutral-100);
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  .kyc-switch::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-neutral-0);
+    box-shadow: 0 1px 2px rgba(10, 13, 18, 0.15);
+    transition: transform 0.2s ease;
+  }
+  .kyc-switch:checked { background: var(--color-blue-600); }
+  .kyc-switch:checked::after { transform: translateX(16px); }
+
+  /* ---- Method cards ---------------------------------------------------- */
+  .kyc-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .method-card {
+    border: 1px solid var(--color-neutral-200);
+    border-radius: 8px;
+    padding: 16px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* Centered, single-title method cards (PAN / Doc / Face) */
+  .method-card--center {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .method-card__icon {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .method-card__icon img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .method-card__icon-box {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-emerald-600);
+  }
+  .method-card__icon-box img { width: 28px; height: 28px; }
+  .method-card__title {
+    margin: 0;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  /* Per-method gradients + accent text (radial: white -> tint) */
+  .method-card--pan {
+    background: radial-gradient(120% 130% at 50% 0%, #ffffff 0%, var(--color-indigo-50) 100%);
+  }
+  .method-card--pan .method-card__title { color: var(--color-blue-standard-600); }
+
+  .method-card--doc {
+    background: radial-gradient(120% 130% at 50% 0%, #ffffff 0%, var(--color-teal-50) 100%);
+  }
+  .method-card--doc .method-card__title { color: var(--color-emerald-600); }
+
+  .method-card--face {
+    background: radial-gradient(120% 130% at 50% 0%, #ffffff 0%, var(--color-pink-50) 100%);
+  }
+  .method-card--face .method-card__title {
+    color: var(--color-pink-600);
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  /* Featured Aadhaar card */
+  .method-card--aadhaar {
+    border: 1.5px solid var(--color-blue-600);
+    gap: 8px;
+    background: linear-gradient(
+      122.88deg,
+      #ffffff 0%,
+      var(--color-amber-50) 28%,
+      #fed7aa 60%,
+      #fef3c7 102%
+    );
+  }
+  .method-card__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+  }
+  .method-card__row--icon { align-items: flex-start; }
+  .method-card__aadhaar-logo { height: 44px; width: auto; }
+  .method-card__aadhaar-title {
+    margin: 0;
+    flex: 1 0 0;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    color: #9a3412; /* color.text.accent.orange — no DS token, kept for fidelity */
+  }
+
+  /* Start KYC button glow (subtle approximation of the Figma animation) */
+  .kyc-start-btn {
+    position: relative;
+    overflow: hidden;
+    gap: 8px;
+    border-radius: 12px;
+  }
+  .kyc-start-btn .lucide,
+  .kyc-start-btn [data-lucide] { width: 18px; height: 18px; }
+
+  /* ---- Info toast overrides (stack title over description) ------------ */
+  .kyc-info { align-items: flex-start; }
+  .kyc-info .toast-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .kyc-info .toast-description { color: var(--color-neutral-600); }
+  .kyc-info .toast-body { align-items: flex-start; }
+}
