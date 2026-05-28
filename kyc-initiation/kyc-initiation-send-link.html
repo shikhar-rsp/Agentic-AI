@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bajaj eKYC — Initiate KYC (Send Link)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Rubik:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../assets/atlas/atlas.css" />
+    <link rel="stylesheet" href="../css/app.css" />
+    <link rel="stylesheet" href="../css/header.css" />
+    <link rel="stylesheet" href="../css/kyc-initiation.css" />
+  </head>
+  <body data-kycinit-state="send-link">
+    <div class="kycinit-page">
+      <div class="kycinit-bg" aria-hidden="true"></div>
+
+      <!-- ============ Header ============ -->
+      <header class="kyc-header">
+        <div class="kyc-header__row">
+          <img class="kyc-logo" src="../assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+          <div class="kyc-avatar">
+            <img src="../assets/img/agent-avatar.jpg" alt="Support agent" />
+            <span class="kyc-avatar__dot" aria-hidden="true"></span>
+          </div>
+        </div>
+        <span class="badge badge-sm badge-light badge-red">
+          <i data-lucide="alert-circle" style="width: 16px; height: 16px"></i>
+          Link expires in 12hr 32mins
+        </span>
+      </header>
+
+      <!-- ============ Body ============ -->
+      <div class="kycinit-body">
+        <div class="kycinit-card">
+          <div class="kycinit-head">
+            <h1 class="kycinit-title">Initiate KYC</h1>
+            <p class="kycinit-subtitle">
+              Complete the customer's KYC yourself or send them a secure KYC verification link.
+            </p>
+          </div>
+
+          <!-- Customer summary -->
+          <div class="kycinit-customer">
+            <div class="kycinit-customer__name">
+              <span class="kycinit-customer__label">Customer Name</span>
+              <span class="kycinit-customer__value">Ashok Kumar</span>
+            </div>
+            <div class="kycinit-customer__meta-group">
+              <p class="kycinit-customer__meta">Partner ID: <strong>C1738E474E73</strong></p>
+              <p class="kycinit-customer__meta">Customer Type: <strong>Individual</strong></p>
+            </div>
+          </div>
+
+          <!-- Option tiles (single-select) -->
+          <div class="kycinit-tiles" role="radiogroup" aria-label="KYC method">
+            <div
+              class="kycinit-tile is-selected"
+              data-option="complete"
+              role="radio"
+              aria-checked="true"
+              tabindex="0"
+            >
+              <span class="kycinit-tile__icon"><i data-lucide="user-plus"></i></span>
+              <div>
+                <p class="kycinit-tile__title">Complete KYC for Customer</p>
+                <p class="kycinit-tile__desc">
+                  Verify the customer directly by entering their details and documents.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="kycinit-tile"
+              data-option="send-link"
+              role="radio"
+              aria-checked="false"
+              tabindex="0"
+            >
+              <span class="kycinit-tile__icon"><i data-lucide="send"></i></span>
+              <div>
+                <p class="kycinit-tile__title">Send KYC link to Customer</p>
+                <p class="kycinit-tile__desc">
+                  Share a secure link for the customer to complete KYC on their own device.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Requirements (shown only for "Complete KYC for Customer") -->
+          <div class="toast toast-neutral kycinit-toast" role="note" id="kycinit-requirements">
+            <span class="toast-icon"><i data-lucide="info"></i></span>
+            <div class="toast-body">
+              <div class="toast-content">
+                <p class="toast-title">Before proceeding with KYC, you will need:</p>
+                <ol class="kycinit-list">
+                  <li>
+                    Identity Proof (POI): Keep a valid government ID (number or soft copy) ready, such
+                    as Aadhaar, PAN, Passport, Voter ID, or Driving Licence.
+                  </li>
+                  <li>
+                    Address Proof (POA): If PAN is used as POI, an additional address proof document
+                    will be required.
+                  </li>
+                  <li>
+                    Organisation KYC: Keep the GST number, PAN Card, and business registration
+                    details ready for verification.
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <button type="button" class="btn btn-primary kycinit-submit" id="kycinit-submit">
+            <span id="kycinit-submit-label">Start KYC Verification</span>
+            <i data-lucide="arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/vendor/lucide.min.js"></script>
+    <script src="../assets/atlas/atlas.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/kyc-initiation.js"></script>
+  </body>
+</html>

@@ -56,12 +56,11 @@
       if (e.key === 'Escape') closeModal();
     });
 
-    // Allow Camera -> Face Scan capture screen.
+    // Allow Camera — standalone page, so this just dismisses the modal
+    // (no cross-page navigation by design).
     const allow = document.getElementById('kyc-allow-camera');
     if (allow) {
-      allow.addEventListener('click', () => {
-        window.location.href = 'face-scan.html';
-      });
+      allow.addEventListener('click', closeModal);
     }
   }
 
