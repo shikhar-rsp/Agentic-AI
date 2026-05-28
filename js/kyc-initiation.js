@@ -52,6 +52,14 @@
         }
       });
     }
+
+    // Standalone state file (e.g. kyc-initiation-send-link.html) declares the
+    // pre-selected option via <body data-kycinit-state="send-link">.
+    var preState = document.body.dataset.kycinitState;
+    if (preState) {
+      var pre = document.querySelector('.kycinit-tile[data-option="' + preState + '"]');
+      if (pre) select(pre);
+    }
   }
 
   if (document.readyState === 'loading') {

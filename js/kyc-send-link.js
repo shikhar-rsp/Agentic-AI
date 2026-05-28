@@ -136,10 +136,11 @@
       refreshSubmit();
     }
 
-    var hash = location.hash + location.search;
-    if (/keyboard/.test(hash)) showKeyboardDemo();
-    if (/sent/.test(hash)) { fillForm(); markSent(); }
-    if (/errors/.test(hash)) showErrors();
+    // Standalone state files declare it via <body data-sendlink-state="...">.
+    var state = document.body.dataset.sendlinkState || (location.hash + location.search);
+    if (/keyboard/.test(state)) showKeyboardDemo();
+    if (/sent/.test(state)) { fillForm(); markSent(); }
+    if (/errors/.test(state)) showErrors();
 
     window.kycShowKeyboard = showKeyboardDemo;
     window.kycMarkSent = markSent;

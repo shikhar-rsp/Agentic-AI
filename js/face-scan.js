@@ -25,7 +25,9 @@
   }
 
   function stateFromUrl() {
-    // Hash survives clean-URL redirects (e.g. `serve` dropping ?query); prefer it.
+    // Standalone state files declare it via <body data-facescan-state="...">.
+    if (document.body.dataset.facescanState) return document.body.dataset.facescanState;
+    // Hash survives clean-URL redirects (e.g. `serve` dropping ?query).
     var hash = (window.location.hash || '').replace('#', '');
     if (hash) return hash;
     var params = new URLSearchParams(window.location.search);
