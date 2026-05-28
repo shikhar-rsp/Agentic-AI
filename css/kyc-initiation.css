@@ -16,24 +16,15 @@
     gap: 12px;
   }
 
-  /* Decorative blue band behind the header + card top */
+  /* Decorative blue band behind the header + card top (vendored from Figma) */
   .kycinit-bg {
     position: absolute;
     inset: 0 0 auto 0;
     height: 240px;
-    background: #60a5fa; /* accent.blue.subtle — decorative band, no DS token */
+    background: #60a5fa url('../assets/img/kycinit-bg.png') top center / cover no-repeat;
     overflow: hidden;
     z-index: 0;
   }
-  .kycinit-bg::before,
-  .kycinit-bg::after {
-    content: '';
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.18);
-  }
-  .kycinit-bg::before { width: 220px; height: 220px; top: -90px; right: -60px; }
-  .kycinit-bg::after { width: 160px; height: 160px; top: 40px; left: -70px; background: rgba(255, 255, 255, 0.12); }
 
   /* Header + body sit above the decorative band */
   .kycinit-page > .kyc-header { position: relative; z-index: 2; }
@@ -101,6 +92,12 @@
   .kycinit-customer__value {
     font: 600 16px/24px 'Rubik', sans-serif;
     color: var(--color-neutral-800);
+  }
+  .kycinit-customer__meta-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
   }
   .kycinit-customer__meta {
     margin: 0;
