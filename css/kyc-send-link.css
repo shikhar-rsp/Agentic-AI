@@ -130,6 +130,12 @@
   /* Required asterisk */
   .sendlink-req { color: var(--color-red-600); }
 
+  /* Error message under a field (DS .form-error, restyled to match Figma) */
+  .sendlink-card .form-error {
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: #b91c1c;
+  }
+
   /* Native select styled like the DS input */
   .sendlink-select-wrap { position: relative; width: 100%; }
   .sendlink-select {
