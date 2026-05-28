@@ -52,6 +52,20 @@
             Back
           </a>
 
+          <!-- Success toast (shown after the link is sent) -->
+          <div class="toast toast-success sendlink-success" id="sl-success" role="status">
+            <span class="toast-icon"><i data-lucide="check-circle"></i></span>
+            <div class="toast-body">
+              <div class="toast-content">
+                <p class="toast-title">Link Sent Successfully!</p>
+                <p class="toast-description">
+                  KYC link has been sent successfully to the mobile number 99xxxxx999 at 08:45 PM.
+                  <strong>Valid till 14th April 08:45 PM</strong>
+                </p>
+              </div>
+            </div>
+          </div>
+
           <!-- Customer info -->
           <div class="sendlink-customer">
             <div>
@@ -153,7 +167,7 @@
 
           <!-- Submit -->
           <button type="button" class="btn btn-primary sendlink-submit" id="sl-submit" disabled>
-            Send Link to Customer
+            <span id="sl-submit-label">Send Link to Customer</span>
             <i data-lucide="send"></i>
           </button>
         </div>

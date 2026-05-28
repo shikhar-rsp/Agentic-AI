@@ -45,10 +45,33 @@
       });
     }
 
+    var email = document.getElementById('sl-email');
+    var submitLabel = document.getElementById('sl-submit-label');
+    var successToast = document.getElementById('sl-success');
+
+    function fillForm() {
+      if (mobile) mobile.value = '9999999999';
+      if (email) email.value = 'ashok.kumar@email.com';
+      if (captcha) captcha.value = '2B3J7y';
+      validate();
+    }
+
+    // Transition to the "link sent" state.
+    function markSent() {
+      if (successToast) successToast.classList.add('is-visible');
+      if (submit) {
+        submit.classList.remove('btn-primary');
+        submit.classList.add('btn-secondary');
+        submit.disabled = false;
+      }
+      if (submitLabel) submitLabel.textContent = 'Re-Send Link to Customer';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     if (submit) {
       submit.addEventListener('click', function () {
-        // TODO: submit and route to the link-sent confirmation screen.
-        console.log('Sending KYC link to customer…');
+        if (submit.disabled) return;
+        markSent();
       });
     }
 
@@ -66,11 +89,7 @@
     // ---- Demo: #keyboard renders the iOS keyboard mockup with the form
     // pre-filled (so the enabled-button state matches the Figma frame).
     function showKeyboardDemo() {
-      if (mobile) mobile.value = '9999999999';
-      var email = document.getElementById('sl-email');
-      if (email) email.value = 'ashok.kumar@email.com';
-      if (captcha) captcha.value = '2B3J7y';
-      validate();
+      fillForm();
       var kb = document.getElementById('ios-keyboard');
       if (kb) kb.classList.add('is-visible');
       document.body.classList.add('keyboard-open');
@@ -78,10 +97,15 @@
         if (captcha) captcha.scrollIntoView({ block: 'center' });
       }, 80);
     }
-    if (/keyboard/.test(location.hash) || /keyboard/.test(location.search)) {
-      showKeyboardDemo();
+
+    var hash = location.hash + location.search;
+    if (/keyboard/.test(hash)) showKeyboardDemo();
+    if (/sent/.test(hash)) {
+      fillForm();
+      markSent();
     }
     window.kycShowKeyboard = showKeyboardDemo;
+    window.kycMarkSent = markSent;
 
     validate();
   }

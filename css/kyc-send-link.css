@@ -189,6 +189,25 @@
   .sendlink-captcha__refresh .lucide,
   .sendlink-captcha__refresh [data-lucide] { width: 16px; height: 16px; }
 
+  /* Success toast (shown after the link is sent) */
+  .sendlink-success { display: none; align-items: flex-start; width: 100%; }
+  .sendlink-success.is-visible { display: flex; }
+  .sendlink-success .toast-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .sendlink-success .toast-title { font-weight: 500; font-size: 16px; line-height: 24px; }
+  .sendlink-success .toast-description {
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--color-neutral-600);
+  }
+  .sendlink-success .toast-description strong {
+    font-weight: 600;
+    color: var(--color-neutral-800);
+  }
+
   /* Submit (disabled until required fields are filled) */
   .sendlink-submit { width: 100%; gap: 8px; }
   .sendlink-submit .lucide,
