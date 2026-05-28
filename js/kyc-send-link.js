@@ -52,6 +52,37 @@
       });
     }
 
+    // ---- Keyboard-aware: keep the focused field visible when the OS
+    // keyboard (or the mockup) covers the lower part of the screen.
+    var focusables = document.querySelectorAll('.sendlink-card .form-input, .sendlink-card .sendlink-select');
+    Array.prototype.forEach.call(focusables, function (el) {
+      el.addEventListener('focus', function () {
+        setTimeout(function () {
+          el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }, 50);
+      });
+    });
+
+    // ---- Demo: #keyboard renders the iOS keyboard mockup with the form
+    // pre-filled (so the enabled-button state matches the Figma frame).
+    function showKeyboardDemo() {
+      if (mobile) mobile.value = '9999999999';
+      var email = document.getElementById('sl-email');
+      if (email) email.value = 'ashok.kumar@email.com';
+      if (captcha) captcha.value = '2B3J7y';
+      validate();
+      var kb = document.getElementById('ios-keyboard');
+      if (kb) kb.classList.add('is-visible');
+      document.body.classList.add('keyboard-open');
+      setTimeout(function () {
+        if (captcha) captcha.scrollIntoView({ block: 'center' });
+      }, 80);
+    }
+    if (/keyboard/.test(location.hash) || /keyboard/.test(location.search)) {
+      showKeyboardDemo();
+    }
+    window.kycShowKeyboard = showKeyboardDemo;
+
     validate();
   }
 

@@ -10,12 +10,20 @@
     max-width: 402px;
     margin-inline: auto;
     min-height: 100vh;
+    min-height: 100dvh; /* shrink with the on-screen keyboard */
     background: var(--color-neutral-50);
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 12px;
   }
+
+  /* Keep focused inputs clear of a sticky header / open keyboard */
+  .sendlink-card .form-input,
+  .sendlink-card .sendlink-select { scroll-margin-block: 96px 320px; }
+
+  /* When the keyboard mockup is open, leave room to scroll content above it */
+  body.keyboard-open .sendlink-body { padding-bottom: 320px; }
 
   /* Decorative band (shared visual with the initiation screen) */
   .sendlink-bg {

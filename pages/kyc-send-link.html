@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="../css/app.css" />
     <link rel="stylesheet" href="../css/header.css" />
     <link rel="stylesheet" href="../css/kyc-send-link.css" />
+    <link rel="stylesheet" href="../css/ios-keyboard.css" />
   </head>
   <body>
     <div class="sendlink-page">
@@ -156,6 +157,41 @@
             <i data-lucide="send"></i>
           </button>
         </div>
+      </div>
+    </div>
+
+    <!-- iOS keyboard mockup (review only — shown via #keyboard) -->
+    <div class="ios-keyboard" id="ios-keyboard" aria-hidden="true">
+      <div class="iosk-suggestions">
+        <span class="iosk-sug">"The"</span>
+        <span class="iosk-sep"></span>
+        <span class="iosk-sug">the</span>
+        <span class="iosk-sep"></span>
+        <span class="iosk-sug">to</span>
+      </div>
+      <div class="iosk-rows">
+        <div class="iosk-row">
+          <span class="iosk-key">q</span><span class="iosk-key">w</span><span class="iosk-key">e</span><span class="iosk-key">r</span><span class="iosk-key">t</span><span class="iosk-key">y</span><span class="iosk-key">u</span><span class="iosk-key">i</span><span class="iosk-key">o</span><span class="iosk-key">p</span>
+        </div>
+        <div class="iosk-row iosk-row--2">
+          <span class="iosk-key">a</span><span class="iosk-key">s</span><span class="iosk-key">d</span><span class="iosk-key">f</span><span class="iosk-key">g</span><span class="iosk-key">h</span><span class="iosk-key">j</span><span class="iosk-key">k</span><span class="iosk-key">l</span>
+        </div>
+        <div class="iosk-row iosk-row--3">
+          <span class="iosk-key iosk-key--fn iosk-key--wide">⇧</span>
+          <span class="iosk-letters">
+            <span class="iosk-key">z</span><span class="iosk-key">x</span><span class="iosk-key">c</span><span class="iosk-key">v</span><span class="iosk-key">b</span><span class="iosk-key">n</span><span class="iosk-key">m</span>
+          </span>
+          <span class="iosk-key iosk-key--fn iosk-key--wide">⌫</span>
+        </div>
+        <div class="iosk-row iosk-row--4">
+          <span class="iosk-key iosk-key--fn iosk-key--abc">123</span>
+          <span class="iosk-key iosk-key--space">space</span>
+          <span class="iosk-key iosk-key--return">return</span>
+        </div>
+      </div>
+      <div class="iosk-bottom">
+        <i data-lucide="smile"></i>
+        <i data-lucide="mic"></i>
       </div>
     </div>
 
