@@ -10,12 +10,22 @@
     var submit = document.getElementById('kycinit-submit');
     if (!tiles.length) return;
 
+    var requirements = document.getElementById('kycinit-requirements');
+    var submitLabel = document.getElementById('kycinit-submit-label');
+
     function select(tile) {
       tiles.forEach(function (t) {
         var on = t === tile;
         t.classList.toggle('is-selected', on);
         t.setAttribute('aria-checked', on ? 'true' : 'false');
       });
+
+      // "Send link" hides the agent document checklist and changes the CTA.
+      var sendLink = tile.getAttribute('data-option') === 'send-link';
+      if (requirements) requirements.style.display = sendLink ? 'none' : '';
+      if (submitLabel) {
+        submitLabel.textContent = sendLink ? 'Next' : 'Start KYC Verification';
+      }
     }
 
     tiles.forEach(function (tile) {
