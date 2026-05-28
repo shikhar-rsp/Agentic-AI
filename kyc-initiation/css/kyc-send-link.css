@@ -1,0 +1,227 @@
+/* =========================================================================
+   Send KYC Link to Customer — form screen.
+   Header from header.css; inputs use the DS .form-field/.form-input; the
+   submit uses the DS .btn. Everything else is token-driven layout.
+   ========================================================================= */
+
+@layer app {
+  .sendlink-page {
+    width: 100%;
+    max-width: 402px;
+    margin-inline: auto;
+    min-height: 100vh;
+    min-height: 100dvh; /* shrink with the on-screen keyboard */
+    background: var(--color-neutral-50);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Keep focused inputs clear of a sticky header / open keyboard */
+  .sendlink-card .form-input,
+  .sendlink-card .sendlink-select { scroll-margin-block: 96px 320px; }
+
+  /* When the keyboard mockup is open, leave room to scroll content above it */
+  body.keyboard-open .sendlink-body { padding-bottom: 320px; }
+
+  /* Decorative band (shared visual with the initiation screen) */
+  .sendlink-bg {
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 240px;
+    background: #60a5fa url('../assets/img/kycinit-bg.png') top center / cover no-repeat;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .sendlink-page > .kyc-header { position: relative; z-index: 2; }
+
+  .sendlink-body {
+    position: relative;
+    z-index: 1;
+    padding: 0 16px 40px;
+  }
+
+  /* ---- Card ---- */
+  .sendlink-card {
+    background: var(--color-neutral-0);
+    border-radius: 16px;
+    box-shadow: 0 1px 4px rgba(10, 13, 18, 0.1), 0 1px 2px rgba(10, 13, 18, 0.06);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow: hidden;
+  }
+
+  .sendlink-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-align: center;
+  }
+  .sendlink-title {
+    margin: 0;
+    font-family: 'Familjen Grotesk', 'Rubik', sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 32px;
+    color: var(--color-blue-700);
+  }
+  .sendlink-subtitle {
+    margin: 0;
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-600);
+  }
+
+  /* Back link */
+  .sendlink-back {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-800);
+  }
+  .sendlink-back .lucide,
+  .sendlink-back [data-lucide] { width: 20px; height: 20px; }
+
+  /* Customer info box */
+  .sendlink-customer {
+    background: var(--color-blue-50);
+    border-radius: 12px;
+    padding: 12px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    width: 100%;
+  }
+  .sendlink-customer__label { font: 400 12px/16px 'Rubik', sans-serif; color: var(--color-neutral-600); }
+  .sendlink-customer__value { font: 600 16px/24px 'Rubik', sans-serif; color: var(--color-neutral-800); }
+  .sendlink-customer__meta-group { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .sendlink-customer__meta { margin: 0; font: 400 12px/16px 'Rubik', sans-serif; color: var(--color-neutral-600); }
+  .sendlink-customer__meta strong { font-weight: 400; color: var(--color-neutral-800); }
+
+  /* Section header bar (soft blue gradient) */
+  .sendlink-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+  .sendlink-section__bar {
+    margin: 0;
+    padding: 12px;
+    border-radius: 8px;
+    background: linear-gradient(90deg, var(--color-blue-standard-50) 0%, #dbeafe 100%);
+    font: 600 16px/24px 'Rubik', sans-serif;
+    color: var(--color-neutral-800);
+  }
+  .sendlink-fields { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+
+  /* Required asterisk — Figma uses text.danger (#b91c1c) */
+  .sendlink-req { color: #b91c1c; }
+
+  /* Error message under a field (DS .form-error, restyled to match Figma) */
+  .sendlink-card .form-error {
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: #b91c1c;
+  }
+
+  /* Native select styled like the DS input */
+  .sendlink-select-wrap { position: relative; width: 100%; }
+  .sendlink-select {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    padding: 8px 36px 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--color-neutral-300);
+    background: var(--color-neutral-0);
+    box-shadow: 0 1px 4px rgba(10, 13, 18, 0.05);
+    color: var(--color-neutral-800);
+    font: 400 16px/24px 'Rubik', sans-serif;
+    cursor: pointer;
+    outline: none;
+  }
+  .sendlink-select:focus { border-color: var(--color-blue-600); }
+  .sendlink-select-caret {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--color-neutral-600);
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Captcha */
+  .sendlink-captcha {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+    width: 100%;
+  }
+  .sendlink-captcha__img {
+    flex: 1 0 0;
+    min-width: 0;
+    aspect-ratio: 298 / 108;
+    border: 1px solid var(--color-neutral-200);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .sendlink-captcha__img img { width: 100%; height: 100%; object-fit: contain; }
+  .sendlink-captcha__refresh {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid var(--color-neutral-300);
+    background: var(--color-neutral-0);
+    color: var(--color-neutral-700);
+    cursor: pointer;
+  }
+  .sendlink-captcha__refresh .lucide,
+  .sendlink-captcha__refresh [data-lucide] { width: 16px; height: 16px; }
+
+  /* Success toast (shown after the link is sent) */
+  .sendlink-success { display: none; align-items: flex-start; width: 100%; }
+  .sendlink-success.is-visible { display: flex; }
+  .sendlink-success .toast-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .sendlink-success .toast-title { font-weight: 500; font-size: 16px; line-height: 24px; }
+  .sendlink-success .toast-description {
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--color-neutral-600);
+  }
+  .sendlink-success .toast-description strong {
+    font-weight: 600;
+    color: var(--color-neutral-800);
+  }
+
+  /* Submit (disabled until required fields are filled) */
+  .sendlink-submit { width: 100%; gap: 8px; }
+  .sendlink-submit .lucide,
+  .sendlink-submit [data-lucide] { width: 20px; height: 20px; }
+  .sendlink-submit:disabled {
+    background: var(--color-neutral-100);
+    color: var(--color-neutral-300);
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+}

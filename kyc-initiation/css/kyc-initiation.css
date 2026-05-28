@@ -1,0 +1,186 @@
+/* =========================================================================
+   KYC Initiation (mobile) — entry screen for the agent-assisted KYC flow.
+   Header comes from header.css; .badge / .toast / .btn from the design system.
+   ========================================================================= */
+
+@layer app {
+  .kycinit-page {
+    width: 100%;
+    max-width: 402px;
+    margin-inline: auto;
+    min-height: 100vh;
+    background: var(--color-neutral-50);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Decorative blue band behind the header + card top (vendored from Figma) */
+  .kycinit-bg {
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 240px;
+    background: #60a5fa url('../assets/img/kycinit-bg.png') top center / cover no-repeat;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  /* Header + body sit above the decorative band */
+  .kycinit-page > .kyc-header { position: relative; z-index: 2; }
+
+  .kycinit-body {
+    position: relative;
+    z-index: 1;
+    padding: 0 16px 16px;
+  }
+
+  /* ---- Main card ---- */
+  .kycinit-card {
+    background: var(--color-neutral-0);
+    border-radius: 16px;
+    box-shadow: 0 1px 4px rgba(10, 13, 18, 0.1), 0 1px 2px rgba(10, 13, 18, 0.06);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow: hidden;
+  }
+
+  .kycinit-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-align: center;
+  }
+  .kycinit-title {
+    margin: 0;
+    font-family: 'Familjen Grotesk', 'Rubik', sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 32px;
+    color: var(--color-blue-700);
+  }
+  .kycinit-subtitle {
+    margin: 0;
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-600);
+  }
+
+  /* ---- Customer info box ---- */
+  .kycinit-customer {
+    background: var(--color-blue-50);
+    border-radius: 12px;
+    padding: 12px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+  }
+  .kycinit-customer__name {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .kycinit-customer__label {
+    font: 400 12px/16px 'Rubik', sans-serif;
+    color: var(--color-neutral-600);
+  }
+  .kycinit-customer__value {
+    font: 600 16px/24px 'Rubik', sans-serif;
+    color: var(--color-neutral-800);
+  }
+  .kycinit-customer__meta-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .kycinit-customer__meta {
+    margin: 0;
+    font: 400 12px/16px 'Rubik', sans-serif;
+    color: var(--color-neutral-600);
+  }
+  .kycinit-customer__meta strong {
+    font-weight: 400;
+    color: var(--color-neutral-800);
+  }
+
+  /* ---- Option tiles ---- */
+  .kycinit-tiles {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .kycinit-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid var(--color-neutral-200);
+    background: var(--color-neutral-0);
+    text-decoration: none;
+    cursor: pointer;
+    text-align: left;
+  }
+  .kycinit-tile.is-selected {
+    background: var(--color-blue-50);
+    border-color: var(--color-blue-600);
+  }
+  .kycinit-tile:focus-visible {
+    outline: 2px solid var(--color-blue-600);
+    outline-offset: 2px;
+  }
+  .kycinit-tile__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    border-radius: 6px;
+    background: var(--color-blue-standard-600);
+    color: var(--color-neutral-0);
+  }
+  .kycinit-tile__icon .lucide,
+  .kycinit-tile__icon [data-lucide] { width: 20px; height: 20px; }
+  .kycinit-tile__title {
+    margin: 0;
+    font: 600 14px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-800);
+  }
+  .kycinit-tile__desc {
+    margin: 0;
+    font: 400 12px/16px 'Rubik', sans-serif;
+    color: var(--color-neutral-600);
+  }
+
+  /* ---- Info toast (numbered checklist) ---- */
+  .kycinit-toast { align-items: flex-start; }
+  .kycinit-toast .toast-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .kycinit-toast .toast-title {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .kycinit-list {
+    margin: 0;
+    padding-left: 18px;
+    list-style: decimal;
+    font: 400 12px/16px 'Rubik', sans-serif;
+    color: var(--color-neutral-600);
+  }
+  .kycinit-list li + li { margin-top: 4px; }
+
+  /* ---- Submit button ---- */
+  .kycinit-submit { width: 100%; gap: 8px; }
+  .kycinit-submit .lucide,
+  .kycinit-submit [data-lucide] { width: 20px; height: 20px; }
+}
