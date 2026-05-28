@@ -57,3 +57,11 @@
     border: 1.5px solid var(--color-neutral-0);
   }
 }
+
+/* Figma uses text.danger (#b91c1c) for the "Link expires" badge label, while
+   the DS red-light badge ships #dc2626. Unlayered (the DS badge CSS is also
+   unlayered) + extra specificity so it wins. Icon stays icon.danger (#dc2626). */
+.kyc-header .badge.badge-red { color: #b91c1c; }
+.kyc-header .badge.badge-red .lucide,
+.kyc-header .badge.badge-red [data-lucide],
+.kyc-header .badge.badge-red svg { color: #dc2626; }

@@ -127,8 +127,8 @@
   }
   .sendlink-fields { display: flex; flex-direction: column; gap: 12px; width: 100%; }
 
-  /* Required asterisk */
-  .sendlink-req { color: var(--color-red-600); }
+  /* Required asterisk — Figma uses text.danger (#b91c1c) */
+  .sendlink-req { color: #b91c1c; }
 
   /* Error message under a field (DS .form-error, restyled to match Figma) */
   .sendlink-card .form-error {
