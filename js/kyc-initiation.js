@@ -44,8 +44,12 @@
       submit.addEventListener('click', function () {
         var selected = document.querySelector('.kycinit-tile.is-selected');
         var option = selected ? selected.getAttribute('data-option') : null;
-        // TODO: route to the chosen flow when those screens exist.
-        console.log('Start KYC Verification with option:', option);
+        if (option === 'send-link') {
+          window.location.href = 'kyc-send-link.html';
+        } else {
+          // TODO: route to the "Complete KYC for Customer" flow when it exists.
+          console.log('Start KYC Verification (complete path)');
+        }
       });
     }
   }
