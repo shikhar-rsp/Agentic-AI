@@ -288,3 +288,12 @@
     }
   }
 }
+
+/* Make form-field fill its grid cell. DS .form-field is unlayered with a
+   fixed --form-field-width, so this override must be unlayered too. */
+.sendlink-fields .form-field { width: 100%; }
+
+/* Give the captcha image a natural height on web (not squished). */
+@media (min-width: 768px) {
+  .sendlink-captcha__img { aspect-ratio: auto; height: 60px; }
+}
