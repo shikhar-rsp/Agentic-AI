@@ -184,3 +184,50 @@
   .kycinit-submit .lucide,
   .kycinit-submit [data-lucide] { width: 20px; height: 20px; }
 }
+
+/* =========================================================================
+   Web / desktop layout (>= 768px) — Figma node 1253:81086.
+   Full-width band + header, centered 800px card, 2-col customer info, tiles
+   side by side.
+   ========================================================================= */
+@layer app {
+  @media (min-width: 768px) {
+    .kycinit-page { max-width: none; gap: 0; }
+
+    .kycinit-bg {
+      height: 360px;
+      background: linear-gradient(120deg, #4d8fc8 0%, #60a5fa 55%, #8ec5fb 100%);
+    }
+
+    .kycinit-body {
+      display: flex;
+      justify-content: center;
+      padding: 56px 16px 48px;
+    }
+    .kycinit-card {
+      width: 100%;
+      max-width: 800px;
+      padding: 32px;
+      gap: 20px;
+    }
+
+    /* Customer info: name | divider | meta */
+    .kycinit-customer {
+      flex-direction: row;
+      align-items: center;
+      gap: 0;
+      padding: 16px;
+    }
+    .kycinit-customer__name { flex: 1 0 0; }
+    .kycinit-customer__meta-group {
+      flex: 1 0 0;
+      align-items: flex-start;
+      border-left: 1px solid var(--color-blue-200);
+      padding-left: 32px;
+    }
+
+    /* Two tiles side by side */
+    .kycinit-tiles { flex-direction: row; align-items: stretch; }
+    .kycinit-tile { flex: 1 0 0; }
+  }
+}

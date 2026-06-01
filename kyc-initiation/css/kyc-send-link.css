@@ -225,3 +225,19 @@
     box-shadow: none;
   }
 }
+
+/* =========================================================================
+   Web / desktop layout (>= 768px) — centered card, full-width band+header.
+   (No dedicated web Figma yet; mirrors the initiation web shell.)
+   ========================================================================= */
+@layer app {
+  @media (min-width: 768px) {
+    .sendlink-page { max-width: none; gap: 0; }
+    .sendlink-bg {
+      height: 360px;
+      background: linear-gradient(120deg, #4d8fc8 0%, #60a5fa 55%, #8ec5fb 100%);
+    }
+    .sendlink-body { display: flex; justify-content: center; padding: 56px 16px 48px; }
+    .sendlink-card { width: 100%; max-width: 800px; padding: 32px; }
+  }
+}

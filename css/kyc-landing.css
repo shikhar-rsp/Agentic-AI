@@ -321,3 +321,16 @@
     line-height: 20px;
     color: var(--color-neutral-600);
   }
+
+/* =========================================================================
+   Web / desktop layout (>= 768px) — full-width header + hero, centered panel.
+   (No dedicated web Figma yet; sensible responsive treatment to review.)
+   ========================================================================= */
+@layer app {
+  @media (min-width: 768px) {
+    .kyc-page { max-width: none; }
+    .kyc-hero { align-items: center; text-align: center; padding: 32px 16px 96px; }
+    .kyc-hero__title, .kyc-hero__subtitle { max-width: 640px; }
+    .kyc-panel-wrap { width: 100%; max-width: 640px; margin-inline: auto; }
+  }
+}
