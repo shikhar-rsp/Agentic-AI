@@ -18,9 +18,8 @@
     position: relative;
   }
 
-  /* Gold/orange decorative banner — hidden on mobile, shown on web */
+  /* Gold/orange decorative banner — shown on both mobile and web */
   .aadhaar-bg {
-    display: none;
     position: absolute;
     inset: 0 0 auto 0;
     height: 280px;
@@ -122,12 +121,18 @@
     color: var(--color-neutral-700);
   }
 
-  /* ---- Radio buttons (verification type) ---- */
+  /* ---- Radio buttons (verification type) ----
+     2-column on both mobile and web (matches the Figma). */
   .aadhaar-radios {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 12px;
   }
+  .aadhaar-radio { flex: 1 0 0; min-width: 0; }
+
+  /* The radio label is just "Aadhaar" on mobile and "Aadhaar Number" on web,
+     so the "Number" extension is hidden by default and shown on >=768px. */
+  .aadhaar-radio__label-ext { display: none; }
   .aadhaar-radio {
     display: flex;
     align-items: center;
@@ -208,10 +213,7 @@
     }
     .aadhaar-title { font-size: 28px; line-height: 36px; }
 
-    /* Radios go 2-col on web */
-    .aadhaar-radios {
-      flex-direction: row;
-    }
-    .aadhaar-radio { flex: 1 0 0; }
+    /* On web, show the full "Aadhaar Number" label */
+    .aadhaar-radio__label-ext { display: inline; }
   }
 }
