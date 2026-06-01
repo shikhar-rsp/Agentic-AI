@@ -1,0 +1,387 @@
+/* =========================================================================
+   KYC Landing (mobile) — page-specific layout.
+   Components (.btn, .badge, .toast) come from the Atlas design system.
+   Everything here is composition/layout built on design-system tokens.
+   ========================================================================= */
+
+@layer app {
+  /* ---- Mobile frame ---------------------------------------------------- */
+  .kyc-page {
+    width: 100%;
+    max-width: 402px;
+    margin-inline: auto;
+    min-height: 100vh;
+    background: var(--color-neutral-50);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* Header styles now live in css/header.css (shared across screens). */
+
+  /* ---- Blue hero ------------------------------------------------------- */
+  .kyc-hero {
+    background: linear-gradient(180deg, var(--color-blue-600) 0%, var(--color-blue-900) 100%);
+    border-bottom: 1px solid var(--color-neutral-200);
+    padding: 16px 16px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .kyc-hero__title {
+    margin: 0;
+    font-family: 'Familjen Grotesk', 'Rubik', sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 32px;
+    color: var(--color-neutral-0);
+  }
+  .kyc-hero__subtitle {
+    margin: 0;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--color-neutral-0);
+  }
+
+  /* ---- White panel (overlaps hero) ------------------------------------ */
+  .kyc-panel-wrap {
+    padding: 0 16px 48px;
+    margin-top: -48px;
+    position: relative;
+    z-index: 1;
+  }
+  .kyc-panel {
+    background: var(--color-neutral-0);
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(10, 13, 18, 0.05);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* ---- Assistance toggle card ----------------------------------------- */
+  .kyc-assist {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid var(--color-neutral-200);
+    border-radius: 8px;
+    background: var(--color-neutral-0);
+  }
+  .kyc-assist__text { display: flex; flex-direction: column; }
+  .kyc-assist__title {
+    margin: 0;
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-800);
+  }
+  .kyc-assist__hint {
+    margin: 0;
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-600);
+  }
+
+  /* Switch (off state) */
+  .kyc-switch {
+    appearance: none;
+    flex-shrink: 0;
+    width: 36px;
+    height: 20px;
+    border-radius: 12px;
+    background: var(--color-neutral-100);
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  .kyc-switch::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-neutral-0);
+    box-shadow: 0 1px 2px rgba(10, 13, 18, 0.15);
+    transition: transform 0.2s ease;
+  }
+  .kyc-switch:checked { background: var(--color-blue-600); }
+  .kyc-switch:checked::after { transform: translateX(16px); }
+
+  /* ---- Method cards ---------------------------------------------------- */
+  .kyc-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .method-card {
+    border: 1px solid var(--color-neutral-200);
+    border-radius: 8px;
+    padding: 16px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* Centered, single-title method cards (PAN / Doc / Face) */
+  .method-card--center {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .method-card__icon {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .method-card__icon img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .method-card__icon-box {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-emerald-600);
+  }
+  .method-card__icon-box img { width: 28px; height: 28px; }
+  .method-card__title {
+    margin: 0;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  /* Per-method gradients + accent text (radial: white -> tint) */
+  .method-card--pan {
+    background: radial-gradient(120% 130% at 50% 0%, #ffffff 0%, var(--color-indigo-50) 100%);
+  }
+  .method-card--pan .method-card__title { color: var(--color-blue-standard-600); }
+
+  .method-card--doc {
+    background: radial-gradient(120% 130% at 50% 0%, #ffffff 0%, var(--color-teal-50) 100%);
+  }
+  .method-card--doc .method-card__title { color: var(--color-emerald-600); }
+
+  .method-card--face {
+    background: radial-gradient(120% 130% at 50% 0%, #ffffff 0%, var(--color-pink-50) 100%);
+  }
+  .method-card--face .method-card__title {
+    color: var(--color-pink-600);
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  /* Featured Aadhaar card */
+  .method-card--aadhaar {
+    border: 1.5px solid var(--color-blue-600);
+    gap: 8px;
+    background: linear-gradient(
+      122.88deg,
+      #ffffff 0%,
+      var(--color-amber-50) 28%,
+      #fed7aa 60%,
+      #fef3c7 102%
+    );
+  }
+  .method-card__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+  }
+  .method-card__row--icon { align-items: flex-start; }
+  .method-card__aadhaar-logo { height: 44px; width: auto; }
+  .method-card__aadhaar-title {
+    margin: 0;
+    flex: 1 0 0;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    color: #9a3412; /* color.text.accent.orange — no DS token, kept for fidelity */
+  }
+
+  /* Start KYC button glow (subtle approximation of the Figma animation) */
+  .kyc-start-btn {
+    position: relative;
+    overflow: hidden;
+    gap: 8px;
+    border-radius: 12px;
+  }
+  .kyc-start-btn .lucide,
+  .kyc-start-btn [data-lucide] { width: 18px; height: 18px; }
+
+  /* ---- Info toast overrides (stack title over description) ------------ */
+  .kyc-info { align-items: flex-start; }
+  .kyc-info .toast-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .kyc-info .toast-description { color: var(--color-neutral-600); }
+  .kyc-info .toast-body { align-items: flex-start; }
+
+  /* ---- Card selection + revealed "Start KYC" CTA ---------------------- */
+  /* CTA is hidden until its card is selected */
+  .method-card__cta { display: none; }
+  .method-card.is-selected .method-card__cta { display: inline-flex; }
+
+  /* Centered cards reveal a full-width CTA below the title */
+  .method-card--center .method-card__cta {
+    width: 100%;
+    margin-top: 8px;
+    justify-content: center;
+  }
+
+  /* Selected highlight for the non-featured cards */
+  .method-card--center { cursor: pointer; border: 1.5px solid transparent; }
+  .method-card--pan.is-selected,
+  .method-card--doc.is-selected,
+  .method-card--face.is-selected {
+    border-color: var(--color-blue-600);
+  }
+  .method-card--center:focus-visible {
+    outline: 2px solid var(--color-blue-600);
+    outline-offset: 2px;
+  }
+
+}
+
+/* ===========================================================================
+   Modal overrides — intentionally UNLAYERED.
+   The design system's modal.css is unlayered, and unlayered rules always beat
+   @layer rules. So these overrides live outside @layer app; since this file is
+   linked after atlas.css they win the normal cascade on equal specificity.
+   =========================================================================== */
+
+/* Override DS backdrop to match Figma scrim (lighter, no blur) */
+.kyc-modal.modal-backdrop {
+    background: rgba(26, 26, 26, 0.36);
+    backdrop-filter: none;
+    padding-inline: 16px;
+  }
+  /* Let the confirmation modal size to its content on mobile */
+  .kyc-modal .modal-confirmation {
+    width: 100%;
+    max-width: 370px;
+    height: auto;
+    border-radius: 16px;
+  }
+  .kyc-modal .modal-header {
+    height: auto;
+    padding: 20px 20px 0;
+    gap: 4px;
+  }
+  .kyc-modal .modal-body {
+    height: auto;
+    padding: 8px 20px 0;
+    text-align: center;
+  }
+  .kyc-modal .modal-footer {
+    height: auto;
+    padding: 20px;
+    gap: 12px;
+    justify-content: center;
+  }
+  .kyc-modal .modal-footer .btn {
+    flex: 1 0 0;
+    width: auto;
+  }
+
+  /* Brand-blue featured icon circle (DS ships success/error/info only) */
+  .modal-header-icon--brand {
+    background: var(--color-blue-50);
+    color: var(--color-blue-600);
+    margin-bottom: 12px;
+  }
+  .modal-header-icon--brand .lucide,
+  .modal-header-icon--brand [data-lucide] { width: 24px; height: 24px; }
+
+  .kyc-modal .modal-title {
+    font-family: 'Rubik', sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: var(--color-neutral-800);
+    height: auto;
+  }
+  .kyc-modal .modal-body {
+    font-family: 'Rubik', sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--color-neutral-600);
+  }
+
+/* =========================================================================
+   Web / desktop layout (>= 768px) — Figma node 1240:21525.
+   Full-width blue banner, mobile hero hidden, centered 800px card, 3-col
+   tiles (Face Scan hidden on web).
+   ========================================================================= */
+@layer app {
+  .kyc-bg { display: none; }
+  /* Web-only title shown inside the panel */
+  .kyc-web-title { display: none; }
+
+  @media (min-width: 768px) {
+    .kyc-web-title {
+      display: block;
+      margin: 0;
+      text-align: center;
+      font-family: 'Familjen Grotesk', 'Rubik', sans-serif;
+      font-weight: 600;
+      font-size: 28px;
+      line-height: 36px;
+      color: var(--color-neutral-800);
+    }
+
+    .kyc-page {
+      max-width: none;
+      background: var(--color-neutral-50);
+    }
+
+    /* Show the full-width banner */
+    .kyc-bg {
+      display: block;
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 360px;
+      background: #60a5fa url('../assets/img/kycinit-bg-web.png') top center / cover no-repeat;
+      z-index: 0;
+    }
+    .kyc-page > .kyc-header { position: relative; z-index: 2; }
+
+    /* Hide the mobile hero (different title was inside it); banner shows instead */
+    .kyc-hero { display: none; }
+
+    /* Centered card (same dimensions as kyc-initiation / kyc-method) */
+    .kyc-panel-wrap {
+      width: 100%;
+      max-width: 800px;
+      margin-inline: auto;
+      margin-top: 0;
+      padding: 56px 16px 48px;
+      position: relative;
+      z-index: 1;
+    }
+    .kyc-panel {
+      padding: 32px;
+      gap: 20px;
+      border-radius: 16px;
+    }
+
+    /* 3 method tiles in a row; Face Scan hidden on web (Figma shows 3) */
+    .kyc-methods { flex-direction: row; gap: 16px; align-items: stretch; }
+    .method-card { flex: 1 0 0; }
+    .method-card--face { display: none; }
+  }
+}
