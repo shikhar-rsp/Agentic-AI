@@ -241,3 +241,50 @@
     .sendlink-card { width: 100%; max-width: 800px; padding: 32px; }
   }
 }
+
+/* =========================================================================
+   Web / desktop layout — form fields (Figma node 1270:13517).
+   Standard responsive form pattern: stack on mobile, 2-column grid on web.
+   Apply this same pattern to future forms.
+   ========================================================================= */
+@layer app {
+  @media (min-width: 768px) {
+    /* Two-column grid for fields within each section + the captcha row */
+    .sendlink-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 16px;
+      row-gap: 12px;
+      align-items: start;
+    }
+
+    /* Captcha image sits in the right grid cell aligned with the input row.
+       Push it down by the label height so it lines up with the field input. */
+    .sendlink-captcha { margin-top: 28px; align-items: flex-start; }
+    .sendlink-captcha__img { aspect-ratio: auto; height: 48px; }
+  }
+}
+
+/* Customer info: 2-col horizontal with divider on web (matches kyc-initiation) */
+@layer app {
+  @media (min-width: 768px) {
+    .sendlink-customer {
+      flex-direction: row;
+      align-items: center;
+      gap: 0;
+      padding: 16px;
+    }
+    .sendlink-customer > div:first-child {
+      flex: 1 0 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .sendlink-customer__meta-group {
+      flex: 1 0 0;
+      align-items: flex-start;
+      border-left: 1px solid var(--color-blue-200);
+      padding-left: 32px;
+    }
+  }
+}
