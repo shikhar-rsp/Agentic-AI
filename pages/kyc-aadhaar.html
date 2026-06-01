@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bajaj eKYC — Aadhaar eKYC</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Rubik:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../assets/atlas/atlas.css" />
+    <link rel="stylesheet" href="../css/app.css" />
+    <link rel="stylesheet" href="../css/header.css" />
+    <link rel="stylesheet" href="../css/kyc-aadhaar.css" />
+  </head>
+  <body>
+    <div class="aadhaar-page">
+      <div class="aadhaar-bg" aria-hidden="true"></div>
+
+      <!-- ============ Header ============ -->
+      <header class="kyc-header">
+        <div class="kyc-header__row">
+          <img class="kyc-logo" src="../assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+          <div class="kyc-header__agent">
+            <div class="kyc-agent-info">
+              <span class="kyc-agent-name">Rajesh Chaurasia</span>
+              <span class="kyc-agent-id">BA786314</span>
+            </div>
+            <div class="kyc-avatar">
+              <img src="../assets/img/agent-avatar.jpg" alt="Support agent" />
+              <span class="kyc-avatar__dot" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+        <span class="badge badge-sm badge-light badge-red">
+          <i data-lucide="alert-circle" style="width: 16px; height: 16px"></i>
+          Link expires in 12hr 32mins
+        </span>
+      </header>
+
+      <!-- ============ Body ============ -->
+      <div class="aadhaar-body">
+        <div class="aadhaar-card">
+          <!-- Top section -->
+          <div class="aadhaar-head">
+            <img class="aadhaar-logo" src="../assets/img/aadhaar-logo.png" alt="Aadhaar" />
+            <h1 class="aadhaar-title">Aadhaar eKYC</h1>
+            <p class="aadhaar-subtitle">
+              Please follow the instructions below to complete KYC. This will only take a while.
+            </p>
+          </div>
+
+          <!-- Back -->
+          <a class="aadhaar-back">
+            <i data-lucide="arrow-left"></i>
+            Back
+          </a>
+
+          <!-- Aadhaar Card Details -->
+          <div class="aadhaar-details">
+            <div class="aadhaar-details__head">
+              <h3 class="aadhaar-details__title">Aadhaar Card Details</h3>
+              <p class="aadhaar-details__hint">
+                We'll send a secure OTP to your Aadhaar-linked mobile number
+              </p>
+            </div>
+
+            <!-- Verification type radios -->
+            <div class="aadhaar-field">
+              <span class="aadhaar-field__label">
+                Select Verification Type<span class="aadhaar-req">*</span>
+              </span>
+              <div class="aadhaar-radios" role="radiogroup" aria-label="Verification type">
+                <label class="aadhaar-radio is-selected" data-vtype="aadhaar">
+                  <input type="radio" name="vtype" value="aadhaar" checked />
+                  <span class="aadhaar-radio__dot" aria-hidden="true"></span>
+                  <span class="aadhaar-radio__label">Aadhaar Number</span>
+                </label>
+                <label class="aadhaar-radio" data-vtype="vid">
+                  <input type="radio" name="vtype" value="vid" />
+                  <span class="aadhaar-radio__dot" aria-hidden="true"></span>
+                  <span class="aadhaar-radio__label">Virtual ID</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Aadhaar Number -->
+            <div class="form-field aadhaar-field">
+              <label class="form-label" for="aadhaar-num">
+                <span id="aadhaar-num-label">Aadhaar Number</span><span class="aadhaar-req">*</span>
+              </label>
+              <div class="form-input-wrapper">
+                <input
+                  class="form-input"
+                  id="aadhaar-num"
+                  type="tel"
+                  inputmode="numeric"
+                  maxlength="12"
+                  placeholder="Enter 12-digit Aadhaar Number"
+                />
+              </div>
+            </div>
+
+            <!-- Mobile Number -->
+            <div class="form-field aadhaar-field">
+              <label class="form-label" for="aadhaar-mobile">
+                Mobile Number linked to Aadhaar<span class="aadhaar-req">*</span>
+              </label>
+              <div class="form-input-wrapper">
+                <input
+                  class="form-input"
+                  id="aadhaar-mobile"
+                  type="tel"
+                  inputmode="numeric"
+                  maxlength="10"
+                  placeholder="Enter 10-digit mobile number"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Send OTP -->
+          <button type="button" class="btn btn-primary aadhaar-submit" id="aadhaar-submit" disabled>
+            Send OTP
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/vendor/lucide.min.js"></script>
+    <script src="../assets/atlas/atlas.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/kyc-aadhaar.js"></script>
+  </body>
+</html>
