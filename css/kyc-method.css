@@ -17,6 +17,18 @@
     position: relative;
   }
 
+  /* Decorative band — hidden on mobile, shown on web */
+  .kycmethod-bg {
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 240px;
+    background: #60a5fa url('../assets/img/kycinit-bg.png') top center / cover no-repeat;
+    overflow: hidden;
+    z-index: 0;
+    display: none;
+  }
+  .kycmethod-page > .kyc-header { position: relative; z-index: 2; }
+
   .kycmethod-body {
     padding: 0 16px 24px;
     position: relative;
@@ -205,16 +217,24 @@
   @media (min-width: 768px) {
     .kycmethod-page { max-width: none; gap: 0; }
 
+    /* Show the full-width banner on web (matches kyc-initiation / kyc-send-link) */
+    .kycmethod-bg {
+      display: block;
+      height: 360px;
+      background: #60a5fa url('../assets/img/kycinit-bg-web.png') top center / cover no-repeat;
+    }
+
     .kycmethod-body {
       display: flex;
       justify-content: center;
-      padding: 32px 16px 48px;
+      padding: 56px 16px 48px;
     }
+    /* Card matches kyc-initiation (max 800px, padding 32) */
     .kycmethod-card {
       width: 100%;
-      max-width: 1040px;
-      padding: 48px;
-      gap: 24px;
+      max-width: 800px;
+      padding: 32px;
+      gap: 20px;
     }
 
     .kycmethod-title {

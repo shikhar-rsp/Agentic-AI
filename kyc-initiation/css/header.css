@@ -72,16 +72,23 @@
   .kyc-agent-name { font: 500 14px/18px 'Rubik', sans-serif; color: var(--color-neutral-800); }
   .kyc-agent-id { font: 400 12px/16px 'Rubik', sans-serif; color: var(--color-neutral-600); }
 
-  /* ---- Desktop / web header ---- */
+  /* ---- Desktop / web header ----
+     Single row: logo (left) | expiry badge | agent (right).
+     The badge is moved INSIDE the row via flex order + display:contents on the
+     row wrapper, so existing mobile markup keeps working. */
   @media (min-width: 768px) {
-    .kyc-header { padding: 12px 32px; }
+    .kyc-header {
+      flex-direction: row;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 32px;
+    }
+    .kyc-header__row { display: contents; }
+    .kyc-logo { order: 1; }
+    .kyc-header > .badge { order: 2; }
+    .kyc-header__agent { order: 3; }
     .kyc-agent-info { display: flex; }
   }
-}
-
-/* Hide the mobile "Link expires" badge on web (unlayered to beat DS .badge). */
-@media (min-width: 768px) {
-  .kyc-header > .badge { display: none; }
 }
 
 /* Figma uses text.danger (#b91c1c) for the "Link expires" badge label, while
