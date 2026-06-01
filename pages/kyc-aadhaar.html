@@ -55,7 +55,7 @@
           </div>
 
           <!-- Back -->
-          <a class="aadhaar-back">
+          <a class="aadhaar-back" id="aadhaar-back">
             <i data-lucide="arrow-left"></i>
             Back
           </a>
@@ -167,6 +167,25 @@
           <button type="button" class="btn btn-primary aadhaar-submit" id="aadhaar-submit" disabled>
             Send OTP
           </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leave-page confirmation modal -->
+    <div class="modal-backdrop aadhaar-leave-modal" id="aadhaar-leave-modal" role="dialog" aria-modal="true" aria-labelledby="aadhaar-leave-title">
+      <div class="modal modal-confirmation">
+        <div class="modal-header no-border">
+          <div class="modal-header-icon modal-header-icon--warning">
+            <i data-lucide="alert-circle"></i>
+          </div>
+          <h2 class="modal-title" id="aadhaar-leave-title">Leave this page?</h2>
+        </div>
+        <div class="modal-body">
+          The details you entered may not be saved if you leave this page.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-modal-close>Go Back</button>
+          <button type="button" class="btn btn-primary" data-modal-close>Continue filling KYC</button>
         </div>
       </div>
     </div>

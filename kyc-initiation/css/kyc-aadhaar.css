@@ -302,3 +302,58 @@
     .aadhaar-radio__label-ext { display: inline; }
   }
 }
+
+/* =========================================================================
+   Leave-page confirmation modal (Figma node 1309:58201).
+   Reuses the DS .modal-confirmation pattern with an amber/warning icon.
+   Modal CSS overrides are UNLAYERED (DS modal.css is unlayered too).
+   ========================================================================= */
+
+/* Scrim + sizing (mirrors the kyc-modal pattern) */
+.aadhaar-leave-modal.modal-backdrop {
+  background: rgba(26, 26, 26, 0.36);
+  backdrop-filter: none;
+  padding-inline: 16px;
+}
+.aadhaar-leave-modal .modal-confirmation {
+  width: 100%;
+  max-width: 370px;
+  height: auto;
+  border-radius: 16px;
+}
+.aadhaar-leave-modal .modal-header { height: auto; padding: 20px 20px 0; gap: 4px; }
+.aadhaar-leave-modal .modal-body {
+  height: auto;
+  padding: 8px 20px 20px;
+  text-align: center;
+  font-family: 'Rubik', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-neutral-600);
+  border-bottom: 1px solid var(--color-neutral-200);
+}
+.aadhaar-leave-modal .modal-footer {
+  height: auto;
+  padding: 16px 20px;
+  gap: 12px;
+  justify-content: center;
+}
+.aadhaar-leave-modal .modal-footer .btn { flex: 1 0 0; width: auto; }
+.aadhaar-leave-modal .modal-title {
+  font-family: 'Rubik', sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  color: var(--color-neutral-800);
+  height: auto;
+  text-align: center;
+}
+
+/* Amber/warning featured-icon variant */
+.modal-header-icon--warning {
+  background: #fef3c7; /* amber-100 */
+  color: #d97706; /* amber-600 */
+  margin-bottom: 12px;
+}
+.modal-header-icon--warning .lucide,
+.modal-header-icon--warning [data-lucide] { width: 24px; height: 24px; }

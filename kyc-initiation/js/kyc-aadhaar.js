@@ -116,6 +116,34 @@
       });
     }
 
+    // ---- Leave-page confirmation modal (clicking Back) ----
+    var leaveModal = document.getElementById('aadhaar-leave-modal');
+    var back = document.getElementById('aadhaar-back');
+    function openLeaveModal() {
+      if (leaveModal) {
+        leaveModal.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+    function closeLeaveModal() {
+      if (leaveModal) {
+        leaveModal.classList.remove('is-open');
+        document.body.style.overflow = '';
+      }
+    }
+    if (back) back.addEventListener('click', function (e) { e.preventDefault(); openLeaveModal(); });
+    if (leaveModal) {
+      leaveModal.addEventListener('click', function (e) {
+        if (e.target === leaveModal) closeLeaveModal(); // scrim click
+      });
+      leaveModal.querySelectorAll('[data-modal-close]').forEach(function (b) {
+        b.addEventListener('click', closeLeaveModal);
+      });
+    }
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeLeaveModal();
+    });
+
     validate();
   }
 
