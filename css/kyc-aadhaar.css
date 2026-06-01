@@ -357,3 +357,42 @@
 }
 .modal-header-icon--warning .lucide,
 .modal-header-icon--warning [data-lucide] { width: 24px; height: 24px; }
+
+/* =========================================================================
+   OTP Verification (Figma node 1455:26192).
+   6 single-character boxes, auto-advance focus, Resend link right-aligned.
+   ========================================================================= */
+@layer app {
+  .aadhaar-otp {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+  }
+  .aadhaar-otp__box {
+    flex: 1 0 0;
+    min-width: 0;
+    aspect-ratio: 1 / 1;
+    padding: 8px;
+    border: 1px solid var(--color-neutral-300);
+    border-radius: 8px;
+    background: var(--color-neutral-0);
+    text-align: center;
+    font: 500 22px/28px 'Rubik', sans-serif;
+    color: var(--color-neutral-800);
+    box-shadow: 0 1px 2px rgba(10, 13, 18, 0.05);
+    outline: none;
+  }
+  .aadhaar-otp__box:focus {
+    border-color: var(--color-blue-600);
+    box-shadow: 0 0 0 3px rgba(0, 93, 172, 0.1);
+  }
+  .aadhaar-otp__box.is-filled { border-color: var(--color-blue-600); }
+
+  .aadhaar-resend {
+    align-self: flex-end;
+    font: 500 14px/20px 'Rubik', sans-serif;
+    color: var(--color-blue-600);
+    text-decoration: none;
+  }
+  .aadhaar-resend:hover { text-decoration: underline; }
+}
