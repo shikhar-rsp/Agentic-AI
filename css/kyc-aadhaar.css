@@ -176,6 +176,70 @@
     color: var(--color-neutral-800);
   }
 
+  /* ---- Success message (under valid mobile number) ---- */
+  .aadhaar-success {
+    display: none;
+    margin: 0;
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: var(--color-emerald-600);
+  }
+  .form-field.is-valid + .aadhaar-success,
+  .form-field.is-valid > .aadhaar-success { display: block; }
+
+  /* ---- Conditional sections (security question + consent) ---- */
+  .aadhaar-extra { display: none; }
+  .aadhaar-card.is-extended .aadhaar-extra { display: flex; }
+
+  /* ---- Consent section ---- */
+  .aadhaar-consent {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .aadhaar-consent__title {
+    margin: 0;
+    font: 600 16px/24px 'Rubik', sans-serif;
+    color: var(--color-neutral-800);
+  }
+  .aadhaar-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    cursor: pointer;
+  }
+  .aadhaar-check input[type='checkbox'] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .aadhaar-check__box {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    border: 1.5px solid var(--color-neutral-400);
+    border-radius: 3px;
+    background: var(--color-neutral-0);
+    position: relative;
+  }
+  .aadhaar-check input[type='checkbox']:checked + .aadhaar-check__box {
+    background: var(--color-blue-600);
+    border-color: var(--color-blue-600);
+  }
+  .aadhaar-check input[type='checkbox']:checked + .aadhaar-check__box::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>") center / 12px no-repeat;
+  }
+  .aadhaar-check__label {
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-800);
+  }
+  .aadhaar-readmore {
+    color: var(--color-blue-600);
+    text-decoration: underline;
+  }
+
   /* ---- Submit ---- */
   .aadhaar-submit { width: 100%; gap: 8px; }
   .aadhaar-submit:disabled {

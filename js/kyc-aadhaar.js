@@ -6,11 +6,17 @@
 (function () {
   'use strict';
 
+  var SECURITY_ANSWER = '14'; // What is 5 + 9?
+
   function init() {
     var radios = Array.prototype.slice.call(document.querySelectorAll('.aadhaar-radio'));
     var numInput = document.getElementById('aadhaar-num');
     var numLabel = document.getElementById('aadhaar-num-label');
     var mobile = document.getElementById('aadhaar-mobile');
+    var sec = document.getElementById('aadhaar-sec');
+    var card = document.querySelector('.aadhaar-card');
+    var consent1 = document.getElementById('aadhaar-c1');
+    var consent2 = document.getElementById('aadhaar-c2');
     var submit = document.getElementById('aadhaar-submit');
 
     function selectRadio(node) {
@@ -55,6 +61,8 @@
       return new RegExp('^\\d{' + len + '}$').test((numInput.value || '').trim());
     }
     function isMobileValid() { return /^\d{10}$/.test((mobile.value || '').trim()); }
+    function isSecurityValid() { return sec && (sec.value || '').trim() === SECURITY_ANSWER; }
+    function isConsented() { return consent1 && consent2 && consent1.checked && consent2.checked; }
 
     function fieldOf(el) { return el ? el.closest('.form-field') : null; }
     function setValid(el, ok) {
@@ -66,8 +74,14 @@
       // Toggle the success (green check) state on each input.
       setValid(numInput, isAadhaarValid());
       setValid(mobile, isMobileValid());
+      setValid(sec, isSecurityValid());
+
+      // Reveal the security + consent sections once Aadhaar + Mobile pass.
+      var extended = isAadhaarValid() && isMobileValid();
+      if (card) card.classList.toggle('is-extended', extended);
+
       if (!submit) return;
-      submit.disabled = !(isAadhaarValid() && isMobileValid());
+      submit.disabled = !(extended && isSecurityValid() && isConsented());
     }
 
     // Keep inputs numeric
@@ -84,6 +98,15 @@
         validate();
       });
     }
+    if (sec) {
+      sec.addEventListener('input', function () {
+        sec.value = sec.value.replace(/\D/g, '').slice(0, 3);
+        validate();
+      });
+    }
+    [consent1, consent2].forEach(function (cb) {
+      if (cb) cb.addEventListener('change', validate);
+    });
 
     if (submit) {
       submit.addEventListener('click', function () {

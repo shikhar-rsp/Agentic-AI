@@ -120,7 +120,47 @@
                   placeholder="Enter 10-digit mobile number"
                 />
               </div>
+              <p class="aadhaar-success" id="aadhaar-mobile-success">
+                Mobile number linked with Aadhaar has matched
+              </p>
             </div>
+
+            <!-- Security question (revealed when mobile + Aadhaar are valid) -->
+            <div class="form-field aadhaar-field aadhaar-extra" id="aadhaar-security">
+              <label class="form-label" for="aadhaar-sec">
+                What is 5 + 9? (Security question)<span class="aadhaar-req">*</span>
+              </label>
+              <div class="form-input-wrapper">
+                <input
+                  class="form-input"
+                  id="aadhaar-sec"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="3"
+                  placeholder=""
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Consent section (revealed when mobile + Aadhaar are valid) -->
+          <div class="aadhaar-consent aadhaar-extra" id="aadhaar-consent">
+            <h3 class="aadhaar-consent__title">Please confirm the following to proceed</h3>
+            <label class="aadhaar-check">
+              <input type="checkbox" id="aadhaar-c1" />
+              <span class="aadhaar-check__box" aria-hidden="true"></span>
+              <span class="aadhaar-check__label">
+                I/We hereby authorize BGIL to print my/our name/mobile number on the policy
+                document as received through Aadhaar e-KYC..
+              </span>
+            </label>
+            <label class="aadhaar-check">
+              <input type="checkbox" id="aadhaar-c2" />
+              <span class="aadhaar-check__box" aria-hidden="true"></span>
+              <span class="aadhaar-check__label">
+                I accept the UIDAI terms and conditions <a href="#" class="aadhaar-readmore">Read More</a>
+              </span>
+            </label>
           </div>
 
           <!-- Send OTP -->
