@@ -323,14 +323,65 @@
   }
 
 /* =========================================================================
-   Web / desktop layout (>= 768px) — full-width header + hero, centered panel.
-   (No dedicated web Figma yet; sensible responsive treatment to review.)
+   Web / desktop layout (>= 768px) — Figma node 1240:21525.
+   Full-width blue banner, mobile hero hidden, centered 800px card, 3-col
+   tiles (Face Scan hidden on web).
    ========================================================================= */
 @layer app {
+  .kyc-bg { display: none; }
+  /* Web-only title shown inside the panel */
+  .kyc-web-title { display: none; }
+
   @media (min-width: 768px) {
-    .kyc-page { max-width: none; }
-    .kyc-hero { align-items: center; text-align: center; padding: 32px 16px 96px; }
-    .kyc-hero__title, .kyc-hero__subtitle { max-width: 640px; }
-    .kyc-panel-wrap { width: 100%; max-width: 640px; margin-inline: auto; }
+    .kyc-web-title {
+      display: block;
+      margin: 0;
+      text-align: center;
+      font-family: 'Familjen Grotesk', 'Rubik', sans-serif;
+      font-weight: 600;
+      font-size: 28px;
+      line-height: 36px;
+      color: var(--color-neutral-800);
+    }
+
+    .kyc-page {
+      max-width: none;
+      background: var(--color-neutral-50);
+    }
+
+    /* Show the full-width banner */
+    .kyc-bg {
+      display: block;
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 360px;
+      background: #60a5fa url('../assets/img/kycinit-bg-web.png') top center / cover no-repeat;
+      z-index: 0;
+    }
+    .kyc-page > .kyc-header { position: relative; z-index: 2; }
+
+    /* Hide the mobile hero (different title was inside it); banner shows instead */
+    .kyc-hero { display: none; }
+
+    /* Centered card (same dimensions as kyc-initiation / kyc-method) */
+    .kyc-panel-wrap {
+      width: 100%;
+      max-width: 800px;
+      margin-inline: auto;
+      margin-top: 0;
+      padding: 56px 16px 48px;
+      position: relative;
+      z-index: 1;
+    }
+    .kyc-panel {
+      padding: 32px;
+      gap: 20px;
+      border-radius: 16px;
+    }
+
+    /* 3 method tiles in a row; Face Scan hidden on web (Figma shows 3) */
+    .kyc-methods { flex-direction: row; gap: 16px; align-items: stretch; }
+    .method-card { flex: 1 0 0; }
+    .method-card--face { display: none; }
   }
 }
