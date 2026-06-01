@@ -190,6 +190,27 @@
    Unlayered to beat DS form-field which is also unlayered. */
 .aadhaar-card .form-field { width: 100%; }
 
+/* Valid state — green check circle on the right of the input.
+   Unlayered to beat the DS form-field's ::after pattern (also unlayered). */
+.aadhaar-card .form-field.is-valid .form-input-wrapper::after {
+  content: '';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background:
+    var(--color-emerald-600)
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>")
+    center / 12px no-repeat;
+  pointer-events: none;
+  z-index: 2;
+}
+/* Make room for the icon so it doesn't overlap the text */
+.aadhaar-card .form-field.is-valid .form-input { padding-right: 40px; }
+
 /* =========================================================================
    Web / desktop layout (>= 768px) — Figma node 1240:20404.
    Gold banner + centered 800px card; radios go 2-col.

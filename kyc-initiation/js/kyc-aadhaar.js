@@ -56,7 +56,16 @@
     }
     function isMobileValid() { return /^\d{10}$/.test((mobile.value || '').trim()); }
 
+    function fieldOf(el) { return el ? el.closest('.form-field') : null; }
+    function setValid(el, ok) {
+      var f = fieldOf(el);
+      if (f) f.classList.toggle('is-valid', !!ok);
+    }
+
     function validate() {
+      // Toggle the success (green check) state on each input.
+      setValid(numInput, isAadhaarValid());
+      setValid(mobile, isMobileValid());
       if (!submit) return;
       submit.disabled = !(isAadhaarValid() && isMobileValid());
     }
