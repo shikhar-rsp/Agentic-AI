@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bajaj eKYC — Unified Journey</title>
+
+  <!--
+  ============================================================================
+  Bajaj eKYC — Unified Journey (single-file SPA)
+  ============================================================================
+
+  This file fuses the 8 standalone eKYC pages (under pages/) into ONE linked
+  SPA-style flow so the client can hook it up to their backend in one place.
+
+  HOW IT WORKS
+  ------------
+  - Every screen is a <section class="ekyc-screen" id="screen-XXX"
+    data-screen="XXX" hidden>. Only one is shown at a time.
+  - Navigation is done via [data-action] attributes on buttons/links, e.g.
+    <button data-action="goto:aadhaar">. The router (bottom of file) listens
+    for clicks and routes accordingly.
+  - location.hash mirrors the current screen so the client can deep-link
+    (e.g. /ekyc-journey.html#aadhaar-otp opens the OTP screen directly).
+  - On every screen change a `ekyc:enter` CustomEvent is dispatched on
+    `document` with detail.screen = slug — the client can hook this to lazy-
+    load data.
+  - window.ekyc = { goto(slug), back(), currentScreen, history } is exposed
+    for programmatic control.
+
+  ID & NAME DISCIPLINE
+  --------------------
+  Source pages collided on ids (e.g. `aadhaar-back`, `aadhaar-leave-modal`
+  existed in both the entry form and the OTP page). We resolve by prefixing
+  every input/button id inside a screen with the screen slug:
+    - aadhaar screen      -> aadhaar-*
+    - aadhaar-otp screen  -> otp-*
+    - send-link screens   -> sl-*  (kept, since unique)
+    - landing screen      -> landing-*
+    - face-scan screens   -> face-* / face-mis-*
+    - initiation          -> init-*
+    - success             -> success-*
+
+  All <input>s carry BOTH id="…" and name="…" (kebab-case).
+
+  SCREEN FLOW (default happy path)
+  --------------------------------
+    initiation  -> (Complete KYC)        -> landing
+                -> (Send Link)           -> send-link
+    send-link   -> (Send Link to Customer)-> send-link-sent
+    send-link-sent -> (back)             -> initiation
+    landing     -> (Aadhaar Start KYC)   -> aadhaar
+                -> (PAN Start KYC)       -> (no-op, console.log)
+                -> (Doc Start KYC)       -> (no-op, console.log)
+                -> (Face Scan Start KYC) -> face-scan
+    aadhaar     -> (Send OTP)            -> aadhaar-otp
+                -> (back)                -> landing
+    aadhaar-otp -> (Verify OTP)          -> face-scan
+                -> (back)                -> aadhaar
+    face-scan   -> (Capture)             -> face-scan-misaligned (first time)
+                                         -> success (subsequent)
+    face-scan-misaligned -> (Retry)      -> face-scan
+                         -> (Continue)   -> success
+    success     -> (Done)                -> initiation
+
+  ALL FORM INPUTS EXPOSED FOR BACKEND BINDING
+  -------------------------------------------
+    send-link form (id=form-send-link):
+      name="mobile-number"     (id sl-mobile)
+      name="email"             (id sl-email)
+      name="language"          (id sl-language)
+      name="link-expiry"       (id sl-expiry)
+      name="captcha"           (id sl-captcha)
+
+    landing form (id=form-landing):
+      name="needs-assistance"  (checkbox, id landing-assist-toggle)
+      name="kyc-method"        (radio-like card group via data-method)
+
+    aadhaar form (id=form-aadhaar):
+      name="verification-type" (radio: aadhaar | vid)
+      name="aadhaar-number"    (id aadhaar-num)
+      name="aadhaar-mobile"    (id aadhaar-mobile)
+      name="security-answer"   (id aadhaar-sec)
+      name="consent-data-sharing" (checkbox, id aadhaar-c1)
+      name="consent-uidai-terms"  (checkbox, id aadhaar-c2)
+
+    aadhaar-otp form (id=form-aadhaar-otp):
+      name="otp-digit-1" ... name="otp-digit-6"   (6 boxes)
+
+  ALL NAVIGATION data-action ATTRIBUTES
+  -------------------------------------
+    data-action="goto:<slug>"        — navigate forward to slug
+    data-action="back"               — pop nav stack
+    data-action="submit:send-link"   — handled by form-send-link
+    data-action="submit:aadhaar"     — handled by form-aadhaar (-> aadhaar-otp)
+    data-action="submit:aadhaar-otp" — handled by form-aadhaar-otp (-> face-scan)
+    data-action="face-capture"       — face-scan capture button
+    data-action="face-retry"         — face-scan-misaligned retry
+    data-action="open-modal:<id>"    — open a modal
+    data-action="close-modal"        — close any modal
+
+  ============================================================================
+  -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Rubik:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Atlas DS + per-screen CSS (paths relative to project root) -->
+  <link rel="stylesheet" href="assets/atlas/atlas.css" />
+  <link rel="stylesheet" href="css/app.css" />
+  <link rel="stylesheet" href="css/header.css" />
+  <link rel="stylesheet" href="css/kyc-initiation.css" />
+  <link rel="stylesheet" href="css/kyc-send-link.css" />
+  <link rel="stylesheet" href="css/kyc-landing.css" />
+  <link rel="stylesheet" href="css/kyc-method.css" />
+  <link rel="stylesheet" href="css/kyc-aadhaar.css" />
+  <link rel="stylesheet" href="css/face-scan.css" />
+  <link rel="stylesheet" href="css/ios-keyboard.css" />
+
+  <style>
+    /* ===== Journey-level SPA chrome ===== */
+    .ekyc-app { min-height: 100vh; }
+    .ekyc-screen[hidden] { display: none !important; }
+    .ekyc-screen { display: block; }
+    /* The success screen is small and simple — style inline. */
+    .success-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 24px;
+      text-align: center;
+      background: #f7fafc;
+    }
+    .success-tick {
+      width: 96px; height: 96px; border-radius: 50%;
+      background: #22c55e; color: #fff;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .success-tick i { width: 56px; height: 56px; }
+    .success-title { font-size: 28px; font-weight: 700; margin: 0; color: #0f172a; }
+    .success-sub { color: #475569; margin: 0 0 16px; max-width: 420px; }
+  </style>
+</head>
+<body>
+
+<main class="ekyc-app" id="ekyc-app">
+
+  <!-- =========================================================================
+       SCREEN: initiation
+       slug: initiation
+       Purpose: Agent picks between completing KYC themselves or sending the
+                customer a secure link.
+       Tiles (data-option): "complete" | "send-link"
+       Primary button: id=init-submit, data-action chosen at runtime by JS
+       Navigation: complete -> landing ; send-link -> send-link
+       ========================================================================= -->
+  <section class="ekyc-screen" id="screen-initiation" data-screen="initiation" hidden>
+    <div class="kycinit-page">
+      <div class="kycinit-bg" aria-hidden="true"></div>
+      <header class="kyc-header">
+        <div class="kyc-header__row">
+          <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+          <div class="kyc-header__agent">
+            <div class="kyc-agent-info">
+              <span class="kyc-agent-name">Rajesh Chaurasia</span>
+              <span class="kyc-agent-id">BA786314</span>
+            </div>
+            <div class="kyc-avatar">
+              <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
+              <span class="kyc-avatar__dot" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+        <span class="badge badge-sm badge-light badge-red">
+          <i data-lucide="alert-circle" style="width: 16px; height: 16px"></i>
+          Link expires in 12hr 32mins
+        </span>
+      </header>
+
+      <div class="kycinit-body">
+        <form class="kycinit-card" id="form-initiation" novalidate>
+          <div class="kycinit-head">
+            <h1 class="kycinit-title">Initiate KYC</h1>
+            <p class="kycinit-subtitle">
+              Complete the customer's KYC yourself or send them a secure KYC verification link.
+            </p>
+          </div>
+
+          <div class="kycinit-customer">
+            <div class="kycinit-customer__name">
+              <span class="kycinit-customer__label">Customer Name</span>
+              <span class="kycinit-customer__value">Ashok Kumar</span>
+            </div>
+            <div class="kycinit-customer__meta-group">
+              <p class="kycinit-customer__meta">Partner ID: <strong>C1738E474E73</strong></p>
+              <p class="kycinit-customer__meta">Customer Type: <strong>Individual</strong></p>
+            </div>
+          </div>
+
+          <div class="kycinit-tiles" role="radiogroup" aria-label="KYC method">
+            <div class="kycinit-tile is-selected" id="init-tile-complete"
+                 data-option="complete" role="radio" aria-checked="true" tabindex="0">
+              <span class="kycinit-tile__icon"><i data-lucide="user-plus"></i></span>
+              <div>
+                <p class="kycinit-tile__title">Complete KYC for Customer</p>
+                <p class="kycinit-tile__desc">
+                  Verify the customer directly by entering their details and documents.
+                </p>
+              </div>
+            </div>
+
+            <div class="kycinit-tile" id="init-tile-send-link"
+                 data-option="send-link" role="radio" aria-checked="false" tabindex="0">
+              <span class="kycinit-tile__icon"><i data-lucide="send"></i></span>
+              <div>
+                <p class="kycinit-tile__title">Send KYC link to Customer</p>
+                <p class="kycinit-tile__desc">
+                  Share a secure link for the customer to complete KYC on their own device.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="toast toast-neutral kycinit-toast" role="note" id="init-requirements">
+            <span class="toast-icon"><i data-lucide="info"></i></span>
+            <div class="toast-body">
+              <div class="toast-content">
+                <p class="toast-title">Before proceeding with KYC, you will need:</p>
+                <ol class="kycinit-list">
+                  <li>Identity Proof (POI): Keep a valid government ID (number or soft copy) ready, such as Aadhaar, PAN, Passport, Voter ID, or Driving Licence.</li>
+                  <li>Address Proof (POA): If PAN is used as POI, an additional address proof document will be required.</li>
+                  <li>Organisation KYC: Keep the GST number, PAN Card, and business registration details ready for verification.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-primary kycinit-submit" id="init-submit" name="init-submit">
+            <span id="init-submit-label">Start KYC Verification</span>
+            <i data-lucide="arrow-right"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SCREEN: send-link
+       slug: send-link
+       Inputs: mobile-number, email, language, link-expiry, captcha
+       Primary: id=sl-submit data-action="submit:send-link" -> send-link-sent
+       Back: data-action="back" -> initiation
+       ========================================================================= -->
+  <section class="ekyc-screen" id="screen-send-link" data-screen="send-link" hidden>
+    <div class="sendlink-page">
+      <div class="sendlink-bg" aria-hidden="true"></div>
+      <header class="kyc-header">
+        <div class="kyc-header__row">
+          <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+          <div class="kyc-header__agent">
+            <div class="kyc-agent-info">
+              <span class="kyc-agent-name">Rajesh Chaurasia</span>
+              <span class="kyc-agent-id">BA786314</span>
+            </div>
+            <div class="kyc-avatar">
+              <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
+              <span class="kyc-avatar__dot" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+        <span class="badge badge-sm badge-light badge-red">
+          <i data-lucide="alert-circle" style="width: 16px; height: 16px"></i>
+          Link expires in 12hr 32mins
+        </span>
+      </header>
+
+      <div class="sendlink-body">
+        <form class="sendlink-card" id="form-send-link" novalidate>
+          <div class="sendlink-head">
+            <h1 class="sendlink-title">Send KYC Link to Customer</h1>
+            <p class="sendlink-subtitle">Share a secure link for the customer to complete KYC on their own device.</p>
+          </div>
+
+          <a class="sendlink-back" id="sl-back" data-action="back" role="button" tabindex="0">
+            <i data-lucide="arrow-left"></i> Back
+          </a>
+
+          <div class="toast toast-success sendlink-success" id="sl-success" role="status">
+            <span class="toast-icon"><i data-lucide="check-circle"></i></span>
+            <div class="toast-body">
+              <div class="toast-content">
+                <p class="toast-title">Link Sent Successfully!</p>
+                <p class="toast-description">
+                  KYC link has been sent successfully to the mobile number 99xxxxx999 at 08:45 PM.
+                  <strong>Valid till 14th April 08:45 PM</strong>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="sendlink-customer">
+            <div>
+              <div class="sendlink-customer__label">Customer Name</div>
+              <div class="sendlink-customer__value">Ashok Kumar</div>
+            </div>
+            <div class="sendlink-customer__meta-group">
+              <p class="sendlink-customer__meta">Partner ID: <strong>C1738E474E73</strong></p>
+              <p class="sendlink-customer__meta">Customer Type: <strong>Individual</strong></p>
+            </div>
+          </div>
+
+          <section class="sendlink-section">
+            <p class="sendlink-section__bar">Required Details</p>
+            <div class="sendlink-fields">
+              <div class="form-field">
+                <label class="form-label" for="sl-mobile">Mobile Number <span class="sendlink-req">*</span></label>
+                <div class="form-input-wrapper">
+                  <input class="form-input" id="sl-mobile" name="mobile-number"
+                         type="tel" inputmode="numeric" maxlength="10"
+                         placeholder="Enter 10-digit mobile number" />
+                </div>
+                <p class="form-error">Enter a valid 10-digit mobile number.</p>
+              </div>
+
+              <div class="form-field">
+                <label class="form-label" for="sl-email">Email ID</label>
+                <div class="form-input-wrapper">
+                  <input class="form-input" id="sl-email" name="email"
+                         type="email" placeholder="Enter a valid email ID" />
+                </div>
+                <p class="form-error">Enter a valid email ID</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="sendlink-section">
+            <p class="sendlink-section__bar">Additional Settings</p>
+            <div class="sendlink-fields">
+              <div class="form-field">
+                <label class="form-label" for="sl-language">Language</label>
+                <div class="form-input-wrapper sendlink-select-wrap">
+                  <select class="sendlink-select" id="sl-language" name="language">
+                    <option>English</option><option>Hindi</option>
+                    <option>Marathi</option><option>Tamil</option><option>Telugu</option>
+                  </select>
+                  <i data-lucide="chevron-down" class="sendlink-select-caret"></i>
+                </div>
+              </div>
+
+              <div class="form-field">
+                <label class="form-label" for="sl-expiry">Link expires in</label>
+                <div class="form-input-wrapper sendlink-select-wrap">
+                  <select class="sendlink-select" id="sl-expiry" name="link-expiry">
+                    <option>48 hrs</option><option>24 hrs</option>
+                    <option>72 hrs</option><option>7 days</option>
+                  </select>
+                  <i data-lucide="chevron-down" class="sendlink-select-caret"></i>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="sendlink-fields">
+            <div class="form-field">
+              <label class="form-label" for="sl-captcha">Enter Captcha <span class="sendlink-req">*</span></label>
+              <div class="form-input-wrapper">
+                <input class="form-input" id="sl-captcha" name="captcha" type="text" placeholder="Enter answer" />
+              </div>
+              <p class="form-error">Incorrect Captcha</p>
+            </div>
+            <div class="sendlink-captcha">
+              <div class="sendlink-captcha__img">
+                <img src="assets/img/captcha-sample.png" alt="Captcha" />
+              </div>
+              <button type="button" class="sendlink-captcha__refresh" id="sl-captcha-refresh"
+                      name="sl-captcha-refresh" data-action="refresh-captcha" aria-label="Refresh captcha">
+                <i data-lucide="refresh-cw"></i>
+              </button>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-primary sendlink-submit"
+                  id="sl-submit" name="sl-submit"
+                  data-action="submit:send-link" disabled>
+            <span id="sl-submit-label">Send Link to Customer</span>
+            <i data-lucide="send"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SCREEN: send-link-sent
+       slug: send-link-sent
+       Read-only confirmation; same markup, "sent" state is applied at enter.
+       Back: data-action="back"; Resend: data-action="goto:send-link"
+       ========================================================================= -->
+  <section class="ekyc-screen" id="screen-send-link-sent" data-screen="send-link-sent" hidden>
+    <div class="sendlink-page" data-sendlink-state="sent">
+      <div class="sendlink-bg" aria-hidden="true"></div>
+      <header class="kyc-header">
+        <div class="kyc-header__row">
+          <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+          <div class="kyc-header__agent">
+            <div class="kyc-agent-info">
+              <span class="kyc-agent-name">Rajesh Chaurasia</span>
+              <span class="kyc-agent-id">BA786314</span>
+            </div>
+            <div class="kyc-avatar">
+              <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
+              <span class="kyc-avatar__dot" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+        <span class="badge badge-sm badge-light badge-red">
+          <i data-lucide="alert-circle" style="width: 16px; height: 16px"></i>
+          Link expires in 12hr 32mins
+        </span>
+      </header>
+
+      <div class="sendlink-body">
+        <form class="sendlink-card" id="form-send-link-sent" novalidate>
+          <div class="sendlink-head">
+            <h1 class="sendlink-title">Send KYC Link to Customer</h1>
+            <p class="sendlink-subtitle">Share a secure link for the customer to complete KYC on their own device.</p>
+          </div>
+
+          <a class="sendlink-back" id="sls-back" data-action="back" role="button" tabindex="0">
+            <i data-lucide="arrow-left"></i> Back
+          </a>
+
+          <div class="toast toast-success sendlink-success is-visible" id="sls-success" role="status">
+            <span class="toast-icon"><i data-lucide="check-circle"></i></span>
+            <div class="toast-body">
+              <div class="toast-content">
+                <p class="toast-title">Link Sent Successfully!</p>
+                <p class="toast-description">
+                  KYC link has been sent successfully to the mobile number 99xxxxx999 at 08:45 PM.
+                  <strong>Valid till 14th April 08:45 PM</strong>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="sendlink-customer">
+            <div>
+              <div class="sendlink-customer__label">Customer Name</div>
+              <div class="sendlink-customer__value">Ashok Kumar</div>
+            </div>
+            <div class="sendlink-customer__meta-group">
+              <p class="sendlink-customer__meta">Partner ID: <strong>C1738E474E73</strong></p>
+              <p class="sendlink-customer__meta">Customer Type: <strong>Individual</strong></p>
+            </div>
+          </div>
+
+          <section class="sendlink-section">
+            <p class="sendlink-section__bar">Required Details</p>
+            <div class="sendlink-fields">
+              <div class="form-field">
+                <label class="form-label" for="sls-mobile">Mobile Number</label>
+                <div class="form-input-wrapper">
+                  <input class="form-input" id="sls-mobile" name="mobile-number-sent"
+                         type="tel" value="9999999999" readonly />
+                </div>
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="sls-email">Email ID</label>
+                <div class="form-input-wrapper">
+                  <input class="form-input" id="sls-email" name="email-sent"
+                         type="email" value="ashok.kumar@email.com" readonly />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <button type="button" class="btn btn-secondary sendlink-submit"
+                  id="sls-resend" name="sls-resend" data-action="goto:send-link">
+            <span>Re-Send Link to Customer</span>
+            <i data-lucide="send"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SCREEN: landing
+       slug: landing
+       Inputs: name=needs-assistance (checkbox), name=kyc-method (card group)
+       Cards (data-method): aadhaar | pan | document | face
+       Each card's CTA: data-action="select-method:<method>"
+         aadhaar  -> goto:aadhaar
+         pan      -> console.log (no-op)
+         document -> console.log (no-op)
+         face     -> goto:face-scan (after camera modal)
+       ========================================================================= -->
+  <section class="ekyc-screen" id="screen-landing" data-screen="landing" hidden>
+    <div class="kyc-page">
+      <div class="kyc-bg" aria-hidden="true"></div>
+      <header class="kyc-header">
+        <div class="kyc-header__row">
+          <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+          <div class="kyc-header__agent">
+            <div class="kyc-agent-info">
+              <span class="kyc-agent-name">Rajesh Chaurasia</span>
+              <span class="kyc-agent-id">BA786314</span>
+            </div>
+            <div class="kyc-avatar">
+              <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
+              <span class="kyc-avatar__dot" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+        <span class="badge badge-sm badge-light badge-red">
+          <i data-lucide="alert-circle" style="width: 16px; height: 16px"></i>
+          Link expires in 12hr 32mins
+        </span>
+      </header>
+
+      <section class="kyc-hero">
+        <h1 class="kyc-hero__title">Complete Your KYC Verification</h1>
+        <p class="kyc-hero__subtitle">Choose a KYC verification method below to proceed.</p>
+      </section>
+
+      <div class="kyc-panel-wrap">
+        <form class="kyc-panel" id="form-landing" novalidate>
+          <h1 class="kyc-web-title">Choose your KYC Method</h1>
+
+          <div class="kyc-assist">
+            <input type="checkbox" class="kyc-switch"
+                   id="landing-assist-toggle" name="needs-assistance"
+                   aria-label="I need assistance completing KYC" />
+            <label class="kyc-assist__text" for="landing-assist-toggle">
+              <span class="kyc-assist__title">I need assistance completing KYC</span>
+              <span class="kyc-assist__hint">Enable agent assisted mode with audio consent</span>
+            </label>
+          </div>
+
+          <input type="hidden" id="landing-kyc-method" name="kyc-method" value="aadhaar" />
+
+          <div class="kyc-methods">
+            <div class="method-card method-card--aadhaar is-selected"
+                 id="landing-method-aadhaar" data-method="aadhaar">
+              <div class="method-card__row method-card__row--icon">
+                <img class="method-card__aadhaar-logo" src="assets/img/aadhaar-logo.png" alt="Aadhaar" />
+                <span class="badge badge-sm badge-solid badge-amber">
+                  <i data-lucide="zap" style="width: 14px; height: 14px"></i> Fastest
+                </span>
+              </div>
+              <div class="method-card__row">
+                <p class="method-card__aadhaar-title">Aadhaar eKYC</p>
+                <button type="button" class="btn btn-primary kyc-start-btn method-card__cta"
+                        id="landing-start-aadhaar" name="landing-start-aadhaar"
+                        data-action="select-method:aadhaar">
+                  Start KYC <i data-lucide="arrow-right"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="method-card method-card--center method-card--pan"
+                 id="landing-method-pan" data-method="pan" role="button" tabindex="0">
+              <span class="method-card__icon">
+                <img src="assets/img/ashoka-emblem.png" alt="" />
+              </span>
+              <p class="method-card__title">PAN Card</p>
+              <button type="button" class="btn btn-primary kyc-start-btn method-card__cta"
+                      id="landing-start-pan" name="landing-start-pan"
+                      data-action="select-method:pan">
+                Start KYC <i data-lucide="arrow-right"></i>
+              </button>
+            </div>
+
+            <div class="method-card method-card--center method-card--doc"
+                 id="landing-method-doc" data-method="document" role="button" tabindex="0">
+              <span class="method-card__icon">
+                <span class="method-card__icon-box">
+                  <img src="assets/img/doc-icon.svg" alt="" />
+                </span>
+              </span>
+              <p class="method-card__title">Document Upload</p>
+              <button type="button" class="btn btn-primary kyc-start-btn method-card__cta"
+                      id="landing-start-doc" name="landing-start-doc"
+                      data-action="select-method:document">
+                Start KYC <i data-lucide="arrow-right"></i>
+              </button>
+            </div>
+
+            <div class="method-card method-card--center method-card--face"
+                 id="landing-method-face" data-method="face" role="button" tabindex="0">
+              <span class="method-card__icon">
+                <img src="assets/img/face-scan.svg" alt="" style="width: 40px; height: 40px" />
+              </span>
+              <p class="method-card__title">Face Scan</p>
+              <button type="button" class="btn btn-primary kyc-start-btn method-card__cta"
+                      id="landing-start-face" name="landing-start-face"
+                      data-action="select-method:face">
+                Start KYC <i data-lucide="arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="toast toast-info kyc-info" role="status">
+            <span class="toast-icon"><i data-lucide="info"></i></span>
+            <div class="toast-body">
+              <div class="toast-content">
+                <p class="toast-title">Before proceeding with KYC, you will need:</p>
+                <p class="toast-description">
+                  Your Aadhaar number or VID will be required for Aadhaar eKYC with mobile verification.
+                  For PAN-based verification, your PAN number and address proof will be required.
+                  If you choose document upload, please keep your original physical documents ready for verification.
+                </p>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Allow camera modal (scoped to landing screen) -->
+    <div class="modal-backdrop kyc-modal" id="landing-camera-modal"
+         role="dialog" aria-modal="true" aria-labelledby="landing-camera-modal-title">
+      <div class="modal modal-confirmation">
+        <div class="modal-header no-border">
+          <div class="modal-header-icon modal-header-icon--brand">
+            <i data-lucide="camera"></i>
+          </div>
+          <h2 class="modal-title" id="landing-camera-modal-title">Allow camera access</h2>
+        </div>
+        <div class="modal-body">
+          We will use your device camera to capture your face and verify your identity securely.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary"
+                  id="landing-camera-deny" name="landing-camera-deny"
+                  data-action="close-modal" data-modal-close>Deny</button>
+          <button type="button" class="btn btn-primary"
+                  id="landing-camera-allow" name="landing-camera-allow"
+                  data-action="allow-camera">Allow Camera</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SCREEN: aadhaar
+       slug: aadhaar
+       Inputs:
+         name="verification-type"   radios (aadhaar | vid)
+         name="aadhaar-number"      id=aadhaar-num
+         name="aadhaar-mobile"      id=aadhaar-mobile
+         name="security-answer"     id=aadhaar-sec
+         name="consent-data-sharing"  id=aadhaar-c1 (checkbox)
+         name="consent-uidai-terms"   id=aadhaar-c2 (checkbox)
+       Back button: id=aadhaar-back opens leave modal
+       Submit: id=aadhaar-submit data-action="submit:aadhaar" -> aadhaar-otp
+       ========================================================================= -->
+  <section class="ekyc-screen" id="screen-aadhaar" data-screen="aadhaar" hidden>
+    <div class="aadhaar-page">
+      <div class="aadhaar-bg" aria-hidden="true"></div>
+      <header class="kyc-header">
+        <div class="kyc-header__row">
+          <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+          <div class="kyc-header__agent">
+            <div class="kyc-agent-info">
+              <span class="kyc-agent-name">Rajesh Chaurasia</span>
+              <span class="kyc-agent-id">BA786314</span>
+            </div>
+            <div class="kyc-avatar">
+              <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
+              <span class="kyc-avatar__dot" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+        <span class="badge badge-sm badge-light badge-red">
+          <i data-lucide="alert-circle" style="width: 16px; height: 16px"></i>
+          Link expires in 12hr 32mins
+        </span>
+      </header>
+
+      <div class="aadhaar-body">
+        <form class="aadhaar-card" id="form-aadhaar" novalidate>
+          <div class="aadhaar-head">
+            <img class="aadhaar-logo" src="assets/img/aadhaar-logo.png" alt="Aadhaar" />
+            <h1 class="aadhaar-title">Aadhaar eKYC</h1>
+            <p class="aadhaar-subtitle">
+              Please follow the instructions below to complete KYC. This will only take a while.
+            </p>
+          </div>
+
+          <a class="aadhaar-back" id="aadhaar-back" data-action="open-modal:aadhaar-leave-modal"
+             role="button" tabindex="0">
+            <i data-lucide="arrow-left"></i> Back
+          </a>
+
+          <div class="aadhaar-details">
+            <div class="aadhaar-details__head">
+              <h3 class="aadhaar-details__title">Aadhaar Card Details</h3>
+              <p class="aadhaar-details__hint">
+                We'll send a secure OTP to your Aadhaar-linked mobile number
+              </p>
+            </div>
+
+            <div class="aadhaar-field">
+              <span class="aadhaar-field__label">
+                Select Verification Type<span class="aadhaar-req">*</span>
+              </span>
+              <div class="aadhaar-radios" role="radiogroup" aria-label="Verification type">
+                <label class="aadhaar-radio is-selected" data-vtype="aadhaar">
+                  <input type="radio" id="aadhaar-vtype-aadhaar" name="verification-type" value="aadhaar" checked />
+                  <span class="aadhaar-radio__dot" aria-hidden="true"></span>
+                  <span class="aadhaar-radio__label">Aadhaar<span class="aadhaar-radio__label-ext"> Number</span></span>
+                </label>
+                <label class="aadhaar-radio" data-vtype="vid">
+                  <input type="radio" id="aadhaar-vtype-vid" name="verification-type" value="vid" />
+                  <span class="aadhaar-radio__dot" aria-hidden="true"></span>
+                  <span class="aadhaar-radio__label">Virtual ID</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-field aadhaar-field">
+              <label class="form-label" for="aadhaar-num">
+                <span id="aadhaar-num-label">Aadhaar Number</span><span class="aadhaar-req">*</span>
+              </label>
+              <div class="form-input-wrapper">
+                <input class="form-input" id="aadhaar-num" name="aadhaar-number"
+                       type="tel" inputmode="numeric" maxlength="12"
+                       placeholder="Enter 12-digit Aadhaar Number" />
+              </div>
+            </div>
+
+            <div class="form-field aadhaar-field">
+              <label class="form-label" for="aadhaar-mobile">
+                Mobile Number linked to Aadhaar<span class="aadhaar-req">*</span>
+              </label>
+              <div class="form-input-wrapper">
+                <input class="form-input" id="aadhaar-mobile" name="aadhaar-mobile"
+                       type="tel" inputmode="numeric" maxlength="10"
+                       placeholder="Enter 10-digit mobile number" />
+              </div>
+              <p class="aadhaar-success" id="aadhaar-mobile-success">
+                Mobile number linked with Aadhaar has matched
+              </p>
+            </div>
+
+            <div class="form-field aadhaar-field aadhaar-extra" id="aadhaar-security">
+              <label class="form-label" for="aadhaar-sec">
+                What is 5 + 9? (Security question)<span class="aadhaar-req">*</span>
+              </label>
+              <div class="form-input-wrapper">
+                <input class="form-input" id="aadhaar-sec" name="security-answer"
+                       type="text" inputmode="numeric" maxlength="3" placeholder="" />
+              </div>
+            </div>
+          </div>
+
+          <div class="aadhaar-consent aadhaar-extra" id="aadhaar-consent">
+            <h3 class="aadhaar-consent__title">Please confirm the following to proceed</h3>
+            <label class="aadhaar-check">
+              <input type="checkbox" id="aadhaar-c1" name="consent-data-sharing" />
+              <span class="aadhaar-check__box" aria-hidden="true"></span>
+              <span class="aadhaar-check__label">
+                I/We hereby authorize BGIL to print my/our name/mobile number on the policy
+                document as received through Aadhaar e-KYC..
+              </span>
+            </label>
+            <label class="aadhaar-check">
+              <input type="checkbox" id="aadhaar-c2" name="consent-uidai-terms" />
+              <span class="aadhaar-check__box" aria-hidden="true"></span>
+              <span class="aadhaar-check__label">
+                I accept the UIDAI terms and conditions
+                <a href="#" class="aadhaar-readmore">Read More</a>
+              </span>
+            </label>
+          </div>
+
+          <button type="button" class="btn btn-primary aadhaar-submit"
+                  id="aadhaar-submit" name="aadhaar-submit"
+                  data-action="submit:aadhaar" disabled>
+            Send OTP
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal-backdrop aadhaar-leave-modal" id="aadhaar-leave-modal"
+         role="dialog" aria-modal="true" aria-labelledby="aadhaar-leave-title">
+      <div class="modal modal-confirmation">
+        <div class="modal-header no-border">
+          <div class="modal-header-icon modal-header-icon--warning">
+            <i data-lucide="alert-circle"></i>
+          </div>
+          <h2 class="modal-title" id="aadhaar-leave-title">Leave this page?</h2>
+        </div>
+        <div class="modal-body">
+          The details you entered may not be saved if you leave this page.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary"
+                  id="aadhaar-leave-go-back" name="aadhaar-leave-go-back"
+                  data-action="leave-confirm" data-modal-close>Go Back</button>
+          <button type="button" class="btn btn-primary"
+                  id="aadhaar-leave-stay" name="aadhaar-leave-stay"
+                  data-action="close-modal" data-modal-close>Continue filling KYC</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SCREEN: aadhaar-otp
+       slug: aadhaar-otp
+       Inputs: 6 boxes name="otp-digit-1" ... name="otp-digit-6"
+       Back: id=otp-back -> opens otp-leave-modal
+       Resend: id=otp-resend
+       Verify: id=otp-verify data-action="submit:aadhaar-otp" -> face-scan
+       ========================================================================= -->
+  <section class="ekyc-screen" id="screen-aadhaar-otp" data-screen="aadhaar-otp" hidden>
+    <div class="aadhaar-page">
+      <div class="aadhaar-bg" aria-hidden="true"></div>
+      <header class="kyc-header">
+        <div class="kyc-header__row">
+          <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+          <div class="kyc-header__agent">
+            <div class="kyc-agent-info">
+              <span class="kyc-agent-name">Rajesh Chaurasia</span>
+              <span class="kyc-agent-id">BA786314</span>
+            </div>
+            <div class="kyc-avatar">
+              <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
+              <span class="kyc-avatar__dot" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+        <span class="badge badge-sm badge-light badge-red">
+          <i data-lucide="alert-circle" style="width: 16px; height: 16px"></i>
+          Link expires in 12hr 32mins
+        </span>
+      </header>
+
+      <div class="aadhaar-body">
+        <form class="aadhaar-card" id="form-aadhaar-otp" novalidate>
+          <div class="aadhaar-head">
+            <img class="aadhaar-logo" src="assets/img/aadhaar-logo.png" alt="Aadhaar" />
+            <h1 class="aadhaar-title">Aadhaar eKYC</h1>
+            <p class="aadhaar-subtitle">
+              Please follow the instructions below to complete KYC. This will only take a while.
+            </p>
+          </div>
+
+          <a class="aadhaar-back" id="otp-back" data-action="open-modal:otp-leave-modal"
+             role="button" tabindex="0">
+            <i data-lucide="arrow-left"></i> Back
+          </a>
+
+          <div class="aadhaar-details">
+            <div class="aadhaar-details__head">
+              <h3 class="aadhaar-details__title">OTP Verification</h3>
+              <p class="aadhaar-details__hint">
+                We have sent an OTP to your Aadhaar-linked mobile number
+              </p>
+            </div>
+
+            <div class="aadhaar-field">
+              <span class="aadhaar-field__label">Enter 6-digit OTP</span>
+              <div class="aadhaar-otp" data-otp>
+                <input class="aadhaar-otp__box" id="otp-d1" name="otp-digit-1" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 1" />
+                <input class="aadhaar-otp__box" id="otp-d2" name="otp-digit-2" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 2" />
+                <input class="aadhaar-otp__box" id="otp-d3" name="otp-digit-3" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 3" />
+                <input class="aadhaar-otp__box" id="otp-d4" name="otp-digit-4" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 4" />
+                <input class="aadhaar-otp__box" id="otp-d5" name="otp-digit-5" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 5" />
+                <input class="aadhaar-otp__box" id="otp-d6" name="otp-digit-6" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 6" />
+              </div>
+            </div>
+
+            <a href="#" class="aadhaar-resend" id="otp-resend" data-action="resend-otp">Resend OTP</a>
+          </div>
+
+          <button type="button" class="btn btn-primary aadhaar-submit"
+                  id="otp-verify" name="otp-verify"
+                  data-action="submit:aadhaar-otp" disabled>
+            Verify OTP
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal-backdrop aadhaar-leave-modal" id="otp-leave-modal"
+         role="dialog" aria-modal="true" aria-labelledby="otp-leave-title">
+      <div class="modal modal-confirmation">
+        <div class="modal-header no-border">
+          <div class="modal-header-icon modal-header-icon--warning">
+            <i data-lucide="alert-circle"></i>
+          </div>
+          <h2 class="modal-title" id="otp-leave-title">Leave this page?</h2>
+        </div>
+        <div class="modal-body">
+          The details you entered may not be saved if you leave this page.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary"
+                  id="otp-leave-go-back" name="otp-leave-go-back"
+                  data-action="leave-confirm" data-modal-close>Go Back</button>
+          <button type="button" class="btn btn-primary"
+                  id="otp-leave-stay" name="otp-leave-stay"
+                  data-action="close-modal" data-modal-close>Continue filling KYC</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SCREEN: face-scan
+       slug: face-scan
+       Controls:
+         close (top left) -> data-action="back"
+         help             -> data-action="open-modal:face-help-modal" (no-op)
+         flip camera      -> data-action="face-flip"
+         capture          -> data-action="face-capture" (first time -> misaligned;
+                              subsequent -> success)
+       ========================================================================= -->
+  <section class="ekyc-screen" id="screen-face-scan" data-screen="face-scan" hidden>
+    <div class="facescan-page">
+      <div class="facescan-camera" id="face-camera">
+        <div class="facescan-topbar">
+          <a class="facescan-iconbtn" id="face-close" data-action="back" role="button"
+             tabindex="0" aria-label="Close">
+            <i data-lucide="x"></i>
+          </a>
+          <button type="button" class="facescan-iconbtn facescan-iconbtn--bordered"
+                  id="face-help" name="face-help" aria-label="Help">
+            <i data-lucide="help-circle"></i>
+          </button>
+        </div>
+
+        <span class="facescan-pill">
+          <i data-lucide="zap"></i> Auto capture is on
+        </span>
+
+        <div class="facescan-oval" aria-hidden="true">
+          <img class="facescan-oval__feed" src="assets/img/face-sample.png" alt="" />
+        </div>
+
+        <div class="facescan-bottom">
+          <div class="facescan-guide">
+            <p class="facescan-title">Face Scan</p>
+            <p class="facescan-hint" id="face-hint">
+              Make sure you're in well-lit area with plain background
+            </p>
+          </div>
+          <button type="button" class="facescan-flip"
+                  id="face-flip" name="face-flip" data-action="face-flip">
+            <i data-lucide="switch-camera"></i> Flip Camera
+          </button>
+        </div>
+      </div>
+
+      <div class="facescan-footer">
+        <div class="toast toast-info" role="status">
+          <span class="toast-icon"><i data-lucide="info"></i></span>
+          <div class="toast-body">
+            <div class="toast-content">
+              <p class="toast-title">
+                Look directly at the camera and keep your face within the circle frame
+              </p>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary"
+                id="face-capture" name="face-capture"
+                data-action="face-capture" style="width:100%;margin-top:12px;">
+          Capture
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SCREEN: face-scan-misaligned
+       slug: face-scan-misaligned
+       Buttons:
+         retry    -> data-action="goto:face-scan"
+         continue -> data-action="goto:success"
+       ========================================================================= -->
+  <section class="ekyc-screen" id="screen-face-scan-misaligned" data-screen="face-scan-misaligned" hidden>
+    <div class="facescan-page" data-facescan-state="misaligned">
+      <div class="facescan-camera facescan-camera--error" id="face-mis-camera">
+        <div class="facescan-topbar">
+          <a class="facescan-iconbtn" id="face-mis-close" data-action="back" role="button"
+             tabindex="0" aria-label="Close">
+            <i data-lucide="x"></i>
+          </a>
+          <button type="button" class="facescan-iconbtn facescan-iconbtn--bordered"
+                  id="face-mis-help" name="face-mis-help" aria-label="Help">
+            <i data-lucide="help-circle"></i>
+          </button>
+        </div>
+
+        <span class="facescan-pill">
+          <i data-lucide="zap"></i> Auto capture is on
+        </span>
+
+        <div class="facescan-oval" aria-hidden="true">
+          <img class="facescan-oval__feed" src="assets/img/face-sample.png" alt="" />
+        </div>
+
+        <div class="facescan-bottom">
+          <div class="facescan-guide">
+            <p class="facescan-title">Face Scan</p>
+            <p class="facescan-hint" id="face-mis-hint">
+              Keep your face centered within frame for a clear scan
+            </p>
+          </div>
+          <button type="button" class="facescan-flip"
+                  id="face-mis-flip" name="face-mis-flip" data-action="face-flip">
+            <i data-lucide="switch-camera"></i> Flip Camera
+          </button>
+        </div>
+      </div>
+
+      <div class="facescan-footer">
+        <div class="toast toast-info" role="status">
+          <span class="toast-icon"><i data-lucide="info"></i></span>
+          <div class="toast-body">
+            <div class="toast-content">
+              <p class="toast-title">
+                Look directly at the camera and keep your face within the circle frame
+              </p>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button type="button" class="btn btn-secondary"
+                  id="face-mis-retry" name="face-mis-retry"
+                  data-action="face-retry" style="flex:1;">
+            Retry
+          </button>
+          <button type="button" class="btn btn-primary"
+                  id="face-mis-continue" name="face-mis-continue"
+                  data-action="goto:success" style="flex:1;">
+            Continue
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SCREEN: success
+       slug: success
+       Final "KYC Complete" cap. Done button restarts the journey.
+       ========================================================================= -->
+  <section class="ekyc-screen" id="screen-success" data-screen="success" hidden>
+    <div class="success-page">
+      <div class="success-tick" aria-hidden="true">
+        <i data-lucide="check"></i>
+      </div>
+      <h1 class="success-title">KYC Complete</h1>
+      <p class="success-sub">
+        Thank you! The customer's KYC has been successfully verified. You can now proceed with the next step.
+      </p>
+      <button type="button" class="btn btn-primary"
+              id="success-done" name="success-done"
+              data-action="goto:initiation">
+        Done
+      </button>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== Vendor scripts (relative paths) ===== -->
+<script src="assets/vendor/lucide.min.js"></script>
+<script src="assets/atlas/atlas.js"></script>
+<script src="js/app.js"></script>
+
+<!-- ===== Inline SPA router + per-screen logic =================================
+     The router maintains a screen stack, exposes window.ekyc, and dispatches
+     `ekyc:enter` whenever a screen becomes visible. Each per-screen init runs
+     ONCE on first visit (idempotent) and re-renders icons on every entry.
+============================================================================= -->
+<script>
+(function () {
+  'use strict';
+
+  /* -------- Known screens (in order) -------- */
+  var SCREENS = [
+    'initiation', 'send-link', 'send-link-sent',
+    'landing', 'aadhaar', 'aadhaar-otp',
+    'face-scan', 'face-scan-misaligned', 'success'
+  ];
+
+  /* -------- Router -------- */
+  var nav = []; // stack of slugs visited (most recent last)
+  var current = null;
+  var firstFaceCaptureDone = false; // first capture -> misaligned; next -> success
+
+  function $(sel, root) { return (root || document).querySelector(sel); }
+  function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function screenEl(slug) { return document.getElementById('screen-' + slug); }
+
+  function show(slug, opts) {
+    opts = opts || {};
+    if (SCREENS.indexOf(slug) === -1) {
+      console.warn('[ekyc] unknown screen', slug);
+      return;
+    }
+    SCREENS.forEach(function (s) {
+      var el = screenEl(s);
+      if (el) el.hidden = (s !== slug);
+    });
+    current = slug;
+    if (!opts.pop) nav.push(slug);
+    if (!opts.silent) {
+      if (location.hash !== '#' + slug) {
+        try { history.replaceState(null, '', '#' + slug); } catch (e) { location.hash = slug; }
+      }
+    }
+    // Re-render lucide icons (the new screen's <i data-lucide> need painting)
+    if (window.lucide && window.lucide.createIcons) {
+      try { window.lucide.createIcons(); } catch (e) {}
+    }
+    // Run per-screen init (idempotent — guarded by data-inited)
+    var initFn = INITS[slug];
+    if (initFn) {
+      try { initFn(); } catch (e) { console.error('[ekyc] init', slug, e); }
+    }
+    // Notify the client
+    document.dispatchEvent(new CustomEvent('ekyc:enter', {
+      detail: { screen: slug, history: nav.slice() }
+    }));
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  }
+
+  function goto(slug) { show(slug); }
+  function back() {
+    if (nav.length > 1) {
+      nav.pop(); // remove current
+      var prev = nav[nav.length - 1];
+      show(prev, { pop: true });
+    } else {
+      show('initiation', { pop: true });
+    }
+  }
+
+  window.ekyc = {
+    goto: goto, back: back,
+    get currentScreen() { return current; },
+    get history() { return nav.slice(); }
+  };
+
+  /* -------- Click delegation -------- */
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-action]');
+    if (!t) return;
+    var action = t.getAttribute('data-action');
+    if (!action) return;
+
+    // goto:<slug>
+    if (action.indexOf('goto:') === 0) {
+      e.preventDefault();
+      goto(action.slice(5));
+      return;
+    }
+    // back
+    if (action === 'back') {
+      e.preventDefault();
+      back();
+      return;
+    }
+    // select-method:<method>
+    if (action.indexOf('select-method:') === 0) {
+      e.preventDefault();
+      e.stopPropagation();
+      var m = action.slice('select-method:'.length);
+      var hidden = document.getElementById('landing-kyc-method');
+      if (hidden) hidden.value = m;
+      if (m === 'aadhaar') { goto('aadhaar'); return; }
+      if (m === 'face')    { openModal('landing-camera-modal'); return; }
+      // pan / document — no UI flow yet
+      console.log('[ekyc] method selected (no-op):', m);
+      return;
+    }
+    if (action === 'allow-camera') {
+      e.preventDefault();
+      closeModal('landing-camera-modal');
+      goto('face-scan');
+      return;
+    }
+    // modal open/close
+    if (action.indexOf('open-modal:') === 0) {
+      e.preventDefault();
+      openModal(action.slice('open-modal:'.length));
+      return;
+    }
+    if (action === 'close-modal') {
+      var m2 = t.closest('.modal-backdrop');
+      if (m2) closeModalEl(m2);
+      return;
+    }
+    if (action === 'leave-confirm') {
+      // "Go Back" inside leave modal -> actually leave (router back)
+      var mm = t.closest('.modal-backdrop');
+      if (mm) closeModalEl(mm);
+      back();
+      return;
+    }
+    // submit:<form-slug>
+    if (action.indexOf('submit:') === 0) {
+      e.preventDefault();
+      var slug = action.slice('submit:'.length);
+      handleSubmit(slug, t);
+      return;
+    }
+    // face capture / retry / flip
+    if (action === 'face-capture') {
+      e.preventDefault();
+      if (!firstFaceCaptureDone) {
+        firstFaceCaptureDone = true;
+        goto('face-scan-misaligned');
+      } else {
+        goto('success');
+      }
+      return;
+    }
+    if (action === 'face-retry') {
+      e.preventDefault();
+      goto('face-scan');
+      return;
+    }
+    if (action === 'face-flip') {
+      console.log('[ekyc] flip camera');
+      return;
+    }
+    if (action === 'refresh-captcha') {
+      // visual only; backend will replace the image src
+      var icon = t.querySelector('svg, [data-lucide]');
+      if (icon) {
+        icon.style.transition = 'transform 0.4s ease';
+        icon.style.transform = 'rotate(360deg)';
+        setTimeout(function () { icon.style.transition = ''; icon.style.transform = ''; }, 400);
+      }
+      return;
+    }
+    if (action === 'resend-otp') {
+      e.preventDefault();
+      $$('#screen-aadhaar-otp .aadhaar-otp__box').forEach(function (b) {
+        b.value = ''; b.classList.remove('is-filled');
+      });
+      var first = $('#screen-aadhaar-otp .aadhaar-otp__box');
+      if (first) first.focus();
+      var v = $('#otp-verify'); if (v) v.disabled = true;
+      return;
+    }
+  });
+
+  /* -------- Modal helpers -------- */
+  function openModal(id) {
+    var m = document.getElementById(id);
+    if (!m) return;
+    m.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(id) {
+    var m = document.getElementById(id);
+    if (m) closeModalEl(m);
+  }
+  function closeModalEl(m) {
+    m.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+  // Scrim click + Escape
+  document.addEventListener('click', function (e) {
+    if (e.target.classList && e.target.classList.contains('modal-backdrop')) {
+      closeModalEl(e.target);
+    }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      $$('.modal-backdrop.is-open').forEach(closeModalEl);
+    }
+  });
+
+  /* -------- Submit handlers -------- */
+  function handleSubmit(slug, btn) {
+    if (btn && btn.disabled) return;
+    if (slug === 'send-link') {
+      // Mark sent visually then navigate
+      var st = document.getElementById('sl-success');
+      if (st) st.classList.add('is-visible');
+      goto('send-link-sent');
+      return;
+    }
+    if (slug === 'aadhaar') {
+      console.log('[ekyc] Aadhaar form submit', collectAadhaar());
+      goto('aadhaar-otp');
+      return;
+    }
+    if (slug === 'aadhaar-otp') {
+      console.log('[ekyc] OTP verified', collectOtp());
+      goto('face-scan');
+      return;
+    }
+  }
+  function collectAadhaar() {
+    return {
+      'verification-type': (document.querySelector('input[name="verification-type"]:checked') || {}).value,
+      'aadhaar-number': ($('#aadhaar-num') || {}).value,
+      'aadhaar-mobile': ($('#aadhaar-mobile') || {}).value,
+      'security-answer': ($('#aadhaar-sec') || {}).value,
+      'consent-data-sharing': ($('#aadhaar-c1') || {}).checked,
+      'consent-uidai-terms': ($('#aadhaar-c2') || {}).checked
+    };
+  }
+  function collectOtp() {
+    return $$('#screen-aadhaar-otp .aadhaar-otp__box').map(function (b) { return b.value || ''; }).join('');
+  }
+
+  /* =========================================================================
+     Per-screen init functions (ported from js/<page>.js, re-scoped to screen)
+     ========================================================================= */
+  var INITS = {};
+
+  /* ---- initScreen_initiation ---- */
+  INITS['initiation'] = function () {
+    var root = screenEl('initiation');
+    if (root.dataset.inited) return; root.dataset.inited = '1';
+    var tiles = $$('.kycinit-tile', root);
+    var requirements = $('#init-requirements', root);
+    var submit = $('#init-submit', root);
+    var submitLabel = $('#init-submit-label', root);
+
+    function select(tile) {
+      tiles.forEach(function (t) {
+        var on = t === tile;
+        t.classList.toggle('is-selected', on);
+        t.setAttribute('aria-checked', on ? 'true' : 'false');
+      });
+      var sendLink = tile.getAttribute('data-option') === 'send-link';
+      if (requirements) requirements.style.display = sendLink ? 'none' : '';
+      if (submitLabel) submitLabel.textContent = sendLink ? 'Next' : 'Start KYC Verification';
+      submit.setAttribute('data-action', sendLink ? 'goto:send-link' : 'goto:landing');
+    }
+    tiles.forEach(function (tile) {
+      tile.addEventListener('click', function () { select(tile); });
+      tile.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(tile); }
+      });
+    });
+    // initialize default selection -> wire submit's data-action
+    var pre = $('.kycinit-tile.is-selected', root) || tiles[0];
+    if (pre) select(pre);
+  };
+
+  /* ---- initScreen_send-link ---- */
+  INITS['send-link'] = function () {
+    var root = screenEl('send-link');
+    if (root.dataset.inited) return; root.dataset.inited = '1';
+
+    var EXPECTED_CAPTCHA = '2B3J7y';
+    var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    var mobile = $('#sl-mobile', root);
+    var email = $('#sl-email', root);
+    var captcha = $('#sl-captcha', root);
+    var submit = $('#sl-submit', root);
+
+    function val(el) { return el ? el.value.trim() : ''; }
+    function isMobileValid() { return /^\d{10}$/.test(val(mobile)); }
+    function isEmailValid()  { var v = val(email); return v === '' || EMAIL_RE.test(v); }
+    function isCaptchaValid(){ return val(captcha).toLowerCase() === EXPECTED_CAPTCHA.toLowerCase(); }
+    function allValid() { return isMobileValid() && isEmailValid() && isCaptchaValid(); }
+
+    function fieldOf(el) { return el ? el.closest('.form-field') : null; }
+    function setError(el, on) { var f = fieldOf(el); if (f) f.classList.toggle('is-error', !!on); }
+    function refreshSubmit() { if (submit) submit.disabled = !allValid(); }
+
+    function wireField(el, validFn) {
+      if (!el) return;
+      el.addEventListener('blur', function () { setError(el, !validFn()); });
+      el.addEventListener('input', function () {
+        var f = fieldOf(el);
+        if (f && f.classList.contains('is-error') && validFn()) setError(el, false);
+        refreshSubmit();
+      });
+    }
+    if (mobile) {
+      mobile.addEventListener('input', function () {
+        mobile.value = mobile.value.replace(/\D/g, '').slice(0, 10);
+      });
+    }
+    wireField(mobile, isMobileValid);
+    wireField(email, isEmailValid);
+    wireField(captcha, isCaptchaValid);
+    refreshSubmit();
+  };
+
+  /* ---- initScreen_send-link-sent ---- */
+  INITS['send-link-sent'] = function () {
+    // No interactive logic beyond what router handles.
+  };
+
+  /* ---- initScreen_landing ---- */
+  INITS['landing'] = function () {
+    var root = screenEl('landing');
+    if (root.dataset.inited) return; root.dataset.inited = '1';
+    var cards = $$('.method-card', root);
+    function select(card) {
+      cards.forEach(function (c) { c.classList.toggle('is-selected', c === card); });
+      var hidden = $('#landing-kyc-method', root);
+      if (hidden) hidden.value = card.getAttribute('data-method');
+    }
+    cards.forEach(function (card) {
+      card.addEventListener('click', function () { select(card); });
+      card.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(card); }
+      });
+    });
+  };
+
+  /* ---- initScreen_aadhaar ---- */
+  INITS['aadhaar'] = function () {
+    var root = screenEl('aadhaar');
+    if (root.dataset.inited) return; root.dataset.inited = '1';
+    var SECURITY_ANSWER = '14';
+    var radios = $$('.aadhaar-radio', root);
+    var numInput = $('#aadhaar-num', root);
+    var numLabel = $('#aadhaar-num-label', root);
+    var mobile = $('#aadhaar-mobile', root);
+    var sec = $('#aadhaar-sec', root);
+    var card = $('.aadhaar-card', root);
+    var consent1 = $('#aadhaar-c1', root);
+    var consent2 = $('#aadhaar-c2', root);
+    var submit = $('#aadhaar-submit', root);
+
+    function selectRadio(node) {
+      radios.forEach(function (r) {
+        var on = r === node;
+        r.classList.toggle('is-selected', on);
+        var input = r.querySelector('input[type="radio"]');
+        if (input) input.checked = on;
+      });
+      if (numLabel && numInput) {
+        var isVid = node.getAttribute('data-vtype') === 'vid';
+        if (isVid) {
+          numLabel.textContent = 'Virtual ID';
+          numInput.setAttribute('placeholder', 'Enter 16-digit Virtual ID');
+          numInput.setAttribute('maxlength', '16');
+        } else {
+          numLabel.textContent = 'Aadhaar Number';
+          numInput.setAttribute('placeholder', 'Enter 12-digit Aadhaar Number');
+          numInput.setAttribute('maxlength', '12');
+        }
+        numInput.value = '';
+        validate();
+      }
+    }
+    radios.forEach(function (r) {
+      r.addEventListener('click', function () { selectRadio(r); });
+    });
+    function isAadhaarValid() {
+      var sel = $('.aadhaar-radio.is-selected', root);
+      var isVid = sel && sel.getAttribute('data-vtype') === 'vid';
+      var len = isVid ? 16 : 12;
+      return new RegExp('^\\d{' + len + '}$').test((numInput.value || '').trim());
+    }
+    function isMobileValid() { return /^\d{10}$/.test((mobile.value || '').trim()); }
+    function isSecurityValid() { return sec && (sec.value || '').trim() === SECURITY_ANSWER; }
+    function isConsented() { return consent1 && consent2 && consent1.checked && consent2.checked; }
+    function fieldOf(el) { return el ? el.closest('.form-field') : null; }
+    function setValid(el, ok) { var f = fieldOf(el); if (f) f.classList.toggle('is-valid', !!ok); }
+    function validate() {
+      setValid(numInput, isAadhaarValid());
+      setValid(mobile, isMobileValid());
+      setValid(sec, isSecurityValid());
+      var extended = isAadhaarValid() && isMobileValid();
+      if (card) card.classList.toggle('is-extended', extended);
+      if (!submit) return;
+      submit.disabled = !(extended && isSecurityValid() && isConsented());
+    }
+    if (numInput) {
+      numInput.addEventListener('input', function () {
+        var max = parseInt(numInput.getAttribute('maxlength') || '12', 10);
+        numInput.value = numInput.value.replace(/\D/g, '').slice(0, max);
+        validate();
+      });
+    }
+    if (mobile) {
+      mobile.addEventListener('input', function () {
+        mobile.value = mobile.value.replace(/\D/g, '').slice(0, 10);
+        validate();
+      });
+    }
+    if (sec) {
+      sec.addEventListener('input', function () {
+        sec.value = sec.value.replace(/\D/g, '').slice(0, 3);
+        validate();
+      });
+    }
+    [consent1, consent2].forEach(function (cb) { if (cb) cb.addEventListener('change', validate); });
+    validate();
+  };
+
+  /* ---- initScreen_aadhaar-otp ---- */
+  INITS['aadhaar-otp'] = function () {
+    var root = screenEl('aadhaar-otp');
+    if (root.dataset.inited) return; root.dataset.inited = '1';
+    var boxes = $$('.aadhaar-otp__box', root);
+    var verify = $('#otp-verify', root);
+
+    function otpValue() { return boxes.map(function (b) { return b.value || ''; }).join(''); }
+    function isOtpFilled() { return otpValue().length === boxes.length; }
+    function syncBoxes() { boxes.forEach(function (b) { b.classList.toggle('is-filled', !!b.value); }); }
+    function refreshSubmit() { if (verify) verify.disabled = !isOtpFilled(); }
+
+    boxes.forEach(function (b, i) {
+      b.addEventListener('input', function () {
+        b.value = (b.value || '').replace(/\D/g, '').slice(0, 1);
+        if (b.value && i < boxes.length - 1) boxes[i + 1].focus();
+        syncBoxes(); refreshSubmit();
+      });
+      b.addEventListener('keydown', function (e) {
+        if (e.key === 'Backspace' && !b.value && i > 0) boxes[i - 1].focus();
+        else if (e.key === 'ArrowLeft' && i > 0) boxes[i - 1].focus();
+        else if (e.key === 'ArrowRight' && i < boxes.length - 1) boxes[i + 1].focus();
+      });
+      b.addEventListener('paste', function (e) {
+        e.preventDefault();
+        var text = (e.clipboardData || window.clipboardData).getData('text') || '';
+        var digits = text.replace(/\D/g, '').slice(0, boxes.length - i);
+        for (var k = 0; k < digits.length; k++) boxes[i + k].value = digits[k];
+        var next = Math.min(i + digits.length, boxes.length - 1);
+        boxes[next].focus();
+        syncBoxes(); refreshSubmit();
+      });
+    });
+    refreshSubmit();
+    // Focus first empty box on entry
+    var firstEmpty = boxes.find ? boxes.find(function (b) { return !b.value; }) : null;
+    if (firstEmpty) setTimeout(function () { firstEmpty.focus(); }, 60);
+  };
+
+  /* ---- initScreen_face-scan ---- */
+  INITS['face-scan'] = function () {
+    var root = screenEl('face-scan');
+    if (root.dataset.inited) return; root.dataset.inited = '1';
+    var camera = $('#face-camera', root);
+    var hint = $('#face-hint', root);
+    if (camera) camera.classList.remove('facescan-camera--error');
+    if (hint) hint.textContent = "Make sure you're in well-lit area with plain background";
+  };
+
+  /* ---- initScreen_face-scan-misaligned ---- */
+  INITS['face-scan-misaligned'] = function () {
+    var root = screenEl('face-scan-misaligned');
+    if (root.dataset.inited) return; root.dataset.inited = '1';
+    var camera = $('#face-mis-camera', root);
+    var hint = $('#face-mis-hint', root);
+    if (camera) camera.classList.add('facescan-camera--error');
+    if (hint) hint.textContent = 'Keep your face centered within frame for a clear scan';
+  };
+
+  /* ---- initScreen_success ---- */
+  INITS['success'] = function () { /* nothing dynamic */ };
+
+  /* -------- Boot -------- */
+  function boot() {
+    var hash = (location.hash || '').replace('#', '');
+    var start = SCREENS.indexOf(hash) !== -1 ? hash : 'initiation';
+    show(start);
+  }
+  window.addEventListener('hashchange', function () {
+    var hash = (location.hash || '').replace('#', '');
+    if (SCREENS.indexOf(hash) !== -1 && hash !== current) {
+      show(hash, { silent: true });
+    }
+  });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();
+</script>
+
+</body>
+</html>
