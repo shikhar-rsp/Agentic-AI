@@ -1,0 +1,821 @@
+/* =========================================================================
+   pan eKYC entry page (Figma node 1240:20404).
+   Standalone responsive page; mobile single-column, web gold banner +
+   centered 800px card.
+   ========================================================================= */
+
+@layer app {
+
+    /* ---- Mobile frame ---- */
+    .pan-page {
+        width: 100%;
+        max-width: 402px;
+        margin-inline: auto;
+        min-height: 100vh;
+        background: var(--color-neutral-50);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        position: relative;
+    }
+
+    /* Gold/orange decorative banner — shown on both mobile and web */
+    .pan-bg {
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 280px;
+        background: #fed7aa url('../assets/img/kycinit-bg-web.png') top center / cover no-repeat;
+        overflow: hidden;
+        z-index: 0;
+    }
+
+    .pan-page>.kyc-header {
+        position: relative;
+        z-index: 2;
+    }
+
+    .pan-body {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    /* ---- Card ---- */
+    .pan-card {
+        background: var(--color-neutral-0);
+        border-radius: 16px;
+        box-shadow: 0 1px 4px rgba(10, 13, 18, 0.1), 0 1px 2px rgba(10, 13, 18, 0.06);
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    /* ---- Header section (logo + title + subtitle) ---- */
+    .pan-head {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        text-align: center;
+    }
+
+    .pan-logo {
+        height: 48px;
+        width: auto;
+    }
+
+    .pan-title {
+        margin: 0;
+        font-family: 'Familjen Grotesk', 'Rubik', sans-serif;
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 32px;
+        color: var(--color-neutral-800);
+    }
+
+    .pan-subtitle {
+        margin: 0;
+        font: 400 14px/20px 'Rubik', sans-serif;
+        color: var(--color-neutral-600);
+    }
+
+    /* ---- Back link ---- */
+    .pan-back {
+        align-self: flex-start;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0;
+        background: none;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        font: 400 14px/20px 'Rubik', sans-serif;
+        color: var(--color-neutral-800);
+    }
+
+    .pan-back .lucide,
+    .pan-back [data-lucide] {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* ---- Details box (bordered card) ---- */
+    .pan-details {
+        padding: 16px;
+        border-radius: 8px;
+        border: 1px solid var(--color-neutral-200);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .pan-details__head {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .pan-details__title {
+        margin: 0;
+        font: 600 16px/24px 'Rubik', sans-serif;
+        color: var(--color-neutral-800);
+    }
+
+    .pan-details__hint {
+        margin: 0;
+        font: 400 14px/20px 'Rubik', sans-serif;
+        color: #94A3B8;
+    }
+
+    /* ---- Required asterisk ---- */
+    .pan-req {
+        color: #b91c1c;
+    }
+
+    /* ---- Field wrapper ---- */
+    .pan-field {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .pan-field-container {
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+        gap: 8px;
+    }
+
+    .pan-field__label {
+        font: 400 14px/20px 'Rubik', sans-serif;
+        color: var(--color-neutral-700);
+
+    }
+
+    /* ---- Radio buttons (verification type) ----
+     2-column on both mobile and web (matches the Figma). */
+    .pan-radios {
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+    }
+
+    .pan-radio {
+        flex: 1 0 0;
+        min-width: 0;
+    }
+
+    /* The radio label is just "pan" on mobile and "pan Number" on web,
+     so the "Number" extension is hidden by default and shown on >=768px. */
+    .pan-radio__label-ext {
+        display: none;
+    }
+
+    .pan-radio {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 12px;
+        border: 1px solid var(--color-neutral-300);
+        border-radius: 8px;
+        cursor: pointer;
+        background: var(--color-neutral-0);
+        transition: border-color 0.15s, background 0.15s;
+    }
+
+    .pan-radio.is-selected {
+        border-color: var(--color-blue-600);
+        background: var(--color-blue-50);
+    }
+
+    .pan-radio input[type='radio'] {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .pan-radio__dot {
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--color-neutral-400);
+        border-radius: 50%;
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    .pan-radio.is-selected .pan-radio__dot {
+        border-color: var(--color-blue-600);
+    }
+
+    .pan-radio.is-selected .pan-radio__dot::after {
+        content: '';
+        position: absolute;
+        inset: 2px;
+        background: var(--color-blue-600);
+        border-radius: 50%;
+    }
+
+    .pan-radio__label {
+        font: 400 14px/20px 'Rubik', sans-serif;
+        color: var(--color-neutral-800);
+    }
+
+    /* ---- Success message (under valid mobile number) ---- */
+    .pan-success {
+        margin: 0;
+        font: 400 14px/20px 'Rubik', sans-serif;
+        color: #475569;
+    }
+
+
+    /* ---- Conditional sections (security question + consent) ---- */
+    .pan-extra {
+        display: none;
+    }
+
+    .pan-card.is-extended .pan-extra {
+        display: flex;
+    }
+
+    /* ---- Consent section ---- */
+    .pan-consent {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .pan-consent__title {
+        margin: 0;
+        font: 600 16px/24px 'Rubik', sans-serif;
+        color: var(--color-neutral-800);
+    }
+
+    .pan-check {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        cursor: pointer;
+    }
+
+    .pan-check input[type='checkbox'] {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .pan-check__box {
+        flex-shrink: 0;
+        width: 18px;
+        height: 18px;
+        margin-top: 1px;
+        border: 1.5px solid var(--color-neutral-400);
+        border-radius: 3px;
+        background: var(--color-neutral-0);
+        position: relative;
+    }
+
+    .pan-check input[type='checkbox']:checked+.pan-check__box {
+        background: var(--color-blue-600);
+        border-color: var(--color-blue-600);
+    }
+
+    .pan-check input[type='checkbox']:checked+.pan-check__box::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>") center / 12px no-repeat;
+    }
+
+    .pan-check__label {
+        font: 400 14px/20px 'Rubik', sans-serif;
+        color: var(--color-neutral-800);
+    }
+
+    .pan-readmore {
+        color: var(--color-blue-600);
+        text-decoration: underline;
+    }
+
+    /* ---- Submit ---- */
+    .pan-submit {
+        width: 100%;
+        gap: 8px;
+    }
+
+    .pan-submit:disabled {
+        background: var(--color-neutral-100);
+        color: var(--color-neutral-300);
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+}
+
+/* Make form-field fill its container (DS clamps it at --form-field-width).
+   Unlayered to beat DS form-field which is also unlayered. */
+.pan-card .form-field {
+    width: 100%;
+}
+
+/* Valid state — green check circle on the right of the input.
+   Unlayered to beat the DS form-field's ::after pattern (also unlayered). */
+.pan-card .form-field.is-valid .form-input-wrapper::after {
+    content: '';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background:
+        var(--color-emerald-600) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>") center / 12px no-repeat;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Make room for the icon so it doesn't overlap the text */
+.pan-card .form-field.is-valid .form-input {
+    padding-right: 40px;
+}
+
+/* =========================================================================
+   Web / desktop layout (>= 768px) — Figma node 1240:20404.
+   Gold banner + centered 800px card; radios go 2-col.
+   ========================================================================= */
+@layer app {
+    @media (min-width: 768px) {
+        .pan-page {
+            max-width: none;
+            gap: 0;
+        }
+
+        .pan-bg {
+            display: block;
+        }
+
+        .pan-body {
+            display: flex;
+            justify-content: center;
+            padding: 56px 16px 48px;
+        }
+
+        .pan-card {
+            width: 100%;
+            max-width: 800px;
+            padding: 32px;
+            gap: 20px;
+        }
+
+        .pan-title {
+            font-size: 28px;
+            line-height: 36px;
+        }
+
+        /* On web, show the full "pan Number" label */
+        .pan-radio__label-ext {
+            display: inline;
+        }
+    }
+}
+
+/* =========================================================================
+   Leave-page confirmation modal (Figma node 1309:58201).
+   Reuses the DS .modal-confirmation pattern with an amber/warning icon.
+   Modal CSS overrides are UNLAYERED (DS modal.css is unlayered too).
+   ========================================================================= */
+
+/* Scrim + sizing (mirrors the kyc-modal pattern) */
+.pan-leave-modal.modal-backdrop {
+    background: rgba(26, 26, 26, 0.36);
+    backdrop-filter: none;
+    padding-inline: 16px;
+}
+
+.pan-leave-modal .modal-confirmation {
+    width: 100%;
+    max-width: 370px;
+    height: auto;
+    border-radius: 16px;
+}
+
+.pan-leave-modal .modal-header {
+    height: auto;
+    padding: 20px 20px 0;
+    gap: 4px;
+}
+
+.pan-leave-modal .modal-body {
+    height: auto;
+    padding: 8px 20px 20px;
+    text-align: center;
+    font-family: 'Rubik', sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--color-neutral-600);
+    border-bottom: 1px solid var(--color-neutral-200);
+}
+
+.pan-leave-modal .modal-footer {
+    height: auto;
+    padding: 16px 20px;
+    gap: 12px;
+    justify-content: center;
+}
+
+.pan-leave-modal .modal-footer .btn {
+    flex: 1 0 0;
+    width: auto;
+}
+
+.pan-leave-modal .modal-title {
+    font-family: 'Rubik', sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: var(--color-neutral-800);
+    height: auto;
+    text-align: center;
+}
+
+/* Amber/warning featured-icon variant */
+.modal-header-icon--warning {
+    background: #fef3c7;
+    /* amber-100 */
+    color: #d97706;
+    /* amber-600 */
+    margin-bottom: 12px;
+}
+
+.modal-header-icon--warning .lucide,
+.modal-header-icon--warning [data-lucide] {
+    width: 24px;
+    height: 24px;
+}
+
+/* =========================================================================
+   OTP Verification (Figma node 1455:26192).
+   6 single-character boxes, auto-advance focus, Resend link right-aligned.
+   ========================================================================= */
+@layer app {
+    .pan-otp {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        flex-wrap: nowrap;
+    }
+
+    .pan-otp__box {
+        width: 64px;
+        height: 64px;
+        flex: 0 0 64px;
+        min-width: 0;
+        aspect-ratio: 1 / 1;
+        padding: 8px;
+        border: 1px solid var(--color-neutral-300);
+        border-radius: 8px;
+        background: var(--color-neutral-0);
+        text-align: center;
+        font: 500 22px/28px 'Rubik', sans-serif;
+        color: var(--color-neutral-800);
+        box-shadow: 0 1px 2px rgba(10, 13, 18, 0.05);
+        outline: none;
+    }
+
+    .pan-otp__box:focus {
+        border-color: var(--color-blue-600);
+        box-shadow: 0 0 0 3px rgba(0, 93, 172, 0.1);
+    }
+
+    .pan-otp__box.is-filled {
+        border-color: var(--color-blue-600);
+    }
+
+    .pan-resend {
+        align-self: flex-end;
+        font: 500 14px/20px 'Rubik', sans-serif;
+        color: var(--color-blue-600);
+        text-decoration: none;
+    }
+
+    .pan-resend:hover {
+        text-decoration: underline;
+    }
+
+    /* Form input */
+    .form-input {
+        border-radius: 8px !important;
+    }
+
+    /* Wrapper that Atlas actually renders */
+    .form-input-wrapper {
+        border-radius: 8px !important;
+        overflow: hidden;
+    }
+
+    /* Buttons */
+    .btn {
+        border-radius: 8px !important;
+    }
+
+    .pan-verifying {
+        text-align: center;
+        padding-top: 24px;
+    }
+
+    .pan-verifying__title {
+        font: 600 16px/24px 'Rubik', sans-serif;
+        color: #1e293b;
+        margin-bottom: 12px;
+    }
+
+    .pan-verifying__loader {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        color: #CBD5E1;
+        margin-bottom: 24px;
+        font-size: 14px;
+    }
+
+    .loader {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+
+        background:
+            conic-gradient(transparent 0deg,
+                transparent 90deg,
+                #334155 360deg);
+
+        animation: spin 0.8s linear infinite;
+
+        -webkit-mask: radial-gradient(farthest-side,
+                transparent calc(100% - 3px),
+                #000 calc(100% - 2px));
+
+        mask: radial-gradient(farthest-side,
+                transparent calc(100% - 3px),
+                #000 calc(100% - 2px));
+    }
+
+    .pan-verifying .progress {
+        width: 100%;
+        max-width: 320px;
+        margin: 0 auto;
+    }
+
+    .pan-progress__row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+
+    }
+
+    .pan-progress__bar {
+        height: 8px;
+        background: #e2e8f0;
+        border-radius: 999px;
+        overflow: hidden;
+    }
+
+    .pan-progress__fill {
+        height: 100%;
+        background: #65a30d;
+        transition: width .4s ease;
+    }
+
+    .pan-verifying-note {
+        margin-top: 32px;
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        color: #000000;
+        font-size: 14px;
+    }
+
+    .pan-sub-card {
+        border-radius: 8px;
+        border: 1px solid #E2E8F0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 0px;
+    }
+
+    .toast {
+        padding: 4px 8px;
+    }
+
+    .toast-title {
+        color: #2E2B2B;
+        font-family: 'Rubik', sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 0px;
+    }
+
+    .pan-address-title {
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 24px;
+        color: #1E293B;
+        margin-top: 0;
+    }
+
+    .pan-address-subtitle {
+        font-weight: 400;
+        font-size: 14px;
+        color: #475569;
+    }
+
+    .dropdown-input-container {
+        margin-top: 32px;
+        width: 100% !important;
+
+    }
+
+    .atlas-drag-drop-wrapper {
+        margin-top: 20px;
+    }
+
+    .atlas-drag-drop-label {
+        font-weight: 500 !important;
+        color: #1E293B !important;
+        font-size: 16px;
+    }
+
+    .upload-success-row {
+        margin-top: 8px;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .upload-success-name {
+        font: 400 14px/20px 'Rubik', sans-serif;
+        color: #475569;
+    }
+
+    .upload-success-row[hidden] {
+        display: none !important;
+    }
+
+    .atlas-drag-drop.has-file .atlas-drag-drop-content {
+        display: none;
+    }
+
+    .atlas-drag-drop.has-file .upload-preview {
+        display: flex;
+    }
+
+    .upload-preview {
+        display: none;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .upload-preview img {
+        width: 100%;
+        max-height: 220px;
+        object-fit: contain;
+        border-radius: 8px;
+    }
+
+    .review-card {
+        padding: 16px;
+        border: 1px solid #E2E8F0;
+        border-radius: 8px;
+        background: #FFFFFF;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .review-title {
+        color: #1E293B;
+        font: 600 18px/28px 'Rubik', sans-serif;
+    }
+
+    .review-info-banner {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        padding: 10px 12px;
+
+        background: #EFF6FF;
+        border-radius: 4px;
+
+        color: #334155;
+        font: 400 12px/16px 'Rubik', sans-serif;
+    }
+
+    .review-info-banner svg {
+        width: 16px;
+        height: 16px;
+        color: #2563EB;
+        flex-shrink: 0;
+    }
+
+    .review-section {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .review-section__header {
+        background: #EFF6FF;
+        border-radius: 4px;
+
+        padding: 8px 12px;
+
+        color: #334155;
+        font: 500 14px/20px 'Rubik', sans-serif;
+    }
+
+    .review-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px 24px;
+        padding: 0 4px;
+    }
+
+    .review-label {
+        color: #64748B;
+        font: 400 12px/16px 'Rubik', sans-serif;
+
+        margin-bottom: 2px;
+    }
+
+    .review-value {
+        color: #1E293B;
+        font: 500 14px/20px 'Rubik', sans-serif;
+
+        word-break: break-word;
+    }
+
+    .review-consent-card {
+        margin-top: 8px;
+
+        padding: 16px;
+
+        border: 1px solid #E2E8F0;
+        border-radius: 8px;
+
+        background: #FFFFFF;
+
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .review-consent-title {
+        color: #1E293B;
+        font: 600 14px/20px 'Rubik', sans-serif;
+    }
+
+    .review-consent-card .checkbox {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+
+        color: #334155;
+        font: 400 12px/18px 'Rubik', sans-serif;
+
+        cursor: pointer;
+    }
+
+    .review-consent-card .checkbox input {
+        margin-top: 2px;
+        flex-shrink: 0;
+    }
+
+    .review-submit-btn,
+    .pan-submit {
+        margin-top: 16px;
+    }
+
+    @media (max-width: 640px) {
+        .review-grid {
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+}
