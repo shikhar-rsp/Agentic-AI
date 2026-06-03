@@ -971,7 +971,7 @@
 .form-input {
     display: flex;
     width: 100%;
-    padding: var(--form-field-input-padding);
+    padding: 7px 11px;
     align-items: center;
     gap: var(--space-2);
     border-radius: var(--form-field-input-radius);
@@ -3887,7 +3887,7 @@
         align-items: center;
 
         width: 100%;
-        padding: var(--spacing-sm) !important;
+        padding: var(--spacing-sm);
 
         border-radius: var(--radius-md);
         box-shadow: var(--shadow-toast);
@@ -4045,10 +4045,6 @@
     /* Neutral */
     .toast-neutral {
         background: var(--color-background-neutral-subtle);
-    }
-
-    .toast-neutral::before {
-        background: var(--color-background-neutral-bold);
     }
 
     .toast-neutral .toast-icon {

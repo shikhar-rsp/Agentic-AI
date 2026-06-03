@@ -103,6 +103,10 @@
   ============================================================================
   -->
 
+  <!-- Phosphor Icons -->
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -194,98 +198,94 @@
        Primary button: id=init-submit, data-action chosen at runtime by JS
        Navigation: complete -> landing ; send-link -> send-link
        ========================================================================= -->
-    <section class="ekyc-screen" id="screen-initiation" data-screen="initiation" hidden>
-      <div class="kycinit-page">
-        <div class="kycinit-bg" aria-hidden="true"></div>
-        <header class="kyc-header">
-          <div class="kyc-header__row">
-            <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
-            <div class="kyc-header__agent">
-              <div class="kyc-agent-info">
-                <span class="kyc-agent-name">Rajesh Chaurasia</span>
-                <span class="kyc-agent-id">BA786314</span>
-              </div>
-              <div class="kyc-avatar">
-                <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
-                <span class="kyc-avatar__dot" aria-hidden="true"></span>
+       <section class="ekyc-screen" id="screen-initiation" data-screen="initiation" hidden>
+        <div class="kycinit-page">
+          <div class="kycinit-bg" aria-hidden="true"></div>
+          <header class="kyc-header">
+            <div class="kyc-header__row">
+              <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+              <div class="kyc-header__agent">
+                <div class="kyc-agent-info">
+                  <span class="kyc-agent-name">Rajesh Chaurasia</span>
+                  <span class="kyc-agent-id">BA786314</span>
+                </div>
+                <div class="kyc-avatar">
+                  <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
+                  <span class="kyc-avatar__dot" aria-hidden="true"></span>
+                </div>
               </div>
             </div>
+          </header>
+  
+          <div class="kycinit-body">
+            <form class="kycinit-card" id="form-initiation" novalidate>
+              <div class="kycinit-head">
+                <h1 class="kycinit-title">Initiate KYC</h1>
+                <p class="kycinit-subtitle">
+                  Complete the customer's KYC yourself or send them a secure KYC verification link.
+                </p>
+              </div>
+  
+              <div class="kycinit-customer">
+                <div class="kycinit-customer__name">
+                  <span class="kycinit-customer__label">Customer Name</span>
+                  <span class="kycinit-customer__value">Ashok Kumar</span>
+                </div>
+                <div class="kycinit-customer__meta-group">
+                  <p class="kycinit-customer__meta">Partner ID: <strong>C1738E474E73</strong></p>
+                  <p class="kycinit-customer__meta">Customer Type: <strong>Individual</strong></p>
+                </div>
+              </div>
+  
+              <div class="kycinit-tiles" role="radiogroup" aria-label="KYC method">
+                <div class="kycinit-tile is-selected" id="init-tile-complete" data-option="complete" role="radio"
+                  aria-checked="true" tabindex="0">
+                  <span class="kycinit-tile__icon"><i class="ph ph-user-plus ph-md"></i></span>
+                  <div>
+                    <p class="kycinit-tile__title">Complete KYC for Customer</p>
+                    <p class="kycinit-tile__desc">
+                      Verify the customer directly by entering their details and documents.
+                    </p>
+                  </div>
+                </div>
+  
+                <div class="kycinit-tile" id="init-tile-send-link" data-option="send-link" role="radio"
+                  aria-checked="false" tabindex="0">
+                  <span class="kycinit-tile__icon"><i class="ph ph-paper-plane-tilt ph-md"></i></span>
+                  <div>
+                    <p class="kycinit-tile__title">Send KYC link to Customer</p>
+                    <p class="kycinit-tile__desc">
+                      Share a secure link for the customer to complete KYC on their own device.
+                    </p>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="toast toast-neutral kycinit-toast" role="note" id="init-requirements">
+                <span class="toast-icon"><i class="ph ph-info ph-md"></i></span>
+                <div class="toast-body">
+                  <div class="toast-content">
+                    <p class="toast-title">Before proceeding with KYC, you will need:</p>
+                    <ol class="kycinit-list">
+                      <li>Identity Proof (POI): Keep a valid government ID (number or soft copy) ready, such as Aadhaar,
+                        PAN, Passport, Voter ID, or Driving Licence.</li>
+                      <li>Address Proof (POA): If PAN is used as POI, an additional address proof document will be
+                        required.</li>
+                      <li>Organisation KYC: Keep the GST number, PAN Card, and business registration details ready for
+                        verification.</li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+  
+              <button type="button" class="btn btn-primary kycinit-submit" id="init-submit" name="init-submit">
+                <span id="init-submit-label">Start KYC Verification</span>
+                <i data-lucide="arrow-right"></i>
+              </button>
+            </form>
           </div>
-          <span class="badge badge-sm badge-light badge-red">
-            <i data-lucide="alert-circle" style="width: 16px; height: 16px"></i>
-            Link expires in 12hr 32mins
-          </span>
-        </header>
-
-        <div class="kycinit-body">
-          <form class="kycinit-card" id="form-initiation" novalidate>
-            <div class="kycinit-head">
-              <h1 class="kycinit-title">Initiate KYC</h1>
-              <p class="kycinit-subtitle">
-                Complete the customer's KYC yourself or send them a secure KYC verification link.
-              </p>
-            </div>
-
-            <div class="kycinit-customer">
-              <div class="kycinit-customer__name">
-                <span class="kycinit-customer__label">Customer Name</span>
-                <span class="kycinit-customer__value">Ashok Kumar</span>
-              </div>
-              <div class="kycinit-customer__meta-group">
-                <p class="kycinit-customer__meta">Partner ID: <strong>C1738E474E73</strong></p>
-                <p class="kycinit-customer__meta">Customer Type: <strong>Individual</strong></p>
-              </div>
-            </div>
-
-            <div class="kycinit-tiles" role="radiogroup" aria-label="KYC method">
-              <div class="kycinit-tile is-selected" id="init-tile-complete" data-option="complete" role="radio"
-                aria-checked="true" tabindex="0">
-                <span class="kycinit-tile__icon"><i data-lucide="user-plus"></i></span>
-                <div>
-                  <p class="kycinit-tile__title">Complete KYC for Customer</p>
-                  <p class="kycinit-tile__desc">
-                    Verify the customer directly by entering their details and documents.
-                  </p>
-                </div>
-              </div>
-
-              <div class="kycinit-tile" id="init-tile-send-link" data-option="send-link" role="radio"
-                aria-checked="false" tabindex="0">
-                <span class="kycinit-tile__icon"><i data-lucide="send"></i></span>
-                <div>
-                  <p class="kycinit-tile__title">Send KYC link to Customer</p>
-                  <p class="kycinit-tile__desc">
-                    Share a secure link for the customer to complete KYC on their own device.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="toast toast-neutral kycinit-toast" role="note" id="init-requirements">
-              <span class="toast-icon"><i data-lucide="info"></i></span>
-              <div class="toast-body">
-                <div class="toast-content">
-                  <p class="toast-title">Before proceeding with KYC, you will need:</p>
-                  <ol class="kycinit-list">
-                    <li>Identity Proof (POI): Keep a valid government ID (number or soft copy) ready, such as Aadhaar,
-                      PAN, Passport, Voter ID, or Driving Licence.</li>
-                    <li>Address Proof (POA): If PAN is used as POI, an additional address proof document will be
-                      required.</li>
-                    <li>Organisation KYC: Keep the GST number, PAN Card, and business registration details ready for
-                      verification.</li>
-                  </ol>
-                </div>
-              </div>
-            </div>
-
-            <button type="button" class="btn btn-primary kycinit-submit" id="init-submit" name="init-submit">
-              <span id="init-submit-label">Start KYC Verification</span>
-              <i data-lucide="arrow-right"></i>
-            </button>
-          </form>
         </div>
-      </div>
-    </section>
+      </section>
 
     <!-- =========================================================================
        SCREEN: send-link
@@ -329,7 +329,7 @@
             </a>
 
             <div class="toast toast-success sendlink-success" id="sl-success" role="status">
-              <span class="toast-icon"><i data-lucide="check-circle"></i></span>
+              <span class="toast-icon"><i class="ph ph-check-circle ph-md"></i></span>
               <div class="toast-body">
                 <div class="toast-content">
                   <p class="toast-title">Link Sent Successfully!</p>
@@ -459,10 +459,6 @@
               </div>
             </div>
           </div>
-          <span class="badge badge-sm badge-light badge-red">
-            <i data-lucide="alert-circle" style="width: 16px; height: 16px"></i>
-            Link expires in 12hr 32mins
-          </span>
         </header>
 
         <div class="sendlink-body">
@@ -477,7 +473,7 @@
             </a>
 
             <div class="toast toast-success sendlink-success is-visible" id="sls-success" role="status">
-              <span class="toast-icon"><i data-lucide="check-circle"></i></span>
+              <span class="toast-icon"><i class="ph ph-check-circle ph-md"></i></span>
               <div class="toast-body">
                 <div class="toast-content">
                   <p class="toast-title">Link Sent Successfully!</p>
@@ -519,6 +515,53 @@
                 </div>
               </div>
             </section>
+
+            <section class="sendlink-section">
+              <p class="sendlink-section__bar">Additional Settings</p>
+              <div class="sendlink-fields">
+                <div class="form-field">
+                  <label class="form-label" for="sls-language">Language</label>
+                  <div class="form-input-wrapper sendlink-select-wrap">
+                    <select class="sendlink-select" id="sls-language" name="language-sent" disabled>
+                      <option selected>English</option>
+                      <option>Hindi</option>
+                      <option>Marathi</option>
+                      <option>Tamil</option>
+                      <option>Telugu</option>
+                    </select>
+                    <i data-lucide="chevron-down" class="sendlink-select-caret"></i>
+                  </div>
+                </div>
+
+                <div class="form-field">
+                  <label class="form-label" for="sls-expiry">Link expires in</label>
+                  <div class="form-input-wrapper sendlink-select-wrap">
+                    <select class="sendlink-select" id="sls-expiry" name="link-expiry-sent" disabled>
+                      <option selected>48 hrs</option>
+                      <option>24 hrs</option>
+                      <option>72 hrs</option>
+                      <option>7 days</option>
+                    </select>
+                    <i data-lucide="chevron-down" class="sendlink-select-caret"></i>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <div class="sendlink-fields">
+              <div class="form-field">
+                <label class="form-label" for="sls-captcha">Enter Captcha</label>
+                <div class="form-input-wrapper">
+                  <input class="form-input" id="sls-captcha" name="captcha-sent" type="text" readonly
+                    placeholder="••••••" />
+                </div>
+              </div>
+              <div class="sendlink-captcha">
+                <div class="sendlink-captcha__img">
+                  <img src="assets/img/captcha-sample.png" alt="Captcha" />
+                </div>
+              </div>
+            </div>
 
             <button type="button" class="btn btn-secondary sendlink-submit" id="sls-resend" name="sls-resend"
               data-action="goto:send-link">

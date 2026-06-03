@@ -622,11 +622,7 @@
         gap: 0px;
     }
 
-    .toast {
-        padding: 4px 8px;
-    }
-
-    .toast-title {
+    .pan-page .toast-title {
         color: #2E2B2B;
         font-family: 'Rubik', sans-serif;
         font-size: 14px;

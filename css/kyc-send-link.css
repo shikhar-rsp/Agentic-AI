@@ -60,18 +60,19 @@
     align-items: center;
     gap: 4px;
     text-align: center;
+    margin-bottom: 16px;
   }
   .sendlink-title {
     margin: 0;
     font-family: 'Familjen Grotesk', 'Rubik', sans-serif;
     font-weight: 600;
-    font-size: 28px;
-    line-height: 32px;
+    font-size: 30px;
+    line-height: 34px;
     color: var(--color-blue-700);
   }
   .sendlink-subtitle {
     margin: 0;
-    font: 400 14px/20px 'Rubik', sans-serif;
+    font: 400 16px/24px 'Rubik', sans-serif;
     color: var(--color-neutral-600);
   }
 
@@ -104,11 +105,11 @@
     text-align: center;
     width: 100%;
   }
-  .sendlink-customer__label { font: 400 12px/16px 'Rubik', sans-serif; color: var(--color-neutral-600); }
-  .sendlink-customer__value { font: 600 16px/24px 'Rubik', sans-serif; color: var(--color-neutral-800); }
+  .sendlink-customer__label { font: 400 14px/20px 'Rubik', sans-serif; color: var(--color-neutral-600); margin-bottom: 4px; }
+  .sendlink-customer__value { font: 500 20px/24px 'Rubik', sans-serif; color: var(--color-neutral-800); }
   .sendlink-customer__meta-group { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-  .sendlink-customer__meta { margin: 0; font: 400 12px/16px 'Rubik', sans-serif; color: var(--color-neutral-600); }
-  .sendlink-customer__meta strong { font-weight: 400; color: var(--color-neutral-800); }
+  .sendlink-customer__meta { margin: 0; font: 400 14px/20px 'Rubik', sans-serif; color: var(--color-neutral-600); }
+  .sendlink-customer__meta strong { font-weight: 500; color: var(--color-neutral-800); }
 
   /* Section header bar (soft blue gradient) */
   .sendlink-section {
@@ -142,7 +143,7 @@
     appearance: none;
     -webkit-appearance: none;
     width: 100%;
-    padding: 8px 36px 8px 12px;
+    padding: 7px 36px 7px 11px;
     border-radius: 8px;
     border: 1px solid var(--color-neutral-300);
     background: var(--color-neutral-0);
@@ -172,14 +173,13 @@
     width: 100%;
   }
   .sendlink-captcha__img {
-    flex: 1 0 0;
     min-width: 0;
     aspect-ratio: 298 / 108;
     border: 1px solid var(--color-neutral-200);
     border-radius: 4px;
     overflow: hidden;
   }
-  .sendlink-captcha__img img { width: 100%; height: 100%; object-fit: contain; }
+  .sendlink-captcha__img img { width: 100%; height: 100%; object-fit: cover; }
   .sendlink-captcha__refresh {
     align-self: flex-start;
     display: inline-flex;
@@ -196,14 +196,14 @@
   .sendlink-captcha__refresh [data-lucide] { width: 16px; height: 16px; }
 
   /* Success toast (shown after the link is sent) */
-  .sendlink-success { display: none; align-items: flex-start; width: 100%; }
+  .sendlink-success { display: none; align-items: flex-start; width: 100%; padding: 16px 16px 16px 19px; }
   .sendlink-success.is-visible { display: flex; }
   .sendlink-success .toast-content {
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
   }
-  .sendlink-success .toast-title { font-weight: 500; font-size: 16px; line-height: 24px; }
+  .sendlink-success .toast-title { font-weight: 500; font-size: 16px; line-height: 24px; margin: 0; }
   .sendlink-success .toast-description {
     font-size: 14px;
     line-height: 20px;
@@ -215,7 +215,7 @@
   }
 
   /* Submit (disabled until required fields are filled) */
-  .sendlink-submit { width: 100%; gap: 8px; }
+  .sendlink-submit { width: 100%; gap: 8px;margin-top: 8px; }
   .sendlink-submit .lucide,
   .sendlink-submit [data-lucide] { width: 20px; height: 20px; }
   .sendlink-submit:disabled {
@@ -238,7 +238,7 @@
       background: #60a5fa url('../assets/img/kycinit-bg-web.png') top center / cover no-repeat;
     }
     .sendlink-body { display: flex; justify-content: center; padding: 56px 16px 48px; }
-    .sendlink-card { width: 100%; max-width: 800px; padding: 32px; }
+    .sendlink-card { width: 100%; max-width: 800px; padding: 24px 32px; }
   }
 }
 
@@ -260,8 +260,8 @@
 
     /* Captcha image sits in the right grid cell aligned with the input row.
        Push it down by the label height so it lines up with the field input. */
-    .sendlink-captcha { margin-top: 28px; align-items: flex-start; }
-    .sendlink-captcha__img { aspect-ratio: auto; height: 48px; }
+    .sendlink-captcha { margin-top: 0; height: 100%; align-items: flex-start; }
+    .sendlink-captcha__img { aspect-ratio: auto; height: 68px; width: 188px; }
   }
 }
 
@@ -282,8 +282,8 @@
     }
     .sendlink-customer__meta-group {
       flex: 1 0 0;
-      align-items: flex-start;
-      border-left: 1px solid var(--color-blue-200);
+      align-items: center;
+      border-left: 1px solid var(--color-neutral-300);
       padding-left: 32px;
     }
   }
@@ -295,5 +295,5 @@
 
 /* Give the captcha image a natural height on web (not squished). */
 @media (min-width: 768px) {
-  .sendlink-captcha__img { aspect-ratio: auto; height: 60px; }
+  .sendlink-captcha__img { aspect-ratio: auto; height: 68px; width: 188px; }
 }
