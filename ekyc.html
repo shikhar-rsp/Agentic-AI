@@ -117,10 +117,10 @@
   <link rel="stylesheet" href="css/kyc-send-link.css" />
   <link rel="stylesheet" href="css/kyc-landing.css" />
   <link rel="stylesheet" href="css/kyc-method.css" />
-  <link rel="stylesheet" href="css/kyc-aadhaar.css" />
   <link rel="stylesheet" href="css/face-scan.css" />
   <link rel="stylesheet" href="css/ios-keyboard.css" />
   <link rel="stylesheet" href="css/kyc-pan.css" />
+  <link rel="stylesheet" href="css/kyc-aadhaar.css" />
   <link rel="stylesheet" href="css/kyc-success.css" />
 
   <style>
@@ -821,11 +821,13 @@
               </label>
             </div>
     
-            <button type="button" class="btn btn-primary aadhaar-submit"
-                    id="aadhaar-submit" name="aadhaar-submit"
-                    data-action="submit:aadhaar" disabled>
-              Send OTP
-            </button>
+            <div class="submit-bar-mobile">
+              <button type="button" class="btn btn-primary aadhaar-submit"
+                      id="aadhaar-submit" name="aadhaar-submit"
+                      data-action="submit:aadhaar" disabled>
+                Send OTP
+              </button>
+            </div>
           </form>
         </div>
       </div>
@@ -930,11 +932,13 @@
     
             </div>
     
-            <button type="button" class="btn btn-primary aadhaar-submit"
-                    id="otp-verify" name="otp-verify"
-                    data-action="submit:aadhaar-otp" disabled>
-              Verify OTP
-            </button>
+            <div class="submit-bar-mobile">
+              <button type="button" class="btn btn-primary aadhaar-submit"
+                      id="otp-verify" name="otp-verify"
+                      data-action="submit:aadhaar-otp" disabled>
+                Verify OTP
+              </button>
+            </div>
           </form>
         </div>
     
@@ -1136,12 +1140,15 @@
                 <span class="aadhaar-check__label">I/We consent to BGIL updating/downloading my/our CKYC records with CERSAI/CKYCR using the CKYC Number (KIN) provided by me/us or shared data. I/We also consent to receiving CKYC-related communications from CERSAI via SMS/email on my/our registered contact details.</span>
               </label>
             </div>
+
+            <div class="submit-bar-mobile">
+              <button type="button" class="btn btn-primary aadhaar-submit"
+                      id="review-submit" name="review-submit"
+                      data-action="submit:aadhaar-review" disabled>
+                Confirm &amp; Submit
+              </button>
+            </div>
     
-            <button type="button" class="btn btn-primary aadhaar-submit"
-                    id="review-submit" name="review-submit"
-                    data-action="submit:aadhaar-review" disabled>
-              Confirm &amp; Submit
-            </button>
           </form>
         </div>
       </div>
@@ -1157,7 +1164,7 @@
         ========================================================================= -->
     <section class="ekyc-screen" id="screen-aadhaar-done" data-screen="aadhaar-done" hidden>
       <div class="aadhaar-page">
-        <div class="kyc-bg" aria-hidden="true"></div>
+        <div class="kycinit-bg" aria-hidden="true"></div>
         <header class="kyc-header">
           <div class="kyc-header__row">
             <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
@@ -1229,11 +1236,13 @@
               </div>
             </div>
     
-            <button type="button" class="btn btn-primary adone-btn"
-                    id="adone-back" name="adone-back"
-                    data-action="goto:initiation">
-              Back to Module
-            </button>
+            <div class="submit-bar-mobile">
+              <button type="button" class="btn btn-primary adone-btn"
+                      id="adone-back" name="adone-back"
+                      data-action="goto:initiation">
+                Back to Module
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -2308,6 +2317,33 @@
         }
         if (action === 'face-flip') {
           console.log('[ekyc] flip camera');
+          return;
+        }
+        if (action === 'copy-kyc-id') {
+          e.preventDefault();
+          var idText = 'BGIL-KYC-MNPTT1N6';
+          if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(idText);
+          } else {
+            var ta = document.createElement('textarea');
+            ta.value = idText;
+            ta.style.position = 'fixed'; ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.focus(); ta.select();
+            try { document.execCommand('copy'); } catch (err) {}
+            document.body.removeChild(ta);
+          }
+          var copyIcon = t.querySelector('[data-lucide]');
+          if (copyIcon) {
+            copyIcon.setAttribute('data-lucide', 'check');
+            window.lucide && lucide.createIcons();
+          }
+          setTimeout(function () {
+            if (copyIcon) {
+              copyIcon.setAttribute('data-lucide', 'copy');
+              window.lucide && lucide.createIcons();
+            }
+          }, 1500);
           return;
         }
         if (action === 'refresh-captcha') {

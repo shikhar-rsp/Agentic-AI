@@ -20,7 +20,7 @@
   .kycinit-bg {
     position: absolute;
     inset: 0 0 auto 0;
-    height: 240px;
+    height: 280px;
     background: #60a5fa url('../assets/img/kycinit-bg.png') top center / cover no-repeat;
     overflow: hidden;
     z-index: 0;

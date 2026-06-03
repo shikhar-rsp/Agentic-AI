@@ -4,7 +4,9 @@
    Slug: aadhaar-done  |  ID prefix: adone-*
    ========================================================================= */
 @layer app {
-  .adone-body { align-items: stretch; }
+  .adone-body {
+    align-items: stretch;
+  }
 
   .adone-content {
     display: flex;
@@ -14,13 +16,15 @@
     gap: 32px;
     width: 100%;
   }
-  .adone-content-wrap{
+
+  .adone-content-wrap {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     gap: 8px;
   }
+
   /* ---- Illustration ---- */
   .adone-illustration {
     width: auto;
@@ -33,6 +37,7 @@
     font: 600 32px/36px 'Rubik', sans-serif;
     color: var(--color-neutral-900);
   }
+
   .adone-subtitle {
     margin: 0;
     font: 400 16px/24px 'Rubik', sans-serif;
@@ -40,15 +45,17 @@
   }
 
   /* ---- KYC summary card ---- */
-  .adone-card-wrap{
+  .adone-card-wrap {
     width: 100%;
     padding: 12px;
     background: var(--color-lime-50);
     border-radius: 8px;
   }
+
   .adone-card {
     width: 100%;
-    border: 1.5px solid var(--color-lime-600); /* green-300 */
+    border: 1.5px solid var(--color-lime-600);
+    /* green-300 */
     border-radius: 16px;
     background: var(--color-neutral-0);
     overflow: hidden;
@@ -65,10 +72,12 @@
     align-items: center;
     gap: 8px;
   }
+
   .adone-id-label {
     font: 400 13px/20px 'Rubik', sans-serif;
     color: var(--color-neutral-500);
   }
+
   .adone-id-row {
     display: flex;
     align-items: center;
@@ -77,11 +86,13 @@
     background: var(--color-blue-50);
     border-radius: 8px;
   }
+
   .adone-id-value {
     font: 700 20px/28px 'Familjen Grotesk', 'Rubik', sans-serif;
     color: var(--color-blue-700, #1d4ed8);
     letter-spacing: 0.02em;
   }
+
   .adone-copy-btn {
     display: flex;
     align-items: center;
@@ -94,7 +105,11 @@
   }
 
   /* Verification rows */
-  .adone-rows { display: flex; flex-direction: column; }
+  .adone-rows {
+    display: flex;
+    flex-direction: column;
+  }
+
   .adone-row {
     display: flex;
     align-items: center;
@@ -102,25 +117,30 @@
     padding: 12px 0;
     border-top: 1px solid var(--color-neutral-200);
   }
+
   .adone-row:first-child {
     border-top: none;
   }
+
   .adone-row__label {
     flex: 1;
     font: 400 14px/20px 'Rubik', sans-serif;
     color: var(--color-neutral-700);
     text-align: left;
   }
+
   .adone-row__method {
     font: 400 14px/20px 'Rubik', sans-serif;
     color: var(--color-neutral-600);
   }
+
   .adone-row__status {
     display: flex;
     align-items: center;
     gap: 4px;
     font: 400 14px/20px 'Rubik', sans-serif;
-    color: #4D7C0F; /* green-600 */
+    color: #4D7C0F;
+    /* green-600 */
     white-space: nowrap;
     background: var(--color-lime-50);
     padding: 4px 8px;
@@ -128,5 +148,46 @@
   }
 
   /* ---- CTA button ---- */
-  .adone-btn { width: 100%; }
+  .adone-btn {
+    width: 100%;
+  }
+
+  .ekyc-screen .kycinit-bg{
+    height: 280px;
+  }
+}
+
+@media (max-width: 567px) {
+  .adone-content{
+    padding: 16px;
+  }
+  .adone-title{
+    font-size: 24px;
+    line-height: 28px;
+  }
+  .adone-subtitle{
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .adone-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+    gap: 2px 8px;
+  }
+  .adone-row__label {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .adone-row__method {
+    grid-column: 1;
+    grid-row: 2;
+    text-align: left;
+  }
+  .adone-row__status {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    align-self: center;
+  }
 }

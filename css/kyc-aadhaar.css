@@ -5,6 +5,7 @@
    ========================================================================= */
 
 @layer app {
+
   /* ---- Mobile frame ---- */
   .aadhaar-page {
     width: 100%;
@@ -27,7 +28,11 @@
     overflow: hidden;
     z-index: 0;
   }
-  .aadhaar-page > .kyc-header { position: relative; z-index: 2; }
+
+  .aadhaar-page>.kyc-header {
+    position: relative;
+    z-index: 2;
+  }
 
   .aadhaar-body {
     position: relative;
@@ -40,7 +45,7 @@
     background: var(--color-neutral-0);
     border-radius: 16px;
     box-shadow: 0 1px 4px rgba(10, 13, 18, 0.1), 0 1px 2px rgba(10, 13, 18, 0.06);
-    padding: 24px 16px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -55,7 +60,12 @@
     text-align: center;
     margin-bottom: 12px;
   }
-  .aadhaar-logo { height: 48px; width: auto; }
+
+  .aadhaar-logo {
+    height: 48px;
+    width: auto;
+  }
+
   .aadhaar-title {
     margin: 0;
     font-family: 'Familjen Grotesk', 'Rubik', sans-serif;
@@ -64,6 +74,7 @@
     line-height: 32px;
     color: var(--color-neutral-800);
   }
+
   .aadhaar-subtitle {
     margin: 0;
     font: 400 14px/20px 'Rubik', sans-serif;
@@ -84,8 +95,12 @@
     font: 400 14px/20px 'Rubik', sans-serif;
     color: var(--color-neutral-800);
   }
+
   .aadhaar-back .lucide,
-  .aadhaar-back [data-lucide] { width: 20px; height: 20px; }
+  .aadhaar-back [data-lucide] {
+    width: 20px;
+    height: 20px;
+  }
 
   /* ---- Details box (bordered card) ---- */
   .aadhaar-details {
@@ -96,12 +111,19 @@
     flex-direction: column;
     gap: 16px;
   }
-  .aadhaar-details__head { display: flex; flex-direction: column; gap: 4px; }
+
+  .aadhaar-details__head {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
   .aadhaar-details__title {
     margin: 0;
     font: 600 16px/24px 'Rubik', sans-serif;
     color: var(--color-neutral-800);
   }
+
   .aadhaar-details__hint {
     margin: 0;
     font: 400 14px/20px 'Rubik', sans-serif;
@@ -109,7 +131,9 @@
   }
 
   /* ---- Required asterisk ---- */
-  .aadhaar-req { color: #b91c1c; }
+  .aadhaar-req {
+    color: #b91c1c;
+  }
 
   /* ---- Field wrapper ---- */
   .aadhaar-field {
@@ -117,6 +141,7 @@
     flex-direction: column;
     gap: 8px;
   }
+
   .aadhaar-field__label {
     font: 400 14px/20px 'Rubik', sans-serif;
     color: var(--color-neutral-700);
@@ -129,11 +154,18 @@
     flex-direction: row;
     gap: 12px;
   }
-  .aadhaar-radio { flex: 1 0 0; min-width: 0; }
+
+  .aadhaar-radio {
+    flex: 1 0 0;
+    min-width: 0;
+  }
 
   /* The radio label is just "Aadhaar" on mobile and "Aadhaar Number" on web,
      so the "Number" extension is hidden by default and shown on >=768px. */
-  .aadhaar-radio__label-ext { display: none; }
+  .aadhaar-radio__label-ext {
+    display: none;
+  }
+
   .aadhaar-radio {
     display: flex;
     align-items: center;
@@ -145,33 +177,44 @@
     background: var(--color-neutral-0);
     transition: border-color 0.15s, background 0.15s;
   }
+
   .aadhaar-radio.is-selected {
     border-color: var(--color-blue-600);
     background: var(--color-blue-50);
   }
+
   .aadhaar-radio input[type='radio'] {
     position: absolute;
     opacity: 0;
     pointer-events: none;
   }
+
   .aadhaar-radio__dot {
     width: 20px;
     height: 20px;
-    border: 2px solid var(--color-neutral-400);
+    border: 1px solid var(--color-neutral-400);
     border-radius: 50%;
     position: relative;
     flex-shrink: 0;
   }
+
   .aadhaar-radio.is-selected .aadhaar-radio__dot {
     border-color: var(--color-blue-600);
   }
+
   .aadhaar-radio.is-selected .aadhaar-radio__dot::after {
     content: '';
     position: absolute;
     inset: 2px;
     background: var(--color-blue-600);
     border-radius: 50%;
+    width: 8px;
+    height: 8px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
+
   .aadhaar-radio__label {
     font: 400 14px/20px 'Rubik', sans-serif;
     color: var(--color-neutral-800);
@@ -184,34 +227,46 @@
     font: 400 14px/20px 'Rubik', sans-serif;
     color: var(--color-emerald-600);
   }
-  .form-field.is-valid + .aadhaar-success,
-  .form-field.is-valid > .aadhaar-success { display: block; }
+
+  .form-field.is-valid+.aadhaar-success,
+  .form-field.is-valid>.aadhaar-success {
+    display: block;
+  }
 
   /* ---- Conditional sections (security question + consent) ---- */
-  .aadhaar-extra { display: none; }
-  .aadhaar-card.is-extended .aadhaar-extra { display: flex; }
+  .aadhaar-extra {
+    display: none;
+  }
+
+  .aadhaar-card.is-extended .aadhaar-extra {
+    display: flex;
+  }
 
   /* ---- Consent section ---- */
   .aadhaar-consent {
     flex-direction: column;
     gap: 12px;
   }
+
   .aadhaar-consent__title {
     margin: 0;
     font: 600 16px/24px 'Rubik', sans-serif;
     color: var(--color-neutral-800);
   }
+
   .aadhaar-check {
     display: flex;
     align-items: flex-start;
     gap: 8px;
     cursor: pointer;
   }
+
   .aadhaar-check input[type='checkbox'] {
     position: absolute;
     opacity: 0;
     pointer-events: none;
   }
+
   .aadhaar-check__box {
     flex-shrink: 0;
     width: 18px;
@@ -222,27 +277,35 @@
     background: var(--color-neutral-0);
     position: relative;
   }
-  .aadhaar-check input[type='checkbox']:checked + .aadhaar-check__box {
+
+  .aadhaar-check input[type='checkbox']:checked+.aadhaar-check__box {
     background: var(--color-blue-600);
     border-color: var(--color-blue-600);
   }
-  .aadhaar-check input[type='checkbox']:checked + .aadhaar-check__box::after {
+
+  .aadhaar-check input[type='checkbox']:checked+.aadhaar-check__box::after {
     content: '';
     position: absolute;
     inset: 0;
     background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>") center / 12px no-repeat;
   }
+
   .aadhaar-check__label {
     font: 400 14px/20px 'Rubik', sans-serif;
     color: var(--color-neutral-800);
   }
+
   .aadhaar-readmore {
     color: var(--color-blue-600);
     text-decoration: underline;
   }
 
   /* ---- Submit ---- */
-  .aadhaar-submit { width: 100%; gap: 8px; }
+  .aadhaar-submit {
+    width: 100%;
+    gap: 8px;
+  }
+
   .aadhaar-submit:disabled {
     background: var(--color-neutral-100);
     color: var(--color-neutral-300);
@@ -256,27 +319,53 @@
    ========================================================================= */
 
 /* display: flex on .aadhaar-body overrides the hidden attribute — force it off */
-.aadhaar-body[hidden] { display: none !important; }
+.aadhaar-body[hidden] {
+  display: none !important;
+}
 
 /* Two-class specificity beats DS single-class .form-field */
-.aadhaar-card .aadhaar-extra { display: none; }
-.aadhaar-card.is-extended .aadhaar-extra { display: flex; }
+.aadhaar-card .aadhaar-extra {
+  display: none;
+}
+
+.aadhaar-card.is-extended .aadhaar-extra {
+  display: flex;
+}
 
 /* Consent shown only after security answer is valid */
-.aadhaar-card .aadhaar-consent { display: none; }
-.aadhaar-card.is-secured .aadhaar-consent { display: flex; }
+.aadhaar-card .aadhaar-consent {
+  display: none;
+}
+
+.aadhaar-card.is-secured .aadhaar-consent {
+  display: flex;
+}
 
 /* Review card overrides the 800px desktop cap on .aadhaar-card */
-.review-card { max-width: 1000px;         padding: 32px !important;}
+.review-card {
+  max-width: 1000px;
+  padding: 32px !important;
+}
 
 /* Progress bar always fills card width */
-.varifying-details-card { width: 100%; }
-.varifying-details__progress-wrap { width: 100%; min-width: 0; }
-.varifying-details__bar-track { width: 100%; }
+.varifying-details-card {
+  width: 100%;
+}
+
+.varifying-details__progress-wrap {
+  width: 100%;
+  min-width: 0;
+}
+
+.varifying-details__bar-track {
+  width: 100%;
+}
 
 /* Make form-field fill its container (DS clamps it at --form-field-width).
    Unlayered to beat DS form-field which is also unlayered. */
-.aadhaar-card .form-field { width: 100%; }
+.aadhaar-card .form-field {
+  width: 100%;
+}
 
 /* Valid state — green check circle on the right of the input.
    Unlayered to beat the DS form-field's ::after pattern (also unlayered). */
@@ -290,14 +379,15 @@
   height: 20px;
   border-radius: 50%;
   background:
-    var(--color-emerald-600)
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>")
-    center / 12px no-repeat;
+    var(--color-emerald-600) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>") center / 12px no-repeat;
   pointer-events: none;
   z-index: 2;
 }
+
 /* Make room for the icon so it doesn't overlap the text */
-.aadhaar-card .form-field.is-valid .form-input { padding-right: 40px; }
+.aadhaar-card .form-field.is-valid .form-input {
+  padding-right: 40px;
+}
 
 /* =========================================================================
    Web / desktop layout (>= 768px) — Figma node 1240:20404.
@@ -305,25 +395,37 @@
    ========================================================================= */
 @layer app {
   @media (min-width: 768px) {
-    .aadhaar-page { max-width: none; gap: 0; }
+    .aadhaar-page {
+      max-width: none;
+      gap: 0;
+    }
 
-    .aadhaar-bg { display: block; }
+    .aadhaar-bg {
+      display: block;
+    }
 
     .aadhaar-body {
       display: flex;
       justify-content: center;
       padding: 56px 16px 48px;
     }
+
     .aadhaar-card {
       width: 100%;
       max-width: 800px;
       padding: 32px;
       gap: 20px;
     }
-    .aadhaar-title { font-size: 28px; line-height: 36px; }
+
+    .aadhaar-title {
+      font-size: 28px;
+      line-height: 36px;
+    }
 
     /* On web, show the full "Aadhaar Number" label */
-    .aadhaar-radio__label-ext { display: inline; }
+    .aadhaar-radio__label-ext {
+      display: inline;
+    }
   }
 }
 
@@ -339,13 +441,20 @@
   backdrop-filter: none;
   padding-inline: 16px;
 }
+
 .aadhaar-leave-modal .modal-confirmation {
   width: 100%;
   max-width: 370px;
   height: auto;
   border-radius: 16px;
 }
-.aadhaar-leave-modal .modal-header { height: auto; padding: 20px 20px 0; gap: 4px; }
+
+.aadhaar-leave-modal .modal-header {
+  height: auto;
+  padding: 20px 20px 0;
+  gap: 4px;
+}
+
 .aadhaar-leave-modal .modal-body {
   height: auto;
   padding: 8px 20px 20px;
@@ -356,13 +465,19 @@
   color: var(--color-neutral-600);
   border-bottom: 1px solid var(--color-neutral-200);
 }
+
 .aadhaar-leave-modal .modal-footer {
   height: auto;
   padding: 16px 20px;
   gap: 12px;
   justify-content: center;
 }
-.aadhaar-leave-modal .modal-footer .btn { flex: 1 0 0; width: auto; }
+
+.aadhaar-leave-modal .modal-footer .btn {
+  flex: 1 0 0;
+  width: auto;
+}
+
 .aadhaar-leave-modal .modal-title {
   font-family: 'Rubik', sans-serif;
   font-weight: 500;
@@ -379,8 +494,12 @@
   color: #dc2626;
   margin-bottom: 12px;
 }
+
 .modal-header-icon--error .lucide,
-.modal-header-icon--error [data-lucide] { width: 24px; height: 24px; }
+.modal-header-icon--error [data-lucide] {
+  width: 24px;
+  height: 24px;
+}
 
 /* Too-many-attempts modal */
 .otp-maxattempts-modal.modal-backdrop {
@@ -388,33 +507,69 @@
   backdrop-filter: none;
   padding-inline: 16px;
 }
+
 .otp-maxattempts-modal .modal-confirmation {
-  width: 100%; max-width: 370px; height: auto; border-radius: 16px;
+  width: 100%;
+  max-width: 370px;
+  height: auto;
+  border-radius: 16px;
 }
-.modal-confirmation.size-md{
+
+.modal-confirmation.size-md {
   max-width: 520px;
 }
-.otp-maxattempts-modal .modal-header { height: auto; padding: 20px 20px 0; gap: 4px; }
-.otp-maxattempts-modal .modal-body {
-  height: auto; padding: 8px 20px 20px; text-align: center;
-  font-family: 'Rubik', sans-serif; font-size: 14px; line-height: 20px;
-  color: var(--color-neutral-600); border-bottom: 1px solid var(--color-neutral-200);
+
+.otp-maxattempts-modal .modal-header {
+  height: auto;
+  padding: 20px 20px 0;
+  gap: 4px;
 }
-.otp-maxattempts-modal .modal-footer { height: auto; padding: 16px 20px; justify-content: center; }
-.otp-maxattempts-modal .modal-footer .btn { width: 100%; }
+
+.otp-maxattempts-modal .modal-body {
+  height: auto;
+  padding: 8px 20px 20px;
+  text-align: center;
+  font-family: 'Rubik', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-neutral-600);
+  border-bottom: 1px solid var(--color-neutral-200);
+}
+
+.otp-maxattempts-modal .modal-footer {
+  height: auto;
+  padding: 16px 20px;
+  justify-content: center;
+}
+
+.otp-maxattempts-modal .modal-footer .btn {
+  width: 100%;
+}
+
 .otp-maxattempts-modal .modal-title {
-  font-family: 'Rubik', sans-serif; font-weight: 500; font-size: 20px;
-  line-height: 24px; color: var(--color-neutral-800); height: auto; text-align: center;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  color: var(--color-neutral-800);
+  height: auto;
+  text-align: center;
 }
 
 /* Amber/warning featured-icon variant */
 .modal-header-icon--warning {
-  background: #fef3c7; /* amber-100 */
-  color: #d97706; /* amber-600 */
+  background: #fef3c7;
+  /* amber-100 */
+  color: #d97706;
+  /* amber-600 */
   margin-bottom: 12px;
 }
+
 .modal-header-icon--warning .lucide,
-.modal-header-icon--warning [data-lucide] { width: 24px; height: 24px; }
+.modal-header-icon--warning [data-lucide] {
+  width: 24px;
+  height: 24px;
+}
 
 /* =========================================================================
    OTP Verification (Figma node 1455:26192).
@@ -426,13 +581,15 @@
     gap: 8px;
     width: 100%;
   }
-  .aadhaar-otp-container{
+
+  .aadhaar-otp-container {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 8px;
   }
+
   .aadhaar-otp__box {
     flex: 1 0 0;
     min-width: 0;
@@ -449,11 +606,15 @@
     width: 64px;
     height: 64px;
   }
+
   .aadhaar-otp__box:focus {
     border-color: var(--color-pagination-border-selected);
     box-shadow: 0 0 0 3px rgba(0, 93, 172, 0.1);
   }
-  .aadhaar-otp__box.is-filled { border-color: var(--color-pagination-border-selected); }
+
+  .aadhaar-otp__box.is-filled {
+    border-color: var(--color-pagination-border-selected);
+  }
 
   /* ---- OTP footer (error message + resend link) ---- */
   .aadhaar-otp__footer {
@@ -462,11 +623,13 @@
     gap: 10px;
     margin-top: 4px;
   }
+
   .aadhaar-otp__error {
     margin: 0;
-    font: 400 13px/20px 'Rubik', sans-serif;
+    font: 400 14px/20px 'Rubik', sans-serif;
     color: var(--color-red-600, #dc2626);
   }
+
   .aadhaar-otp.is-error .aadhaar-otp__box {
     border-color: var(--color-red-600, #dc2626);
   }
@@ -478,7 +641,10 @@
     color: var(--color-blue-600);
     text-decoration: none;
   }
-  .aadhaar-resend:hover { text-decoration: underline; }
+
+  .aadhaar-resend:hover {
+    text-decoration: underline;
+  }
 
   /* ---- Verifying details section ---- */
   .varifying-details-body {
@@ -486,18 +652,22 @@
     align-items: center !important;
     padding-top: 130px;
   }
+
   .varifying-details-card {
     max-width: 696px;
     width: 100%;
     margin-inline: auto;
     gap: 24px;
   }
+
   .varifying-details__header {
     display: flex;
     align-items: center;
     gap: 12px;
     justify-content: center;
+    padding: 24px 0;
   }
+
   .varifying-details__spinner {
     flex-shrink: 0;
     width: 24px;
@@ -506,17 +676,25 @@
     align-items: center;
     justify-content: center;
   }
+
   .varifying-details__spinner svg {
     width: 24px;
     height: 24px;
     animation: otp-spin 0.8s linear infinite;
   }
-  @keyframes otp-spin { to { transform: rotate(360deg); } }
+
+  @keyframes otp-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
   .varifying-details__title {
     margin: 0;
-    font: 600 16px/24px 'Rubik', sans-serif;
+    font: 500 16px/24px 'Rubik', sans-serif;
     color: var(--color-neutral-800);
   }
+
   .varifying-details__progress-wrap {
     display: flex;
     flex-direction: column;
@@ -526,20 +704,24 @@
     max-width: 320px;
     margin: 0 auto;
   }
+
   .varifying-details__progress-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
   }
+
   .varifying-details__label {
     font: 400 13px/20px 'Rubik', sans-serif;
     color: var(--color-neutral-600);
   }
+
   .varifying-details__pct {
     font: 500 13px/20px 'Rubik', sans-serif;
     color: var(--color-neutral-800);
   }
+
   .varifying-details__bar-track {
     width: 100%;
     height: 8px;
@@ -547,6 +729,7 @@
     background: var(--color-neutral-200, #e5e7eb);
     overflow: hidden;
   }
+
   .varifying-details__bar-fill {
     height: 100%;
     width: 0%;
@@ -554,6 +737,7 @@
     background: #22c55e;
     transition: width 0.05s linear;
   }
+
   .varifying-details-body-info {
     max-width: 696px;
     margin: 56px auto 0;
@@ -564,8 +748,15 @@
   }
 
   /* ---- Review & Submit screen ---- */
-  .review-body { align-items: stretch; }
-  .review-card { gap: 20px; max-width: 1000px; }
+  .review-body {
+    align-items: stretch;
+  }
+
+  .review-card {
+    gap: 20px;
+    max-width: 1000px;
+  }
+
   .review-data-box {
     display: flex;
     flex-direction: column;
@@ -574,13 +765,19 @@
     border-radius: 8px;
     overflow: hidden;
   }
+
   .review-title {
     margin: 0;
     padding: 0;
     font: 500 20px/24px 'Rubik', sans-serif;
     color: var(--color-neutral-800);
   }
-  .review-section { display: flex; flex-direction: column; }
+
+  .review-section {
+    display: flex;
+    flex-direction: column;
+  }
+
   .review-section__bar {
     padding: 12px;
     font: 500 16px/24px 'Rubik', sans-serif;
@@ -588,26 +785,31 @@
     background: linear-gradient(90deg, #EFF6FF 0%, #DBEAFE 100%);
     border-radius: 8px;
   }
+
   .review-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px !important;
     padding: 0 12px !important;
   }
+
   .review-field {
     display: flex;
     flex-direction: column;
     gap: 4px;
     padding: 0;
   }
+
   .review-field__label {
     font: 400 14px/20px 'Rubik', sans-serif;
     color: var(--color-neutral-500);
   }
+
   .review-field__value {
     font: 500 14px/20px 'Rubik', sans-serif;
     color: var(--color-neutral-800);
   }
+
   .review-consent-wrap {
     display: flex;
     flex-direction: column;
@@ -616,14 +818,63 @@
     border: 1px solid var(--color-neutral-200);
     border-radius: 8px;
   }
+
   .review-consent__title {
     margin: 0;
     font: 600 16px/24px 'Rubik', sans-serif;
     color: var(--color-neutral-800);
     margin-bottom: 4px;
   }
-  .review-body .aadhaar-details{
+
+  .review-body .aadhaar-details {
     padding: 20px;
     gap: 16px;
+  }
+}
+
+@media (max-width: 567px) {
+  /* prevent button bar from covering last form content */
+  .aadhaar-card { margin-bottom: 96px; }
+}
+
+@media (max-width: 567px) {
+
+  .aadhaar-otp,
+  .aadhaar-field {
+    width: 100%;
+  }
+
+  .aadhaar-otp__box {
+    flex: 1 1 0;
+    min-width: 0;
+    aspect-ratio: unset;
+    padding: 4px;
+  }
+
+  .varifying-details-body {
+    padding-top: 0;
+  }
+
+  .varifying-details-body-info {
+    margin-top: 16px;
+  }
+
+  .review-card {
+    padding: 16px !important;
+  }
+
+  .review-body .aadhaar-details {
+    padding: 16px;
+  }
+
+  .review-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .review-field {
+    flex-direction: row;
+    justify-content: space-between;
   }
 }
