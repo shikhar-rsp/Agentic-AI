@@ -1,0 +1,132 @@
+/* =========================================================================
+   KYC Success / aadhaar-done screen
+   Shared across all KYC flows (aadhaar, PAN, document, face).
+   Slug: aadhaar-done  |  ID prefix: adone-*
+   ========================================================================= */
+@layer app {
+  .adone-body { align-items: stretch; }
+
+  .adone-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 32px;
+    width: 100%;
+  }
+  .adone-content-wrap{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+  }
+  /* ---- Illustration ---- */
+  .adone-illustration {
+    width: auto;
+    height: 124px;
+  }
+
+  /* ---- Heading & subtitle ---- */
+  .adone-title {
+    margin: 0;
+    font: 600 32px/36px 'Rubik', sans-serif;
+    color: var(--color-neutral-900);
+  }
+  .adone-subtitle {
+    margin: 0;
+    font: 400 16px/24px 'Rubik', sans-serif;
+    color: var(--color-text-label);
+  }
+
+  /* ---- KYC summary card ---- */
+  .adone-card-wrap{
+    width: 100%;
+    padding: 12px;
+    background: var(--color-lime-50);
+    border-radius: 8px;
+  }
+  .adone-card {
+    width: 100%;
+    border: 1.5px solid var(--color-lime-600); /* green-300 */
+    border-radius: 16px;
+    background: var(--color-neutral-0);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    gap: 24px;
+  }
+
+  /* KYC ID block */
+  .adone-id-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .adone-id-label {
+    font: 400 13px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-500);
+  }
+  .adone-id-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background: var(--color-blue-50);
+    border-radius: 8px;
+  }
+  .adone-id-value {
+    font: 700 20px/28px 'Familjen Grotesk', 'Rubik', sans-serif;
+    color: var(--color-blue-700, #1d4ed8);
+    letter-spacing: 0.02em;
+  }
+  .adone-copy-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px;
+    color: var(--color-blue-600, #005dac);
+  }
+
+  /* Verification rows */
+  .adone-rows { display: flex; flex-direction: column; }
+  .adone-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 0;
+    border-top: 1px solid var(--color-neutral-200);
+  }
+  .adone-row:first-child {
+    border-top: none;
+  }
+  .adone-row__label {
+    flex: 1;
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-700);
+    text-align: left;
+  }
+  .adone-row__method {
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-600);
+  }
+  .adone-row__status {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: #4D7C0F; /* green-600 */
+    white-space: nowrap;
+    background: var(--color-lime-50);
+    padding: 4px 8px;
+    border-radius: 16px;
+  }
+
+  /* ---- CTA button ---- */
+  .adone-btn { width: 100%; }
+}

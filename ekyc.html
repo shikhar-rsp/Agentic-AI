@@ -121,6 +121,7 @@
   <link rel="stylesheet" href="css/face-scan.css" />
   <link rel="stylesheet" href="css/ios-keyboard.css" />
   <link rel="stylesheet" href="css/kyc-pan.css" />
+  <link rel="stylesheet" href="css/kyc-success.css" />
 
   <style>
     /* ===== Journey-level SPA chrome ===== */
@@ -681,18 +682,18 @@
     </section>
 
     <!-- =========================================================================
-       SCREEN: aadhaar
-       slug: aadhaar
-       Inputs:
-         name="verification-type"   radios (aadhaar | vid)
-         name="aadhaar-number"      id=aadhaar-num
-         name="aadhaar-mobile"      id=aadhaar-mobile
-         name="security-answer"     id=aadhaar-sec
-         name="consent-data-sharing"  id=aadhaar-c1 (checkbox)
-         name="consent-uidai-terms"   id=aadhaar-c2 (checkbox)
-       Back button: id=aadhaar-back opens leave modal
-       Submit: id=aadhaar-submit data-action="submit:aadhaar" -> aadhaar-otp
-       ========================================================================= -->
+    SCREEN: aadhaar
+    slug: aadhaar
+    Inputs:
+      name="verification-type"   radios (aadhaar | vid)
+      name="aadhaar-number"      id=aadhaar-num
+      name="aadhaar-mobile"      id=aadhaar-mobile
+      name="security-answer"     id=aadhaar-sec
+      name="consent-data-sharing"  id=aadhaar-c1 (checkbox)
+      name="consent-uidai-terms"   id=aadhaar-c2 (checkbox)
+    Back button: id=aadhaar-back opens leave modal
+    Submit: id=aadhaar-submit data-action="submit:aadhaar" -> aadhaar-otp
+    ========================================================================= -->
     <section class="ekyc-screen" id="screen-aadhaar" data-screen="aadhaar" hidden>
       <div class="aadhaar-page">
         <div class="aadhaar-bg" aria-hidden="true"></div>
@@ -715,7 +716,7 @@
             Link expires in 12hr 32mins
           </span>
         </header>
-
+    
         <div class="aadhaar-body">
           <form class="aadhaar-card" id="form-aadhaar" novalidate>
             <div class="aadhaar-head">
@@ -725,12 +726,12 @@
                 Please follow the instructions below to complete KYC. This will only take a while.
               </p>
             </div>
-
-            <a class="aadhaar-back" id="aadhaar-back" data-action="open-modal:aadhaar-leave-modal" role="button"
-              tabindex="0">
+    
+            <a class="aadhaar-back" id="aadhaar-back" data-action="open-modal:aadhaar-leave-modal"
+              role="button" tabindex="0">
               <i data-lucide="arrow-left"></i> Back
             </a>
-
+    
             <div class="aadhaar-details">
               <div class="aadhaar-details__head">
                 <h3 class="aadhaar-details__title">Aadhaar Card Details</h3>
@@ -738,7 +739,7 @@
                   We'll send a secure OTP to your Aadhaar-linked mobile number
                 </p>
               </div>
-
+    
               <div class="aadhaar-field">
                 <span class="aadhaar-field__label">
                   Select Verification Type<span class="aadhaar-req">*</span>
@@ -747,8 +748,7 @@
                   <label class="aadhaar-radio is-selected" data-vtype="aadhaar">
                     <input type="radio" id="aadhaar-vtype-aadhaar" name="verification-type" value="aadhaar" checked />
                     <span class="aadhaar-radio__dot" aria-hidden="true"></span>
-                    <span class="aadhaar-radio__label">Aadhaar<span class="aadhaar-radio__label-ext">
-                        Number</span></span>
+                    <span class="aadhaar-radio__label">Aadhaar<span class="aadhaar-radio__label-ext"> Number</span></span>
                   </label>
                   <label class="aadhaar-radio" data-vtype="vid">
                     <input type="radio" id="aadhaar-vtype-vid" name="verification-type" value="vid" />
@@ -757,41 +757,46 @@
                   </label>
                 </div>
               </div>
-
+    
               <div class="form-field aadhaar-field">
                 <label class="form-label" for="aadhaar-num">
                   <span id="aadhaar-num-label">Aadhaar Number</span><span class="aadhaar-req">*</span>
                 </label>
                 <div class="form-input-wrapper">
-                  <input class="form-input" id="aadhaar-num" name="aadhaar-number" type="tel" inputmode="numeric"
-                    maxlength="12" placeholder="Enter 12-digit Aadhaar Number" />
+                  <input class="form-input" id="aadhaar-num" name="aadhaar-number"
+                        type="tel" inputmode="numeric" maxlength="12"
+                        placeholder="Enter 12-digit Aadhaar Number" />
                 </div>
+                <p class="form-error" id="aadhaar-num-error">Invalid Aadhaar Number</p>
               </div>
-
+    
               <div class="form-field aadhaar-field">
                 <label class="form-label" for="aadhaar-mobile">
                   Mobile Number linked to Aadhaar<span class="aadhaar-req">*</span>
                 </label>
                 <div class="form-input-wrapper">
-                  <input class="form-input" id="aadhaar-mobile" name="aadhaar-mobile" type="tel" inputmode="numeric"
-                    maxlength="10" placeholder="Enter 10-digit mobile number" />
+                  <input class="form-input" id="aadhaar-mobile" name="aadhaar-mobile"
+                        type="tel" inputmode="numeric" maxlength="10"
+                        placeholder="Enter 10-digit mobile number" />
                 </div>
+                <p class="form-error">Enter a valid 10-digit mobile number.</p>
                 <p class="aadhaar-success" id="aadhaar-mobile-success">
                   Mobile number linked with Aadhaar has matched
                 </p>
               </div>
-
+    
               <div class="form-field aadhaar-field aadhaar-extra" id="aadhaar-security">
                 <label class="form-label" for="aadhaar-sec">
                   What is 5 + 9? (Security question)<span class="aadhaar-req">*</span>
                 </label>
                 <div class="form-input-wrapper">
-                  <input class="form-input" id="aadhaar-sec" name="security-answer" type="text" inputmode="numeric"
-                    maxlength="3" placeholder="" />
+                  <input class="form-input" id="aadhaar-sec" name="security-answer"
+                        type="text" inputmode="numeric" maxlength="3" placeholder="" />
                 </div>
+                <p class="form-error">Incorrect answer. Please try again.</p>
               </div>
             </div>
-
+    
             <div class="aadhaar-consent aadhaar-extra" id="aadhaar-consent">
               <h3 class="aadhaar-consent__title">Please confirm the following to proceed</h3>
               <label class="aadhaar-check">
@@ -807,22 +812,27 @@
                 <span class="aadhaar-check__box" aria-hidden="true"></span>
                 <span class="aadhaar-check__label">
                   I accept the UIDAI terms and conditions
-                  <a href="#" class="aadhaar-readmore">Read More</a>
+                  <span class="aadhaar-readmore__extra" hidden><br/>
+                    I/We hereby authorize BGIL, its representatives and service providers to carry out Aadhaar-based authentication/e-KYC through UIDAI using the Aadhaar/VID details and/or documents submitted by me/us including masked Aadhaar, Secure QR, e-Aadhaar, XML/Offline e-KYC. For this purpose, I/We consent to the collection, use, storage and processing of my/our identity and address details including name, address, DOB, gender, mobile/email and photograph. I/We understand that BGIL will share my/our Aadhaar number/VID and/or required demographic information with UIDAI solely for authentication/e-KYC, and UIDAI may return authentication/verification response and permitted e-KYC data to BGIL.
+                  </span>
+                  <a href="#" class="aadhaar-readmore" id="aadhaar-readmore-toggle"
+                    aria-expanded="false">Read More</a>
                 </span>
               </label>
             </div>
-
-            <button type="button" class="btn btn-primary aadhaar-submit" id="aadhaar-submit" name="aadhaar-submit"
-              data-action="submit:aadhaar" disabled>
+    
+            <button type="button" class="btn btn-primary aadhaar-submit"
+                    id="aadhaar-submit" name="aadhaar-submit"
+                    data-action="submit:aadhaar" disabled>
               Send OTP
             </button>
           </form>
         </div>
       </div>
-
-      <div class="modal-backdrop aadhaar-leave-modal" id="aadhaar-leave-modal" role="dialog" aria-modal="true"
-        aria-labelledby="aadhaar-leave-title">
-        <div class="modal modal-confirmation">
+    
+      <div class="modal-backdrop aadhaar-leave-modal" id="aadhaar-leave-modal"
+          role="dialog" aria-modal="true" aria-labelledby="aadhaar-leave-title">
+        <div class="modal modal-confirmation size-md">
           <div class="modal-header no-border">
             <div class="modal-header-icon modal-header-icon--warning">
               <i data-lucide="alert-circle"></i>
@@ -833,23 +843,25 @@
             The details you entered may not be saved if you leave this page.
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" id="aadhaar-leave-go-back" name="aadhaar-leave-go-back"
-              data-action="leave-confirm" data-modal-close>Go Back</button>
-            <button type="button" class="btn btn-primary" id="aadhaar-leave-stay" name="aadhaar-leave-stay"
-              data-action="close-modal" data-modal-close>Continue filling KYC</button>
+            <button type="button" class="btn btn-secondary"
+                    id="aadhaar-leave-go-back" name="aadhaar-leave-go-back"
+                    data-action="leave-confirm" data-modal-close>Go Back</button>
+            <button type="button" class="btn btn-primary"
+                    id="aadhaar-leave-stay" name="aadhaar-leave-stay"
+                    data-action="close-modal" data-modal-close>Continue filling KYC</button>
           </div>
         </div>
       </div>
     </section>
-
+    
     <!-- =========================================================================
-       SCREEN: aadhaar-otp
-       slug: aadhaar-otp
-       Inputs: 6 boxes name="otp-digit-1" ... name="otp-digit-6"
-       Back: id=otp-back -> opens otp-leave-modal
-       Resend: id=otp-resend
-       Verify: id=otp-verify data-action="submit:aadhaar-otp" -> face-scan
-       ========================================================================= -->
+        SCREEN: aadhaar-otp
+        slug: aadhaar-otp
+        Inputs: 6 boxes name="otp-digit-1" ... name="otp-digit-6"
+        Back: id=otp-back -> opens otp-leave-modal
+        Resend: id=otp-resend
+        Verify: id=otp-verify data-action="submit:aadhaar-otp" -> face-scan
+        ========================================================================= -->
     <section class="ekyc-screen" id="screen-aadhaar-otp" data-screen="aadhaar-otp" hidden>
       <div class="aadhaar-page">
         <div class="aadhaar-bg" aria-hidden="true"></div>
@@ -872,8 +884,8 @@
             Link expires in 12hr 32mins
           </span>
         </header>
-
-        <div class="aadhaar-body">
+    
+        <div class="aadhaar-body" id="otp-form-body">
           <form class="aadhaar-card" id="form-aadhaar-otp" novalidate>
             <div class="aadhaar-head">
               <img class="aadhaar-logo" src="assets/img/aadhaar-logo.png" alt="Aadhaar" />
@@ -882,11 +894,12 @@
                 Please follow the instructions below to complete KYC. This will only take a while.
               </p>
             </div>
-
-            <a class="aadhaar-back" id="otp-back" data-action="open-modal:otp-leave-modal" role="button" tabindex="0">
+    
+            <a class="aadhaar-back" id="otp-back" data-action="open-modal:otp-leave-modal"
+              role="button" tabindex="0">
               <i data-lucide="arrow-left"></i> Back
             </a>
-
+    
             <div class="aadhaar-details">
               <div class="aadhaar-details__head">
                 <h3 class="aadhaar-details__title">OTP Verification</h3>
@@ -894,39 +907,83 @@
                   We have sent an OTP to your Aadhaar-linked mobile number
                 </p>
               </div>
-
-              <div class="aadhaar-field">
-                <span class="aadhaar-field__label">Enter 6-digit OTP</span>
-                <div class="aadhaar-otp" data-otp>
-                  <input class="aadhaar-otp__box" id="otp-d1" name="otp-digit-1" type="tel" inputmode="numeric"
-                    maxlength="1" aria-label="Digit 1" />
-                  <input class="aadhaar-otp__box" id="otp-d2" name="otp-digit-2" type="tel" inputmode="numeric"
-                    maxlength="1" aria-label="Digit 2" />
-                  <input class="aadhaar-otp__box" id="otp-d3" name="otp-digit-3" type="tel" inputmode="numeric"
-                    maxlength="1" aria-label="Digit 3" />
-                  <input class="aadhaar-otp__box" id="otp-d4" name="otp-digit-4" type="tel" inputmode="numeric"
-                    maxlength="1" aria-label="Digit 4" />
-                  <input class="aadhaar-otp__box" id="otp-d5" name="otp-digit-5" type="tel" inputmode="numeric"
-                    maxlength="1" aria-label="Digit 5" />
-                  <input class="aadhaar-otp__box" id="otp-d6" name="otp-digit-6" type="tel" inputmode="numeric"
-                    maxlength="1" aria-label="Digit 6" />
+    
+              <div class="aadhaar-otp-container">
+                <div class="aadhaar-field">
+                  <span class="aadhaar-field__label">Enter 6-digit OTP</span>
+                  <div class="aadhaar-otp" data-otp>
+                    <input class="aadhaar-otp__box" id="otp-d1" name="otp-digit-1" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 1" />
+                    <input class="aadhaar-otp__box" id="otp-d2" name="otp-digit-2" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 2" />
+                    <input class="aadhaar-otp__box" id="otp-d3" name="otp-digit-3" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 3" />
+                    <input class="aadhaar-otp__box" id="otp-d4" name="otp-digit-4" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 4" />
+                    <input class="aadhaar-otp__box" id="otp-d5" name="otp-digit-5" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 5" />
+                    <input class="aadhaar-otp__box" id="otp-d6" name="otp-digit-6" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 6" />
+                  </div>
+                  <div class="aadhaar-otp__footer">
+                    <p class="aadhaar-otp__error" id="otp-error" hidden>
+                      OTP doesn't match. <span id="otp-attempts-left"></span> attempts left.
+                    </p>
+                    <a href="#" class="aadhaar-resend" id="otp-resend" data-action="resend-otp">Resend OTP</a>
+                  </div>
                 </div>
               </div>
-
-              <a href="#" class="aadhaar-resend" id="otp-resend" data-action="resend-otp">Resend OTP</a>
+    
             </div>
-
-            <button type="button" class="btn btn-primary aadhaar-submit" id="otp-verify" name="otp-verify"
-              data-action="submit:aadhaar-otp" disabled>
+    
+            <button type="button" class="btn btn-primary aadhaar-submit"
+                    id="otp-verify" name="otp-verify"
+                    data-action="submit:aadhaar-otp" disabled>
               Verify OTP
             </button>
           </form>
         </div>
+    
+        <div class="aadhaar-body varifying-details-body" id="otp-verifying-body" hidden>
+          <div class="aadhaar-card varifying-details-card">
+            <div class="varifying-details__header">
+              <span class="varifying-details__spinner" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#paint0_angular_1240_21969_clip_path)" data-figma-skip-parse="true"><g transform="matrix(0.008 0 0 0.008 8 8)"><foreignObject x="-1083.33" y="-1083.33" width="2166.67" height="2166.67"><div xmlns="http://www.w3.org/1999/xhtml" style="background:conic-gradient(from 90deg,rgba(255,255,255,0.06) 0deg,rgba(51,65,85,1) 360deg);height:100%;width:100%;opacity:1"></div></foreignObject></g></g><path d="M8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0ZM8 1.33301C4.3181 1.33301 1.33301 4.3181 1.33301 8C1.33301 11.6819 4.3181 14.667 8 14.667C11.6819 14.667 14.667 11.6819 14.667 8C14.667 4.3181 11.6819 1.33301 8 1.33301Z" fill="url(#spinner-gradient)"/><defs><clipPath id="paint0_angular_1240_21969_clip_path"><path d="M8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0ZM8 1.33301C4.3181 1.33301 1.33301 4.3181 1.33301 8C1.33301 11.6819 4.3181 14.667 8 14.667C11.6819 14.667 14.667 11.6819 14.667 8C14.667 4.3181 11.6819 1.33301 8 1.33301Z"/></clipPath></defs></svg></span>
+              <p class="varifying-details__title">Verifying your details through UIDAI</p>
+            </div>
+            <div class="varifying-details__progress-wrap">
+              <div class="varifying-details__progress-row">
+                <span class="varifying-details__label">Processing data...</span>
+                <span class="varifying-details__pct" id="otp-progress-pct">0%</span>
+              </div>
+              <div class="varifying-details__bar-track">
+                <div class="varifying-details__bar-fill" id="otp-progress-bar"></div>
+              </div>
+            </div>
+          </div>
+          <p class="varifying-details-body-info">
+            Please keep your browser window open. This process usually takes less than 30 seconds to securely extract and verify your information.
+          </p>
+        </div>
       </div>
-
-      <div class="modal-backdrop aadhaar-leave-modal" id="otp-leave-modal" role="dialog" aria-modal="true"
-        aria-labelledby="otp-leave-title">
-        <div class="modal modal-confirmation">
+    
+      <!-- Too-many-attempts modal (shown after 3 wrong OTPs) -->
+      <div class="modal-backdrop otp-maxattempts-modal" id="otp-maxattempts-modal"
+          role="dialog" aria-modal="true" aria-labelledby="otp-maxattempts-title">
+        <div class="modal modal-confirmation size-md">
+          <div class="modal-header no-border">
+            <div class="modal-header-icon modal-header-icon--error">
+              <i data-lucide="x-circle"></i>
+            </div>
+            <h2 class="modal-title" id="otp-maxattempts-title">Too many attempts</h2>
+          </div>
+          <div class="modal-body">
+            We couldn't verify your Aadhaar with the OTP provided. Don't worry, you can still complete your KYC using another method.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary"
+                    id="otp-try-another" name="otp-try-another"
+                    data-action="close-modal">Try Another Method</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="modal-backdrop aadhaar-leave-modal" id="otp-leave-modal"
+          role="dialog" aria-modal="true" aria-labelledby="otp-leave-title">
+        <div class="modal modal-confirmation size-md">
           <div class="modal-header no-border">
             <div class="modal-header-icon modal-header-icon--warning">
               <i data-lucide="alert-circle"></i>
@@ -937,10 +994,246 @@
             The details you entered may not be saved if you leave this page.
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" id="otp-leave-go-back" name="otp-leave-go-back"
-              data-action="leave-confirm" data-modal-close>Go Back</button>
-            <button type="button" class="btn btn-primary" id="otp-leave-stay" name="otp-leave-stay"
-              data-action="close-modal" data-modal-close>Continue filling KYC</button>
+            <button type="button" class="btn btn-secondary"
+                    id="otp-leave-go-back" name="otp-leave-go-back"
+                    data-action="leave-confirm" data-modal-close>Go Back</button>
+            <button type="button" class="btn btn-primary"
+                    id="otp-leave-stay" name="otp-leave-stay"
+                    data-action="close-modal" data-modal-close>Continue filling KYC</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- =========================================================================
+        SCREEN: aadhaar-review
+        slug: aadhaar-review
+        Purpose: Review masked Aadhaar data and accept final consents before submit.
+        Inputs:
+          name="review-consent-1"  (checkbox, id review-c1)
+          name="review-consent-2"  (checkbox, id review-c2)
+          name="review-consent-3"  (checkbox, id review-c3)
+        Primary: id=review-submit data-action="submit:aadhaar-review" -> success
+        ========================================================================= -->
+    <section class="ekyc-screen" id="screen-aadhaar-review" data-screen="aadhaar-review" hidden>
+      <div class="aadhaar-page">
+        <div class="aadhaar-bg" aria-hidden="true"></div>
+        <header class="kyc-header">
+          <div class="kyc-header__row">
+            <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+            <div class="kyc-header__agent">
+              <div class="kyc-agent-info">
+                <span class="kyc-agent-name">Rajesh Chaurasia</span>
+                <span class="kyc-agent-id">BA786314</span>
+              </div>
+              <div class="kyc-avatar">
+                <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
+                <span class="kyc-avatar__dot" aria-hidden="true"></span>
+              </div>
+            </div>
+          </div>
+          <span class="badge badge-sm badge-light badge-red">
+            <i data-lucide="alert-circle" style="width: 16px; height: 16px"></i>
+            Link expires in 12hr 32mins
+          </span>
+        </header>
+    
+        <div class="aadhaar-body review-body">
+          <form class="aadhaar-card review-card" id="form-aadhaar-review" novalidate>
+            <div class="aadhaar-head">
+              <img class="aadhaar-logo" src="assets/img/aadhaar-logo.png" alt="Aadhaar" />
+              <h1 class="aadhaar-title">Aadhaar eKYC</h1>
+            </div>
+    
+            <!-- Data review box -->
+            <div class="aadhaar-details">
+              <h2 class="review-title">Review &amp; Submit</h2>
+    
+              <div class="toast toast-info review-info-toast" role="note">
+                <span class="toast-icon"><i data-lucide="info"></i></span>
+                <div class="toast-body">
+                  <div class="toast-content">
+                    <p class="toast-description">Your data is secured. Sensitive fields are partially masked below.</p>
+                  </div>
+                </div>
+              </div>
+    
+              <div class="review-section">
+                <div class="review-section__bar">Personal Details</div>
+                <div class="review-grid">
+                  <div class="review-field">
+                    <span class="review-field__label">Name</span>
+                    <span class="review-field__value">Ashok Kumar</span>
+                  </div>
+                  <div class="review-field">
+                    <span class="review-field__label">Mobile Number</span>
+                    <span class="review-field__value">98XXXXX768</span>
+                  </div>
+                  <div class="review-field">
+                    <span class="review-field__label">DOB</span>
+                    <span class="review-field__value">XX-XX-1979</span>
+                  </div>
+                  <div class="review-field">
+                    <span class="review-field__label">Gender</span>
+                    <span class="review-field__value">MALE</span>
+                  </div>
+                </div>
+              </div>
+    
+              <div class="review-section">
+                <div class="review-section__bar">Address Details</div>
+                <div class="review-grid">
+                  <div class="review-field">
+                    <span class="review-field__label">Permanent Address</span>
+                    <span class="review-field__value">5-9/12, XXXX</span>
+                  </div>
+                  <div class="review-field">
+                    <span class="review-field__label">City/District</span>
+                    <span class="review-field__value">Gurugram</span>
+                  </div>
+                  <div class="review-field">
+                    <span class="review-field__label">State</span>
+                    <span class="review-field__value">Haryana</span>
+                  </div>
+                  <div class="review-field">
+                    <span class="review-field__label">Pincode</span>
+                    <span class="review-field__value">XXXX004</span>
+                  </div>
+                </div>
+              </div>
+    
+              <div class="review-section">
+                <div class="review-section__bar">Verification Documents</div>
+                <div class="review-grid">
+                  <div class="review-field">
+                    <span class="review-field__label">Proof of Identity</span>
+                    <span class="review-field__value">Aadhaar Card<br />(9898 XXXX XXXX)</span>
+                  </div>
+                  <div class="review-field">
+                    <span class="review-field__label">Proof of Address</span>
+                    <span class="review-field__value">Aadhaar Card</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+    
+            <!-- Consent box -->
+            <div class="review-consent-wrap">
+              <h3 class="review-consent__title">Please confirm the following to proceed</h3>
+              <label class="aadhaar-check">
+                <input type="checkbox" id="review-c1" name="review-consent-1" />
+                <span class="aadhaar-check__box" aria-hidden="true"></span>
+                <span class="aadhaar-check__label">I/We hereby consent to BGIL verifying the details provided by me/us for the purpose of KYC through independent and/or third-party sources, as may be required.</span>
+              </label>
+              <label class="aadhaar-check">
+                <input type="checkbox" id="review-c2" name="review-consent-2" />
+                <span class="aadhaar-check__box" aria-hidden="true"></span>
+                <span class="aadhaar-check__label">In case of change in KYC documents/status of any of the Applicant, the Applicant shall immediately inform BGIL regarding the said change and submit the revised KYC documents/ updated status to BGIL within 30 days of such change, failing which BGIL shall not be held responsible for any consequences, actions, claims, loss due to the said change in KYC.</span>
+              </label>
+              <label class="aadhaar-check">
+                <input type="checkbox" id="review-c3" name="review-consent-3" />
+                <span class="aadhaar-check__box" aria-hidden="true"></span>
+                <span class="aadhaar-check__label">I/We consent to BGIL updating/downloading my/our CKYC records with CERSAI/CKYCR using the CKYC Number (KIN) provided by me/us or shared data. I/We also consent to receiving CKYC-related communications from CERSAI via SMS/email on my/our registered contact details.</span>
+              </label>
+            </div>
+    
+            <button type="button" class="btn btn-primary aadhaar-submit"
+                    id="review-submit" name="review-submit"
+                    data-action="submit:aadhaar-review" disabled>
+              Confirm &amp; Submit
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+    
+    <!-- =========================================================================
+        SCREEN: aadhaar-done
+        slug: aadhaar-done
+        Purpose: KYC completion confirmation with BGIL KYC ID and verification summary.
+        Controls:
+          id=adone-copy   data-action="copy-kyc-id"  — copy KYC ID to clipboard
+          id=adone-back   data-action="goto:initiation" — restart journey
+        ========================================================================= -->
+    <section class="ekyc-screen" id="screen-aadhaar-done" data-screen="aadhaar-done" hidden>
+      <div class="aadhaar-page">
+        <div class="kyc-bg" aria-hidden="true"></div>
+        <header class="kyc-header">
+          <div class="kyc-header__row">
+            <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+            <div class="kyc-header__agent">
+              <div class="kyc-agent-info">
+                <span class="kyc-agent-name">Rajesh Chaurasia</span>
+                <span class="kyc-agent-id">BA786314</span>
+              </div>
+              <div class="kyc-avatar">
+                <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
+                <span class="kyc-avatar__dot" aria-hidden="true"></span>
+              </div>
+            </div>
+          </div>
+          <span class="badge badge-sm badge-light badge-red">
+            <i data-lucide="alert-circle" style="width: 16px; height: 16px"></i>
+            Link expires in 12hr 32mins
+          </span>
+        </header>
+    
+        <div class="aadhaar-body adone-body">
+    
+          <div class="aadhaar-card adone-content">
+            <div class="adone-content-wrap">
+              <img class="adone-illustration" src="assets/img/congo-avtar.png"
+                  alt="" aria-hidden="true" />
+              <h1 class="adone-title">Congratulations! Your KYC is done.</h1>
+              <p class="adone-subtitle">
+                You're all set to continue with your transaction. Here's a summary of your verification status:
+              </p>
+            </div>
+            <div class="adone-card-wrap">
+              <div class="adone-card">
+                <div class="adone-id-wrap">
+                  <span class="adone-id-label">Your BGIL KYC ID</span>
+                  <div class="adone-id-row">
+                    <span class="adone-id-value">BGIL-KYC-MNPTT1N6</span>
+                    <button type="button" class="adone-copy-btn"
+                            id="adone-copy" name="adone-copy"
+                            data-action="copy-kyc-id" aria-label="Copy KYC ID">
+                      <i data-lucide="copy" style="width:18px;height:18px;"></i>
+                    </button>
+                  </div>
+                </div>
+    
+                <div class="adone-rows">
+                  <div class="adone-row">
+                    <span class="adone-row__label">eKYC</span>
+                    <span class="adone-row__method">Aadhaar Card</span>
+                    <span class="adone-row__status">
+                      <i data-lucide="check-circle" style="width:16px;height:16px;"></i> Success
+                    </span>
+                  </div>
+                  <div class="adone-row">
+                    <span class="adone-row__label">Proof of Identity</span>
+                    <span class="adone-row__method">Aadhaar Card</span>
+                    <span class="adone-row__status">
+                      <i data-lucide="check-circle" style="width:16px;height:16px;"></i> Success
+                    </span>
+                  </div>
+                  <div class="adone-row">
+                    <span class="adone-row__label">Proof of Address</span>
+                    <span class="adone-row__method">Aadhaar Card</span>
+                    <span class="adone-row__status">
+                      <i data-lucide="check-circle" style="width:16px;height:16px;"></i> Success
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+    
+            <button type="button" class="btn btn-primary adone-btn"
+                    id="adone-back" name="adone-back"
+                    data-action="goto:initiation">
+              Back to Module
+            </button>
           </div>
         </div>
       </div>
@@ -1067,7 +1360,7 @@
       <!-- Leave-page confirmation modal -->
       <div class="modal-backdrop pan-leave-modal" id="pan-leave-modal" role="dialog" aria-modal="true"
         aria-labelledby="pan-leave-title">
-        <div class="modal modal-confirmation">
+        <div class="modal modal-confirmation size-md">
           <div class="modal-header no-border">
             <div class="modal-header-icon modal-header-icon--warning">
               <i data-lucide="alert-circle"></i>
@@ -1167,7 +1460,7 @@
       <!-- Leave-page confirmation modal -->
       <div class="modal-backdrop pan-leave-modal" id="pan-leave-modal" role="dialog" aria-modal="true"
         aria-labelledby="pan-leave-title">
-        <div class="modal modal-confirmation">
+        <div class="modal modal-confirmation size-md">
           <div class="modal-header no-border">
             <div class="modal-header-icon modal-header-icon--warning">
               <i data-lucide="alert-circle"></i>
@@ -1851,6 +2144,7 @@
   <script src="assets/vendor/lucide.min.js"></script>
   <script src="assets/atlas/atlas.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/kyc-aadhaar.js"></script>
 
   <!-- ===== Inline SPA router + per-screen logic =================================
      The router maintains a screen stack, exposes window.ekyc, and dispatches
@@ -1864,7 +2158,8 @@
       /* -------- Known screens (in order) -------- */
       var SCREENS = [
         'initiation', 'send-link', 'send-link-sent',
-        'landing', 'aadhaar', 'aadhaar-otp', 'pan', 'pan-otp', 'pan-verifying', 'pan-address-proof', 'document-scanning',
+        'landing', 'aadhaar', 'aadhaar-otp', 'aadhaar-review', 'aadhaar-done',
+        'pan', 'pan-otp', 'pan-verifying', 'pan-address-proof', 'document-scanning',
         'review-submit',
         'face-scan', 'face-scan-misaligned', 'success'
       ];
@@ -2027,12 +2322,7 @@
         }
         if (action === 'resend-otp') {
           e.preventDefault();
-          $$('#screen-aadhaar-otp .aadhaar-otp__box').forEach(function (b) {
-            b.value = ''; b.classList.remove('is-filled');
-          });
-          var first = $('#screen-aadhaar-otp .aadhaar-otp__box');
-          if (first) first.focus();
-          var v = $('#otp-verify'); if (v) v.disabled = true;
+          aadhaarModule.handleResendOtp();
           return;
         }
       });
@@ -2074,35 +2364,18 @@
           goto('send-link-sent');
           return;
         }
-        if (slug === 'aadhaar') {
-          console.log('[ekyc] Aadhaar form submit', collectAadhaar());
-          goto('aadhaar-otp');
-          return;
-        }
-        if (slug === 'aadhaar-otp') {
-          console.log('[ekyc] OTP verified', collectOtp());
-          goto('face-scan');
-          return;
-        }
-      }
-      function collectAadhaar() {
-        return {
-          'verification-type': (document.querySelector('input[name="verification-type"]:checked') || {}).value,
-          'aadhaar-number': ($('#aadhaar-num') || {}).value,
-          'aadhaar-mobile': ($('#aadhaar-mobile') || {}).value,
-          'security-answer': ($('#aadhaar-sec') || {}).value,
-          'consent-data-sharing': ($('#aadhaar-c1') || {}).checked,
-          'consent-uidai-terms': ($('#aadhaar-c2') || {}).checked
-        };
-      }
-      function collectOtp() {
-        return $$('#screen-aadhaar-otp .aadhaar-otp__box').map(function (b) { return b.value || ''; }).join('');
+        // Delegate all aadhaar-flow slugs to the aadhaar module
+        aadhaarModule.handleSubmit(slug, btn);
       }
 
       /* =========================================================================
          Per-screen init functions (ported from js/<page>.js, re-scoped to screen)
          ========================================================================= */
       var INITS = {};
+
+      /* ----- Aadhaar flow (delegated to js/kyc-aadhaar.js) ----- */
+      var aadhaarModule = window.ekycAadhaar.init({ goto: goto, openModal: openModal, $: $, $$: $$, screenEl: screenEl });
+      Object.keys(aadhaarModule.INITS).forEach(function (k) { INITS[k] = aadhaarModule.INITS[k]; });
 
       /* ---- initScreen_initiation ---- */
       INITS['initiation'] = function () {
@@ -2200,127 +2473,7 @@
         });
       };
 
-      /* ---- initScreen_aadhaar ---- */
-      INITS['aadhaar'] = function () {
-        var root = screenEl('aadhaar');
-        if (root.dataset.inited) return; root.dataset.inited = '1';
-        var SECURITY_ANSWER = '14';
-        var radios = $$('.aadhaar-radio', root);
-        var numInput = $('#aadhaar-num', root);
-        var numLabel = $('#aadhaar-num-label', root);
-        var mobile = $('#aadhaar-mobile', root);
-        var sec = $('#aadhaar-sec', root);
-        var card = $('.aadhaar-card', root);
-        var consent1 = $('#aadhaar-c1', root);
-        var consent2 = $('#aadhaar-c2', root);
-        var submit = $('#aadhaar-submit', root);
-
-        function selectRadio(node) {
-          radios.forEach(function (r) {
-            var on = r === node;
-            r.classList.toggle('is-selected', on);
-            var input = r.querySelector('input[type="radio"]');
-            if (input) input.checked = on;
-          });
-          if (numLabel && numInput) {
-            var isVid = node.getAttribute('data-vtype') === 'vid';
-            if (isVid) {
-              numLabel.textContent = 'Virtual ID';
-              numInput.setAttribute('placeholder', 'Enter 16-digit Virtual ID');
-              numInput.setAttribute('maxlength', '16');
-            } else {
-              numLabel.textContent = 'Aadhaar Number';
-              numInput.setAttribute('placeholder', 'Enter 12-digit Aadhaar Number');
-              numInput.setAttribute('maxlength', '12');
-            }
-            numInput.value = '';
-            validate();
-          }
-        }
-        radios.forEach(function (r) {
-          r.addEventListener('click', function () { selectRadio(r); });
-        });
-        function isAadhaarValid() {
-          var sel = $('.aadhaar-radio.is-selected', root);
-          var isVid = sel && sel.getAttribute('data-vtype') === 'vid';
-          var len = isVid ? 16 : 12;
-          return new RegExp('^\\d{' + len + '}$').test((numInput.value || '').trim());
-        }
-        function isMobileValid() { return /^\d{10}$/.test((mobile.value || '').trim()); }
-        function isSecurityValid() { return sec && (sec.value || '').trim() === SECURITY_ANSWER; }
-        function isConsented() { return consent1 && consent2 && consent1.checked && consent2.checked; }
-        function fieldOf(el) { return el ? el.closest('.form-field') : null; }
-        function setValid(el, ok) { var f = fieldOf(el); if (f) f.classList.toggle('is-valid', !!ok); }
-        function validate() {
-          setValid(numInput, isAadhaarValid());
-          setValid(mobile, isMobileValid());
-          setValid(sec, isSecurityValid());
-          var extended = isAadhaarValid() && isMobileValid();
-          if (card) card.classList.toggle('is-extended', extended);
-          if (!submit) return;
-          submit.disabled = !(extended && isSecurityValid() && isConsented());
-        }
-        if (numInput) {
-          numInput.addEventListener('input', function () {
-            var max = parseInt(numInput.getAttribute('maxlength') || '12', 10);
-            numInput.value = numInput.value.replace(/\D/g, '').slice(0, max);
-            validate();
-          });
-        }
-        if (mobile) {
-          mobile.addEventListener('input', function () {
-            mobile.value = mobile.value.replace(/\D/g, '').slice(0, 10);
-            validate();
-          });
-        }
-        if (sec) {
-          sec.addEventListener('input', function () {
-            sec.value = sec.value.replace(/\D/g, '').slice(0, 3);
-            validate();
-          });
-        }
-        [consent1, consent2].forEach(function (cb) { if (cb) cb.addEventListener('change', validate); });
-        validate();
-      };
-
-      /* ---- initScreen_aadhaar-otp ---- */
-      INITS['aadhaar-otp'] = function () {
-        var root = screenEl('aadhaar-otp');
-        if (root.dataset.inited) return; root.dataset.inited = '1';
-        var boxes = $$('.aadhaar-otp__box', root);
-        var verify = $('#otp-verify', root);
-
-        function otpValue() { return boxes.map(function (b) { return b.value || ''; }).join(''); }
-        function isOtpFilled() { return otpValue().length === boxes.length; }
-        function syncBoxes() { boxes.forEach(function (b) { b.classList.toggle('is-filled', !!b.value); }); }
-        function refreshSubmit() { if (verify) verify.disabled = !isOtpFilled(); }
-
-        boxes.forEach(function (b, i) {
-          b.addEventListener('input', function () {
-            b.value = (b.value || '').replace(/\D/g, '').slice(0, 1);
-            if (b.value && i < boxes.length - 1) boxes[i + 1].focus();
-            syncBoxes(); refreshSubmit();
-          });
-          b.addEventListener('keydown', function (e) {
-            if (e.key === 'Backspace' && !b.value && i > 0) boxes[i - 1].focus();
-            else if (e.key === 'ArrowLeft' && i > 0) boxes[i - 1].focus();
-            else if (e.key === 'ArrowRight' && i < boxes.length - 1) boxes[i + 1].focus();
-          });
-          b.addEventListener('paste', function (e) {
-            e.preventDefault();
-            var text = (e.clipboardData || window.clipboardData).getData('text') || '';
-            var digits = text.replace(/\D/g, '').slice(0, boxes.length - i);
-            for (var k = 0; k < digits.length; k++) boxes[i + k].value = digits[k];
-            var next = Math.min(i + digits.length, boxes.length - 1);
-            boxes[next].focus();
-            syncBoxes(); refreshSubmit();
-          });
-        });
-        refreshSubmit();
-        // Focus first empty box on entry
-        var firstEmpty = boxes.find ? boxes.find(function (b) { return !b.value; }) : null;
-        if (firstEmpty) setTimeout(function () { firstEmpty.focus(); }, 60);
-      };
+      // aadhaar + aadhaar-otp INITs live in js/kyc-aadhaar.js
 
       /* ---- initScreen_PAN ---- */
       INITS['pan'] = function () {

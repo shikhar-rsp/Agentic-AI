@@ -19,3 +19,6 @@ dist/
 
 # Claude agent worktrees
 .claude/
+.cursor/
+
+old-ekyc.html

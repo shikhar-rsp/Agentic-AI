@@ -53,6 +53,7 @@
     align-items: center;
     gap: 8px;
     text-align: center;
+    margin-bottom: 12px;
   }
   .aadhaar-logo { height: 48px; width: auto; }
   .aadhaar-title {
@@ -250,6 +251,29 @@
   }
 }
 
+/* =========================================================================
+   Unlayered overrides — beat DS and layered rules
+   ========================================================================= */
+
+/* display: flex on .aadhaar-body overrides the hidden attribute — force it off */
+.aadhaar-body[hidden] { display: none !important; }
+
+/* Two-class specificity beats DS single-class .form-field */
+.aadhaar-card .aadhaar-extra { display: none; }
+.aadhaar-card.is-extended .aadhaar-extra { display: flex; }
+
+/* Consent shown only after security answer is valid */
+.aadhaar-card .aadhaar-consent { display: none; }
+.aadhaar-card.is-secured .aadhaar-consent { display: flex; }
+
+/* Review card overrides the 800px desktop cap on .aadhaar-card */
+.review-card { max-width: 1000px;         padding: 32px !important;}
+
+/* Progress bar always fills card width */
+.varifying-details-card { width: 100%; }
+.varifying-details__progress-wrap { width: 100%; min-width: 0; }
+.varifying-details__bar-track { width: 100%; }
+
 /* Make form-field fill its container (DS clamps it at --form-field-width).
    Unlayered to beat DS form-field which is also unlayered. */
 .aadhaar-card .form-field { width: 100%; }
@@ -349,6 +373,40 @@
   text-align: center;
 }
 
+/* Error/red featured-icon variant */
+.modal-header-icon--error {
+  background: #fee2e2;
+  color: #dc2626;
+  margin-bottom: 12px;
+}
+.modal-header-icon--error .lucide,
+.modal-header-icon--error [data-lucide] { width: 24px; height: 24px; }
+
+/* Too-many-attempts modal */
+.otp-maxattempts-modal.modal-backdrop {
+  background: rgba(26, 26, 26, 0.36);
+  backdrop-filter: none;
+  padding-inline: 16px;
+}
+.otp-maxattempts-modal .modal-confirmation {
+  width: 100%; max-width: 370px; height: auto; border-radius: 16px;
+}
+.modal-confirmation.size-md{
+  max-width: 520px;
+}
+.otp-maxattempts-modal .modal-header { height: auto; padding: 20px 20px 0; gap: 4px; }
+.otp-maxattempts-modal .modal-body {
+  height: auto; padding: 8px 20px 20px; text-align: center;
+  font-family: 'Rubik', sans-serif; font-size: 14px; line-height: 20px;
+  color: var(--color-neutral-600); border-bottom: 1px solid var(--color-neutral-200);
+}
+.otp-maxattempts-modal .modal-footer { height: auto; padding: 16px 20px; justify-content: center; }
+.otp-maxattempts-modal .modal-footer .btn { width: 100%; }
+.otp-maxattempts-modal .modal-title {
+  font-family: 'Rubik', sans-serif; font-weight: 500; font-size: 20px;
+  line-height: 24px; color: var(--color-neutral-800); height: auto; text-align: center;
+}
+
 /* Amber/warning featured-icon variant */
 .modal-header-icon--warning {
   background: #fef3c7; /* amber-100 */
@@ -368,6 +426,13 @@
     gap: 8px;
     width: 100%;
   }
+  .aadhaar-otp-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
   .aadhaar-otp__box {
     flex: 1 0 0;
     min-width: 0;
@@ -377,10 +442,12 @@
     border-radius: 8px;
     background: var(--color-neutral-0);
     text-align: center;
-    font: 500 22px/28px 'Rubik', sans-serif;
+    font: 400 30px/34px 'Rubik', sans-serif;
     color: var(--color-neutral-800);
     box-shadow: 0 1px 2px rgba(10, 13, 18, 0.05);
     outline: none;
+    width: 64px;
+    height: 64px;
   }
   .aadhaar-otp__box:focus {
     border-color: var(--color-blue-600);
@@ -388,11 +455,175 @@
   }
   .aadhaar-otp__box.is-filled { border-color: var(--color-blue-600); }
 
+  /* ---- OTP footer (error message + resend link) ---- */
+  .aadhaar-otp__footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .aadhaar-otp__error {
+    margin: 0;
+    font: 400 13px/20px 'Rubik', sans-serif;
+    color: var(--color-red-600, #dc2626);
+  }
+  .aadhaar-otp.is-error .aadhaar-otp__box {
+    border-color: var(--color-red-600, #dc2626);
+  }
+
   .aadhaar-resend {
-    align-self: flex-end;
+    flex-shrink: 0;
+    margin-left: auto;
     font: 500 14px/20px 'Rubik', sans-serif;
     color: var(--color-blue-600);
     text-decoration: none;
   }
   .aadhaar-resend:hover { text-decoration: underline; }
+
+  /* ---- Verifying details section ---- */
+  .varifying-details-body {
+    flex-direction: column !important;
+    align-items: center !important;
+    padding-top: 130px;
+  }
+  .varifying-details-card {
+    max-width: 696px;
+    width: 100%;
+    margin-inline: auto;
+    gap: 24px;
+  }
+  .varifying-details__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+  }
+  .varifying-details__spinner {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .varifying-details__spinner svg {
+    width: 24px;
+    height: 24px;
+    animation: otp-spin 0.8s linear infinite;
+  }
+  @keyframes otp-spin { to { transform: rotate(360deg); } }
+  .varifying-details__title {
+    margin: 0;
+    font: 600 16px/24px 'Rubik', sans-serif;
+    color: var(--color-neutral-800);
+  }
+  .varifying-details__progress-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-self: stretch;
+    min-width: 0;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+  .varifying-details__progress-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  .varifying-details__label {
+    font: 400 13px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-600);
+  }
+  .varifying-details__pct {
+    font: 500 13px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-800);
+  }
+  .varifying-details__bar-track {
+    width: 100%;
+    height: 8px;
+    border-radius: 99px;
+    background: var(--color-neutral-200, #e5e7eb);
+    overflow: hidden;
+  }
+  .varifying-details__bar-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 99px;
+    background: #22c55e;
+    transition: width 0.05s linear;
+  }
+  .varifying-details-body-info {
+    max-width: 696px;
+    margin: 56px auto 0;
+    font: 400 13px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-500);
+    text-align: center;
+    padding: 10px;
+  }
+
+  /* ---- Review & Submit screen ---- */
+  .review-body { align-items: stretch; }
+  .review-card { gap: 20px; max-width: 1000px; }
+  .review-data-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--color-neutral-200);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .review-title {
+    margin: 0;
+    padding: 0;
+    font: 500 20px/24px 'Rubik', sans-serif;
+    color: var(--color-neutral-800);
+  }
+  .review-section { display: flex; flex-direction: column; }
+  .review-section__bar {
+    padding: 8px 16px;
+    font: 500 16px/24px 'Rubik', sans-serif;
+    color: var(--color-neutral-700);
+    background: linear-gradient(90deg, #EFF6FF 0%, #DBEAFE 100%);
+    border-radius: 8px;
+  }
+  .review-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px !important;
+    padding: 0 12px !important;
+  }
+  .review-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0;
+  }
+  .review-field__label {
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-500);
+  }
+  .review-field__value {
+    font: 500 14px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-800);
+  }
+  .review-consent-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid var(--color-neutral-200);
+    border-radius: 8px;
+  }
+  .review-consent__title {
+    margin: 0;
+    font: 600 16px/24px 'Rubik', sans-serif;
+    color: var(--color-neutral-800);
+    margin-bottom: 4px;
+  }
+  .review-body .aadhaar-details{
+    padding: 20px;
+    gap: 16px;
+  }
 }
