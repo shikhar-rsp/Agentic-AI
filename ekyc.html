@@ -1984,63 +1984,82 @@
     <!-- =========================================================================
        SCREEN: face-scan
        slug: face-scan
+       Purpose: Camera live view — face capture within the KYC card flow.
        Controls:
-         close (top left) -> data-action="back"
-         help             -> data-action="open-modal:face-help-modal" (no-op)
-         flip camera      -> data-action="face-flip"
-         capture          -> data-action="face-capture" (first time -> misaligned;
-                              subsequent -> success)
+         id=face-back     data-action="back"
+         id=face-flip     data-action="face-flip"
+         id=face-capture  data-action="face-capture"  -> face-scan-misaligned / success
        ========================================================================= -->
     <section class="ekyc-screen" id="screen-face-scan" data-screen="face-scan" hidden>
       <div class="facescan-page">
-        <div class="facescan-camera" id="face-camera">
-          <div class="facescan-topbar">
-            <a class="facescan-iconbtn" id="face-close" data-action="back" role="button" tabindex="0"
-              aria-label="Close">
-              <i data-lucide="x"></i>
-            </a>
-            <button type="button" class="facescan-iconbtn facescan-iconbtn--bordered" id="face-help" name="face-help"
-              aria-label="Help">
-              <i data-lucide="help-circle"></i>
-            </button>
-          </div>
+        <div class="facescan-bg" aria-hidden="true"></div>
 
-          <span class="facescan-pill">
-            <i data-lucide="zap"></i> Auto capture is on
+        <header class="kyc-header">
+          <div class="kyc-header__row">
+            <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+            <div class="kyc-header__agent">
+              <div class="kyc-agent-info">
+                <span class="kyc-agent-name">Rajesh Chaurasia</span>
+                <span class="kyc-agent-id">BA786314</span>
+              </div>
+              <div class="kyc-avatar">
+                <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
+                <span class="kyc-avatar__dot" aria-hidden="true"></span>
+              </div>
+            </div>
+          </div>
+          <span class="badge badge-sm badge-light badge-red">
+            <i data-lucide="alert-circle" style="width: 16px; height: 16px"></i>
+            Link expires in 12hr 32mins
           </span>
+        </header>
 
-          <div class="facescan-oval" aria-hidden="true">
-            <img class="facescan-oval__feed" src="assets/img/face-sample.png" alt="" />
-          </div>
+        <div class="facescan-body">
+          <div class="facescan-card">
+            <div class="facescan-head">
+              <img class="facescan-icon" src="assets/img/face-scan.svg" alt="" aria-hidden="true" />
+              <h1 class="facescan-card-title">KYC via Face Scan</h1>
+            </div>
 
-          <div class="facescan-bottom">
-            <div class="facescan-guide">
-              <p class="facescan-title">Face Scan</p>
+            <div class="toast toast-info facescan-info" role="note">
+              <span class="toast-icon"><i data-lucide="info"></i></span>
+              <div class="toast-body">
+                <div class="toast-content">
+                  <p class="toast-description">
+                    Look directly at the camera and keep your face within the circle frame
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <a class="facescan-back" id="face-back" data-action="back" role="button" tabindex="0">
+              <i data-lucide="arrow-left"></i> Back
+            </a>
+
+            <div class="facescan-camera-wrap" id="face-camera">
+              <div class="facescan-camtopbar">
+                <span class="facescan-cam-pill">
+                  <i data-lucide="zap"></i> Auto capture is off
+                </span>
+              </div>
+
+              <div class="facescan-frame" aria-hidden="true">
+                <img class="facescan-frame__feed" src="assets/img/face-sample.png" alt="" />
+              </div>
+
               <p class="facescan-hint" id="face-hint">
                 Make sure you're in well-lit area with plain background
               </p>
             </div>
-            <button type="button" class="facescan-flip" id="face-flip" name="face-flip" data-action="face-flip">
-              <i data-lucide="switch-camera"></i> Flip Camera
-            </button>
-          </div>
-        </div>
 
-        <div class="facescan-footer">
-          <div class="toast toast-info" role="status">
-            <span class="toast-icon"><i data-lucide="info"></i></span>
-            <div class="toast-body">
-              <div class="toast-content">
-                <p class="toast-title">
-                  Look directly at the camera and keep your face within the circle frame
-                </p>
-              </div>
+            <div class="facescan-submit-bar">
+              <button type="button" class="btn btn-primary facescan-capture-btn"
+                      id="face-capture" name="face-capture"
+                      data-action="face-capture" disabled>
+                Start Face Scan
+              </button>
             </div>
           </div>
-          <button type="button" class="btn btn-primary" id="face-capture" name="face-capture" data-action="face-capture"
-            style="width:100%;margin-top:12px;">
-            Capture
-          </button>
         </div>
       </div>
     </section>

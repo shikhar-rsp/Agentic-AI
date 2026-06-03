@@ -1,27 +1,204 @@
 /* =========================================================================
-   Face Scan capture screen — full-bleed dark camera viewport + white footer.
-   Reuses the DS .toast .toast-info for the footer note; everything else is
-   token-driven layout.
+   Face Scan screens
+   - face-scan        : card-based layout (aadhaar-page pattern)
+   - face-scan-misaligned : full-bleed dark camera viewport
+   facescan-* prefix throughout.
    ========================================================================= */
 
 @layer app {
+
+  /* =========================================================================
+     SHARED: page shell
+     ========================================================================= */
+
   .facescan-page {
     width: 100%;
-    max-width: 402px;
-    margin-inline: auto;
     min-height: 100vh;
-    background: var(--color-neutral-0);
+    background: var(--color-neutral-50);
     display: flex;
     flex-direction: column;
+    position: relative;
   }
 
-  /* ---- Dark camera area ---- */
+  /* Header sits above the bg banner */
+  .facescan-page > .kyc-header {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Misaligned / old full-bleed variant: tighten to 402px like before */
+  .facescan-page[data-facescan-state] {
+    max-width: 402px;
+    margin-inline: auto;
+    background: var(--color-neutral-0);
+  }
+
+  /* =========================================================================
+     SCREEN: face-scan — card layout
+     ========================================================================= */
+
+  /* Pink background banner (same pattern as .aadhaar-bg) */
+  .facescan-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 220px;
+    background: url('../assets/img/face-scan.png') center / cover no-repeat;
+    z-index: 0;
+  }
+
+  /* Body pushes below the header, holds the card */
+  .facescan-body {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    padding: 0 16px 40px;
+  }
+
+  /* White card */
+  .facescan-card {
+    width: 100%;
+    max-width: 696px;
+    background: var(--color-neutral-0);
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+    padding: 24px 24px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow: hidden;
+  }
+
+  /* ---- Head: icon + title ---- */
+  .facescan-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+  }
+
+  .facescan-icon {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+  }
+
+  .facescan-card-title {
+    margin: 0;
+    font: 500 24px/32px 'Rubik', sans-serif;
+    color: var(--color-neutral-900);
+  }
+
+  /* ---- Info toast ---- */
+  .facescan-info { margin: 0; }
+
+  /* ---- Back link ---- */
+  .facescan-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-700);
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .facescan-back [data-lucide] { width: 16px; height: 16px; }
+
+  /* ---- Camera viewport inside card ---- */
+  .facescan-camera-wrap {
+    width: 100%;
+    background: #2e2e2e;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 300px;
+    padding-bottom: 20px;
+  }
+
+  /* Top bar: auto-capture pill flush to the right */
+  .facescan-camtopbar {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 12px 0;
+  }
+
+  .facescan-cam-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--color-blue-standard-600);
+    color: var(--color-neutral-0);
+    padding: 4px 12px;
+    border-radius: 256px;
+    font: 400 12px/18px 'Rubik', sans-serif;
+  }
+  .facescan-cam-pill [data-lucide] { width: 14px; height: 14px; }
+
+  /* White rectangular viewfinder frame */
+  .facescan-frame {
+    width: calc(100% - 48px);
+    max-width: 380px;
+    margin-top: 12px;
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    flex: 1;
+    min-height: 180px;
+  }
+
+  .facescan-frame__feed {
+    display: none;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Hint text at bottom of camera wrap */
+  .facescan-hint {
+    margin: 16px 0 0;
+    background: #1e1e1e;
+    color: var(--color-neutral-0);
+    border-radius: 12px;
+    padding: 8px 16px;
+    font: 400 13px/18px 'Rubik', sans-serif;
+    text-align: center;
+    max-width: calc(100% - 32px);
+  }
+
+  /* ---- Submit bar ---- */
+  .facescan-submit-bar {
+    padding: 16px 0 24px;
+  }
+
+  .facescan-capture-btn {
+    width: 100%;
+  }
+  .facescan-capture-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+
+  /* =========================================================================
+     SCREEN: face-scan-misaligned — full-bleed dark camera
+     (All existing classes kept intact)
+     ========================================================================= */
+
   .facescan-camera {
     flex: 1;
     min-height: 600px;
     position: relative;
     overflow: hidden;
-    background: #333; /* camera viewport — intentional literal */
+    background: #333;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -55,7 +232,7 @@
     color: var(--color-neutral-700);
   }
 
-  /* "Auto capture is on" pill */
+  /* "Auto capture is on" pill (misaligned screen) */
   .facescan-pill {
     display: inline-flex;
     align-items: center;
@@ -79,7 +256,6 @@
     position: relative;
     overflow: hidden;
   }
-  /* Camera feed, clipped to the oval — hidden until a face is detected */
   .facescan-oval__feed {
     display: none;
     position: absolute;
@@ -87,16 +263,12 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 72% 35%; /* show the off-centre face from the sample */
+    object-position: 72% 35%;
   }
 
-  /* Misaligned / error state: red ring + visible feed + error hint */
-  .facescan-camera--error .facescan-oval {
-    border: 3px solid var(--color-red-600);
-  }
-  .facescan-camera--error .facescan-oval__feed {
-    display: block;
-  }
+  /* Error state */
+  .facescan-camera--error .facescan-oval { border: 3px solid var(--color-red-600); }
+  .facescan-camera--error .facescan-oval__feed { display: block; }
 
   /* Bottom guidance block */
   .facescan-bottom {
@@ -120,15 +292,15 @@
     color: var(--color-neutral-0);
     text-align: center;
   }
-  .facescan-hint {
-    margin: 0;
-    width: 100%;
-    background: #1e1e1e; /* dark chip — intentional literal */
+  .facescan-guide .facescan-hint {
+    background: #1e1e1e;
     color: var(--color-neutral-0);
     border-radius: 12px;
     padding: 8px;
     font: 400 14px/20px 'Rubik', sans-serif;
     text-align: center;
+    max-width: 100%;
+    margin: 0;
   }
   .facescan-flip {
     display: inline-flex;
@@ -145,7 +317,7 @@
   .facescan-flip .lucide,
   .facescan-flip [data-lucide] { width: 24px; height: 24px; }
 
-  /* ---- White footer toast ---- */
+  /* White footer */
   .facescan-footer {
     background: var(--color-neutral-0);
     padding: 32px 16px;
