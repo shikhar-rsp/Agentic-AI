@@ -665,6 +665,7 @@
           </div>
         </div>
       </div>
+
     </section>
 
     <!-- =========================================================================
@@ -702,7 +703,7 @@
             Link expires in 12hr 32mins
           </span>
         </header>
-    
+
         <div class="aadhaar-body">
           <form class="aadhaar-card" id="form-aadhaar" novalidate>
             <div class="aadhaar-head">
@@ -712,12 +713,12 @@
                 Please follow the instructions below to complete KYC. This will only take a while.
               </p>
             </div>
-    
-            <a class="aadhaar-back" id="aadhaar-back" data-action="open-modal:aadhaar-leave-modal"
-              role="button" tabindex="0">
+
+            <a class="aadhaar-back" id="aadhaar-back" data-action="open-modal:aadhaar-leave-modal" role="button"
+              tabindex="0">
               <i data-lucide="arrow-left"></i> Back
             </a>
-    
+
             <div class="aadhaar-details">
               <div class="aadhaar-details__head">
                 <h3 class="aadhaar-details__title">Aadhaar Card Details</h3>
@@ -725,7 +726,7 @@
                   We'll send a secure OTP to your Aadhaar-linked mobile number
                 </p>
               </div>
-    
+
               <div class="aadhaar-field">
                 <span class="aadhaar-field__label">
                   Select Verification Type<span class="aadhaar-req">*</span>
@@ -734,7 +735,8 @@
                   <label class="aadhaar-radio is-selected" data-vtype="aadhaar">
                     <input type="radio" id="aadhaar-vtype-aadhaar" name="verification-type" value="aadhaar" checked />
                     <span class="aadhaar-radio__dot" aria-hidden="true"></span>
-                    <span class="aadhaar-radio__label">Aadhaar<span class="aadhaar-radio__label-ext"> Number</span></span>
+                    <span class="aadhaar-radio__label">Aadhaar<span class="aadhaar-radio__label-ext">
+                        Number</span></span>
                   </label>
                   <label class="aadhaar-radio" data-vtype="vid">
                     <input type="radio" id="aadhaar-vtype-vid" name="verification-type" value="vid" />
@@ -743,46 +745,44 @@
                   </label>
                 </div>
               </div>
-    
+
               <div class="form-field aadhaar-field">
                 <label class="form-label" for="aadhaar-num">
                   <span id="aadhaar-num-label">Aadhaar Number</span><span class="aadhaar-req">*</span>
                 </label>
                 <div class="form-input-wrapper">
-                  <input class="form-input" id="aadhaar-num" name="aadhaar-number"
-                        type="tel" inputmode="numeric" maxlength="12"
-                        placeholder="Enter 12-digit Aadhaar Number" />
+                  <input class="form-input" id="aadhaar-num" name="aadhaar-number" type="tel" inputmode="numeric"
+                    maxlength="12" placeholder="Enter 12-digit Aadhaar Number" />
                 </div>
                 <p class="form-error" id="aadhaar-num-error">Invalid Aadhaar Number</p>
               </div>
-    
+
               <div class="form-field aadhaar-field">
                 <label class="form-label" for="aadhaar-mobile">
                   Mobile Number linked to Aadhaar<span class="aadhaar-req">*</span>
                 </label>
                 <div class="form-input-wrapper">
-                  <input class="form-input" id="aadhaar-mobile" name="aadhaar-mobile"
-                        type="tel" inputmode="numeric" maxlength="10"
-                        placeholder="Enter 10-digit mobile number" />
+                  <input class="form-input" id="aadhaar-mobile" name="aadhaar-mobile" type="tel" inputmode="numeric"
+                    maxlength="10" placeholder="Enter 10-digit mobile number" />
                 </div>
                 <p class="form-error">Enter a valid 10-digit mobile number.</p>
                 <p class="aadhaar-success" id="aadhaar-mobile-success">
                   Mobile number linked with Aadhaar has matched
                 </p>
               </div>
-    
+
               <div class="form-field aadhaar-field aadhaar-extra" id="aadhaar-security">
                 <label class="form-label" for="aadhaar-sec">
                   What is 5 + 9? (Security question)<span class="aadhaar-req">*</span>
                 </label>
                 <div class="form-input-wrapper">
-                  <input class="form-input" id="aadhaar-sec" name="security-answer"
-                        type="text" inputmode="numeric" maxlength="3" placeholder="" />
+                  <input class="form-input" id="aadhaar-sec" name="security-answer" type="text" inputmode="numeric"
+                    maxlength="3" placeholder="" />
                 </div>
                 <p class="form-error">Incorrect answer. Please try again.</p>
               </div>
             </div>
-    
+
             <div class="aadhaar-consent aadhaar-extra" id="aadhaar-consent">
               <h3 class="aadhaar-consent__title">Please confirm the following to proceed</h3>
               <label class="aadhaar-check">
@@ -798,11 +798,17 @@
                 <span class="aadhaar-check__box" aria-hidden="true"></span>
                 <span class="aadhaar-check__label">
                   I accept the UIDAI terms and conditions
-                  <span class="aadhaar-readmore__extra" hidden><br/>
-                    I/We hereby authorize BGIL, its representatives and service providers to carry out Aadhaar-based authentication/e-KYC through UIDAI using the Aadhaar/VID details and/or documents submitted by me/us including masked Aadhaar, Secure QR, e-Aadhaar, XML/Offline e-KYC. For this purpose, I/We consent to the collection, use, storage and processing of my/our identity and address details including name, address, DOB, gender, mobile/email and photograph. I/We understand that BGIL will share my/our Aadhaar number/VID and/or required demographic information with UIDAI solely for authentication/e-KYC, and UIDAI may return authentication/verification response and permitted e-KYC data to BGIL.
+                  <span class="aadhaar-readmore__extra" hidden><br />
+                    I/We hereby authorize BGIL, its representatives and service providers to carry out Aadhaar-based
+                    authentication/e-KYC through UIDAI using the Aadhaar/VID details and/or documents submitted by me/us
+                    including masked Aadhaar, Secure QR, e-Aadhaar, XML/Offline e-KYC. For this purpose, I/We consent to
+                    the collection, use, storage and processing of my/our identity and address details including name,
+                    address, DOB, gender, mobile/email and photograph. I/We understand that BGIL will share my/our
+                    Aadhaar number/VID and/or required demographic information with UIDAI solely for
+                    authentication/e-KYC, and UIDAI may return authentication/verification response and permitted e-KYC
+                    data to BGIL.
                   </span>
-                  <a href="#" class="aadhaar-readmore" id="aadhaar-readmore-toggle"
-                    aria-expanded="false">Read More</a>
+                  <a href="#" class="aadhaar-readmore" id="aadhaar-readmore-toggle" aria-expanded="false">Read More</a>
                 </span>
               </label>
             </div>
@@ -817,9 +823,9 @@
           </form>
         </div>
       </div>
-    
-      <div class="modal-backdrop aadhaar-leave-modal" id="aadhaar-leave-modal"
-          role="dialog" aria-modal="true" aria-labelledby="aadhaar-leave-title">
+
+      <div class="modal-backdrop aadhaar-leave-modal" id="aadhaar-leave-modal" role="dialog" aria-modal="true"
+        aria-labelledby="aadhaar-leave-title">
         <div class="modal modal-confirmation size-md">
           <div class="modal-header no-border">
             <div class="modal-header-icon modal-header-icon--warning">
@@ -831,17 +837,15 @@
             The details you entered may not be saved if you leave this page.
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary"
-                    id="aadhaar-leave-go-back" name="aadhaar-leave-go-back"
-                    data-action="leave-confirm" data-modal-close>Go Back</button>
-            <button type="button" class="btn btn-primary"
-                    id="aadhaar-leave-stay" name="aadhaar-leave-stay"
-                    data-action="close-modal" data-modal-close>Continue filling KYC</button>
+            <button type="button" class="btn btn-secondary" id="aadhaar-leave-go-back" name="aadhaar-leave-go-back"
+              data-action="leave-confirm" data-modal-close>Go Back</button>
+            <button type="button" class="btn btn-primary" id="aadhaar-leave-stay" name="aadhaar-leave-stay"
+              data-action="close-modal" data-modal-close>Continue filling KYC</button>
           </div>
         </div>
       </div>
     </section>
-    
+
     <!-- =========================================================================
         SCREEN: aadhaar-otp
         slug: aadhaar-otp
@@ -872,7 +876,7 @@
             Link expires in 12hr 32mins
           </span>
         </header>
-    
+
         <div class="aadhaar-body" id="otp-form-body">
           <form class="aadhaar-card" id="form-aadhaar-otp" novalidate>
             <div class="aadhaar-head">
@@ -882,12 +886,11 @@
                 Please follow the instructions below to complete KYC. This will only take a while.
               </p>
             </div>
-    
-            <a class="aadhaar-back" id="otp-back" data-action="open-modal:otp-leave-modal"
-              role="button" tabindex="0">
+
+            <a class="aadhaar-back" id="otp-back" data-action="open-modal:otp-leave-modal" role="button" tabindex="0">
               <i data-lucide="arrow-left"></i> Back
             </a>
-    
+
             <div class="aadhaar-details">
               <div class="aadhaar-details__head">
                 <h3 class="aadhaar-details__title">OTP Verification</h3>
@@ -895,17 +898,23 @@
                   We have sent an OTP to your Aadhaar-linked mobile number
                 </p>
               </div>
-    
+
               <div class="aadhaar-otp-container">
                 <div class="aadhaar-field">
                   <span class="aadhaar-field__label">Enter 6-digit OTP</span>
                   <div class="aadhaar-otp" data-otp>
-                    <input class="aadhaar-otp__box" id="otp-d1" name="otp-digit-1" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 1" />
-                    <input class="aadhaar-otp__box" id="otp-d2" name="otp-digit-2" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 2" />
-                    <input class="aadhaar-otp__box" id="otp-d3" name="otp-digit-3" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 3" />
-                    <input class="aadhaar-otp__box" id="otp-d4" name="otp-digit-4" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 4" />
-                    <input class="aadhaar-otp__box" id="otp-d5" name="otp-digit-5" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 5" />
-                    <input class="aadhaar-otp__box" id="otp-d6" name="otp-digit-6" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 6" />
+                    <input class="aadhaar-otp__box" id="otp-d1" name="otp-digit-1" type="tel" inputmode="numeric"
+                      maxlength="1" aria-label="Digit 1" />
+                    <input class="aadhaar-otp__box" id="otp-d2" name="otp-digit-2" type="tel" inputmode="numeric"
+                      maxlength="1" aria-label="Digit 2" />
+                    <input class="aadhaar-otp__box" id="otp-d3" name="otp-digit-3" type="tel" inputmode="numeric"
+                      maxlength="1" aria-label="Digit 3" />
+                    <input class="aadhaar-otp__box" id="otp-d4" name="otp-digit-4" type="tel" inputmode="numeric"
+                      maxlength="1" aria-label="Digit 4" />
+                    <input class="aadhaar-otp__box" id="otp-d5" name="otp-digit-5" type="tel" inputmode="numeric"
+                      maxlength="1" aria-label="Digit 5" />
+                    <input class="aadhaar-otp__box" id="otp-d6" name="otp-digit-6" type="tel" inputmode="numeric"
+                      maxlength="1" aria-label="Digit 6" />
                   </div>
                   <div class="aadhaar-otp__footer">
                     <p class="aadhaar-otp__error" id="otp-error" hidden>
@@ -915,7 +924,7 @@
                   </div>
                 </div>
               </div>
-    
+
             </div>
     
             <div class="submit-bar-mobile">
@@ -927,11 +936,31 @@
             </div>
           </form>
         </div>
-    
+
         <div class="aadhaar-body varifying-details-body" id="otp-verifying-body" hidden>
           <div class="aadhaar-card varifying-details-card">
             <div class="varifying-details__header">
-              <span class="varifying-details__spinner" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#paint0_angular_1240_21969_clip_path)" data-figma-skip-parse="true"><g transform="matrix(0.008 0 0 0.008 8 8)"><foreignObject x="-1083.33" y="-1083.33" width="2166.67" height="2166.67"><div xmlns="http://www.w3.org/1999/xhtml" style="background:conic-gradient(from 90deg,rgba(255,255,255,0.06) 0deg,rgba(51,65,85,1) 360deg);height:100%;width:100%;opacity:1"></div></foreignObject></g></g><path d="M8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0ZM8 1.33301C4.3181 1.33301 1.33301 4.3181 1.33301 8C1.33301 11.6819 4.3181 14.667 8 14.667C11.6819 14.667 14.667 11.6819 14.667 8C14.667 4.3181 11.6819 1.33301 8 1.33301Z" fill="url(#spinner-gradient)"/><defs><clipPath id="paint0_angular_1240_21969_clip_path"><path d="M8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0ZM8 1.33301C4.3181 1.33301 1.33301 4.3181 1.33301 8C1.33301 11.6819 4.3181 14.667 8 14.667C11.6819 14.667 14.667 11.6819 14.667 8C14.667 4.3181 11.6819 1.33301 8 1.33301Z"/></clipPath></defs></svg></span>
+              <span class="varifying-details__spinner" aria-hidden="true"><svg width="16" height="16"
+                  viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#paint0_angular_1240_21969_clip_path)" data-figma-skip-parse="true">
+                    <g transform="matrix(0.008 0 0 0.008 8 8)">
+                      <foreignObject x="-1083.33" y="-1083.33" width="2166.67" height="2166.67">
+                        <div xmlns="http://www.w3.org/1999/xhtml"
+                          style="background:conic-gradient(from 90deg,rgba(255,255,255,0.06) 0deg,rgba(51,65,85,1) 360deg);height:100%;width:100%;opacity:1">
+                        </div>
+                      </foreignObject>
+                    </g>
+                  </g>
+                  <path
+                    d="M8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0ZM8 1.33301C4.3181 1.33301 1.33301 4.3181 1.33301 8C1.33301 11.6819 4.3181 14.667 8 14.667C11.6819 14.667 14.667 11.6819 14.667 8C14.667 4.3181 11.6819 1.33301 8 1.33301Z"
+                    fill="url(#spinner-gradient)" />
+                  <defs>
+                    <clipPath id="paint0_angular_1240_21969_clip_path">
+                      <path
+                        d="M8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0ZM8 1.33301C4.3181 1.33301 1.33301 4.3181 1.33301 8C1.33301 11.6819 4.3181 14.667 8 14.667C11.6819 14.667 14.667 11.6819 14.667 8C14.667 4.3181 11.6819 1.33301 8 1.33301Z" />
+                    </clipPath>
+                  </defs>
+                </svg></span>
               <p class="varifying-details__title">Verifying your details through UIDAI</p>
             </div>
             <div class="varifying-details__progress-wrap">
@@ -945,14 +974,15 @@
             </div>
           </div>
           <p class="varifying-details-body-info">
-            Please keep your browser window open. This process usually takes less than 30 seconds to securely extract and verify your information.
+            Please keep your browser window open. This process usually takes less than 30 seconds to securely extract
+            and verify your information.
           </p>
         </div>
       </div>
-    
+
       <!-- Too-many-attempts modal (shown after 3 wrong OTPs) -->
-      <div class="modal-backdrop otp-maxattempts-modal" id="otp-maxattempts-modal"
-          role="dialog" aria-modal="true" aria-labelledby="otp-maxattempts-title">
+      <div class="modal-backdrop otp-maxattempts-modal" id="otp-maxattempts-modal" role="dialog" aria-modal="true"
+        aria-labelledby="otp-maxattempts-title">
         <div class="modal modal-confirmation size-md">
           <div class="modal-header no-border">
             <div class="modal-header-icon modal-header-icon--error">
@@ -961,18 +991,18 @@
             <h2 class="modal-title" id="otp-maxattempts-title">Too many attempts</h2>
           </div>
           <div class="modal-body">
-            We couldn't verify your Aadhaar with the OTP provided. Don't worry, you can still complete your KYC using another method.
+            We couldn't verify your Aadhaar with the OTP provided. Don't worry, you can still complete your KYC using
+            another method.
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary"
-                    id="otp-try-another" name="otp-try-another"
-                    data-action="close-modal">Try Another Method</button>
+            <button type="button" class="btn btn-primary" id="otp-try-another" name="otp-try-another"
+              data-action="close-modal">Try Another Method</button>
           </div>
         </div>
       </div>
-    
-      <div class="modal-backdrop aadhaar-leave-modal" id="otp-leave-modal"
-          role="dialog" aria-modal="true" aria-labelledby="otp-leave-title">
+
+      <div class="modal-backdrop aadhaar-leave-modal" id="otp-leave-modal" role="dialog" aria-modal="true"
+        aria-labelledby="otp-leave-title">
         <div class="modal modal-confirmation size-md">
           <div class="modal-header no-border">
             <div class="modal-header-icon modal-header-icon--warning">
@@ -984,17 +1014,15 @@
             The details you entered may not be saved if you leave this page.
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary"
-                    id="otp-leave-go-back" name="otp-leave-go-back"
-                    data-action="leave-confirm" data-modal-close>Go Back</button>
-            <button type="button" class="btn btn-primary"
-                    id="otp-leave-stay" name="otp-leave-stay"
-                    data-action="close-modal" data-modal-close>Continue filling KYC</button>
+            <button type="button" class="btn btn-secondary" id="otp-leave-go-back" name="otp-leave-go-back"
+              data-action="leave-confirm" data-modal-close>Go Back</button>
+            <button type="button" class="btn btn-primary" id="otp-leave-stay" name="otp-leave-stay"
+              data-action="close-modal" data-modal-close>Continue filling KYC</button>
           </div>
         </div>
       </div>
     </section>
-    
+
     <!-- =========================================================================
         SCREEN: aadhaar-review
         slug: aadhaar-review
@@ -1027,18 +1055,18 @@
             Link expires in 12hr 32mins
           </span>
         </header>
-    
+
         <div class="aadhaar-body review-body">
           <form class="aadhaar-card review-card" id="form-aadhaar-review" novalidate>
             <div class="aadhaar-head">
               <img class="aadhaar-logo" src="assets/img/aadhaar-logo.png" alt="Aadhaar" />
               <h1 class="aadhaar-title">Aadhaar eKYC</h1>
             </div>
-    
+
             <!-- Data review box -->
             <div class="aadhaar-details">
               <h2 class="review-title">Review &amp; Submit</h2>
-    
+
               <div class="toast toast-info review-info-toast" role="note">
                 <span class="toast-icon"><i data-lucide="info"></i></span>
                 <div class="toast-body">
@@ -1047,7 +1075,7 @@
                   </div>
                 </div>
               </div>
-    
+
               <div class="review-section">
                 <div class="review-section__bar">Personal Details</div>
                 <div class="review-grid">
@@ -1069,7 +1097,7 @@
                   </div>
                 </div>
               </div>
-    
+
               <div class="review-section">
                 <div class="review-section__bar">Address Details</div>
                 <div class="review-grid">
@@ -1091,7 +1119,7 @@
                   </div>
                 </div>
               </div>
-    
+
               <div class="review-section">
                 <div class="review-section__bar">Verification Documents</div>
                 <div class="review-grid">
@@ -1106,24 +1134,31 @@
                 </div>
               </div>
             </div>
-    
+
             <!-- Consent box -->
             <div class="review-consent-wrap">
               <h3 class="review-consent__title">Please confirm the following to proceed</h3>
               <label class="aadhaar-check">
                 <input type="checkbox" id="review-c1" name="review-consent-1" />
                 <span class="aadhaar-check__box" aria-hidden="true"></span>
-                <span class="aadhaar-check__label">I/We hereby consent to BGIL verifying the details provided by me/us for the purpose of KYC through independent and/or third-party sources, as may be required.</span>
+                <span class="aadhaar-check__label">I/We hereby consent to BGIL verifying the details provided by me/us
+                  for the purpose of KYC through independent and/or third-party sources, as may be required.</span>
               </label>
               <label class="aadhaar-check">
                 <input type="checkbox" id="review-c2" name="review-consent-2" />
                 <span class="aadhaar-check__box" aria-hidden="true"></span>
-                <span class="aadhaar-check__label">In case of change in KYC documents/status of any of the Applicant, the Applicant shall immediately inform BGIL regarding the said change and submit the revised KYC documents/ updated status to BGIL within 30 days of such change, failing which BGIL shall not be held responsible for any consequences, actions, claims, loss due to the said change in KYC.</span>
+                <span class="aadhaar-check__label">In case of change in KYC documents/status of any of the Applicant,
+                  the Applicant shall immediately inform BGIL regarding the said change and submit the revised KYC
+                  documents/ updated status to BGIL within 30 days of such change, failing which BGIL shall not be held
+                  responsible for any consequences, actions, claims, loss due to the said change in KYC.</span>
               </label>
               <label class="aadhaar-check">
                 <input type="checkbox" id="review-c3" name="review-consent-3" />
                 <span class="aadhaar-check__box" aria-hidden="true"></span>
-                <span class="aadhaar-check__label">I/We consent to BGIL updating/downloading my/our CKYC records with CERSAI/CKYCR using the CKYC Number (KIN) provided by me/us or shared data. I/We also consent to receiving CKYC-related communications from CERSAI via SMS/email on my/our registered contact details.</span>
+                <span class="aadhaar-check__label">I/We consent to BGIL updating/downloading my/our CKYC records with
+                  CERSAI/CKYCR using the CKYC Number (KIN) provided by me/us or shared data. I/We also consent to
+                  receiving CKYC-related communications from CERSAI via SMS/email on my/our registered contact
+                  details.</span>
               </label>
             </div>
 
@@ -1139,7 +1174,7 @@
         </div>
       </div>
     </section>
-    
+
     <!-- =========================================================================
         SCREEN: aadhaar-done
         slug: aadhaar-done
@@ -1170,13 +1205,12 @@
             Link expires in 12hr 32mins
           </span>
         </header>
-    
+
         <div class="aadhaar-body adone-body">
-    
+
           <div class="aadhaar-card adone-content">
             <div class="adone-content-wrap">
-              <img class="adone-illustration" src="assets/img/congo-avtar.png"
-                  alt="" aria-hidden="true" />
+              <img class="adone-illustration" src="assets/img/congo-avtar.png" alt="" aria-hidden="true" />
               <h1 class="adone-title">Congratulations! Your KYC is done.</h1>
               <p class="adone-subtitle">
                 You're all set to continue with your transaction. Here's a summary of your verification status:
@@ -1188,14 +1222,13 @@
                   <span class="adone-id-label">Your BGIL KYC ID</span>
                   <div class="adone-id-row">
                     <span class="adone-id-value">BGIL-KYC-MNPTT1N6</span>
-                    <button type="button" class="adone-copy-btn"
-                            id="adone-copy" name="adone-copy"
-                            data-action="copy-kyc-id" aria-label="Copy KYC ID">
+                    <button type="button" class="adone-copy-btn" id="adone-copy" name="adone-copy"
+                      data-action="copy-kyc-id" aria-label="Copy KYC ID">
                       <i data-lucide="copy" style="width:18px;height:18px;"></i>
                     </button>
                   </div>
                 </div>
-    
+
                 <div class="adone-rows">
                   <div class="adone-row">
                     <span class="adone-row__label">eKYC</span>
@@ -1221,11 +1254,91 @@
                 </div>
               </div>
             </div>
-    
+
             <div class="submit-bar-mobile">
-              <button type="button" class="btn btn-primary adone-btn"
-                      id="adone-back" name="adone-back"
-                      data-action="goto:initiation">
+              <button type="button" class="btn btn-primary adone-btn" id="adone-back" name="adone-back"
+                data-action="goto:initiation">
+              Back to Module
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ekyc-screen" id="screen-pan-done" data-screen="pan-done" hidden>
+      <div class="aadhaar-page">
+        <div class="kyc-bg" aria-hidden="true"></div>
+        <header class="kyc-header">
+          <div class="kyc-header__row">
+            <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+            <div class="kyc-header__agent">
+              <div class="kyc-agent-info">
+                <span class="kyc-agent-name">Rajesh Chaurasia</span>
+                <span class="kyc-agent-id">BA786314</span>
+              </div>
+              <div class="kyc-avatar">
+                <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
+                <span class="kyc-avatar__dot" aria-hidden="true"></span>
+              </div>
+            </div>
+          </div>
+          <span class="badge badge-sm badge-light badge-red">
+            <i data-lucide="alert-circle" style="width: 16px; height: 16px"></i>
+            Link expires in 12hr 32mins
+          </span>
+        </header>
+
+        <div class="aadhaar-body adone-body">
+
+          <div class="aadhaar-card adone-content">
+            <div class="adone-content-wrap">
+              <img class="adone-illustration" src="assets/img/congo-avtar.png" alt="" aria-hidden="true" />
+              <h1 class="adone-title">Congratulations! Your KYC is done.</h1>
+              <p class="adone-subtitle">
+                You're all set to continue with your transaction. Here's a summary of your verification status:
+              </p>
+            </div>
+            <div class="adone-card-wrap">
+              <div class="adone-card">
+                <div class="adone-id-wrap">
+                  <span class="adone-id-label">Your BGIL KYC ID</span>
+                  <div class="adone-id-row">
+                    <span class="adone-id-value">BGIL-KYC-MNPTT1N6</span>
+                    <button type="button" class="adone-copy-btn" id="adone-copy" name="adone-copy"
+                      data-action="copy-kyc-id" aria-label="Copy KYC ID">
+                      <i data-lucide="copy" style="width:18px;height:18px;"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="adone-rows">
+                  <div class="adone-row">
+                    <span class="adone-row__label">eKYC</span>
+                    <span class="adone-row__method">PAN Card</span>
+                    <span class="adone-row__status">
+                      <i data-lucide="check-circle" style="width:16px;height:16px;"></i> Success
+                    </span>
+                  </div>
+                  <div class="adone-row">
+                    <span class="adone-row__label">Proof of Identity</span>
+                    <span class="adone-row__method">PAN Card</span>
+                    <span class="adone-row__status">
+                      <i data-lucide="check-circle" style="width:16px;height:16px;"></i> Success
+                    </span>
+                  </div>
+                  <div class="adone-row">
+                    <span class="adone-row__label">Proof of Address</span>
+                    <span class="adone-row__method">Voter ID</span>
+                    <span class="adone-row__status">
+                      <i data-lucide="check-circle" style="width:16px;height:16px;"></i> Success
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-primary adone-btn" id="adone-back" name="adone-back"
+                data-action="goto:initiation">
                 Back to Module
               </button>
             </div>
@@ -1292,9 +1405,11 @@
                   <span id="pan-num-label">PAN Number</span><span class="pan-req">*</span>
                 </label>
                 <div class="form-input-wrapper">
-                  <input class="form-input" id="pan-num" type="tel" inputmode="numeric" maxlength="12"
-                    placeholder="Enter 12-digit pan Number" />
+                  <input class="form-input" id="pan-num" type="text" maxlength="10"
+                    placeholder="Enter 10-digit PAN Number" />
                 </div>
+                <p class="form-error">Invalid PAN Format. Must be 5 letters, 4 digits, 1 letter</p>
+
               </div>
 
               <!-- Mobile Number -->
@@ -1306,6 +1421,7 @@
                   <input class="form-input" id="pan-mobile" type="tel" inputmode="numeric" maxlength="10"
                     placeholder="Enter 10-digit mobile number" />
                 </div>
+                <p class="form-error">Incorrect mobile number</p>
                 <p class="pan-success" id="pan-mobile-success">
                   An OTP will be sent to this number for verification.
                 </p>
@@ -1411,7 +1527,7 @@
             </div>
 
             <!-- Back -->
-            <a class="pan-back" id="pan-otp-back" data-action="open-modal:pan-otp-leave-modal">
+            <a class="pan-back" id="pan-back" data-action="open-modal:pan-leave-modal">
               <i data-lucide="arrow-left"></i>
               Back
             </a>
@@ -1425,29 +1541,60 @@
                 </p>
               </div>
 
-              <div class="pan-field">
+              <div class="pan-field" id="pan-otp-field">
                 <div class="pan-field-container">
                   <span class="pan-field__label">Enter 6-digit OTP</span>
                   <div class="pan-otp" data-otp>
-                    <input class="pan-otp__box" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 1" />
-                    <input class="pan-otp__box" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 2" />
-                    <input class="pan-otp__box" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 3" />
-                    <input class="pan-otp__box" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 4" />
-                    <input class="pan-otp__box" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 5" />
-                    <input class="pan-otp__box" type="tel" inputmode="numeric" maxlength="1" aria-label="Digit 6" />
+                    <input class="pan-otp__box otp-input-box" type="tel" inputmode="numeric" maxlength="1"
+                      aria-label="Digit 1" />
+                    <input class="pan-otp__box otp-input-box" type="tel" inputmode="numeric" maxlength="1"
+                      aria-label="Digit 2" />
+                    <input class="pan-otp__box otp-input-box" type="tel" inputmode="numeric" maxlength="1"
+                      aria-label="Digit 3" />
+                    <input class="pan-otp__box otp-input-box" type="tel" inputmode="numeric" maxlength="1"
+                      aria-label="Digit 4" />
+                    <input class="pan-otp__box otp-input-box" type="tel" inputmode="numeric" maxlength="1"
+                      aria-label="Digit 5" />
+                    <input class="pan-otp__box otp-input-box" type="tel" inputmode="numeric" maxlength="1"
+                      aria-label="Digit 6" />
                   </div>
-                  <a href="#" class="pan-resend" id="pan-resend">Resend OTP</a>
+                  <div class="otp-footer">
+                    <p id="pan-otp-error" class="otp-hint" style="display:none;">
+                      OTP does not match. You have 2 attempts left.
+                    </p>
+
+                    <a href="#" class="pan-resend" id="pan-resend">
+                      Resend OTP
+                    </a>
+                  </div>
                 </div>
-
               </div>
-
-
             </div>
-
             <!-- Verify OTP -->
             <button type="button" class="btn btn-primary pan-submit" id="pan-verify" disabled>
               Verify OTP
             </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-backdrop otp-maxattempts-modal" id="otp-maxattempts-modal" role="dialog" aria-modal="true"
+        aria-labelledby="otp-maxattempts-title">
+        <div class="modal modal-confirmation size-md">
+          <div class="modal-header no-border">
+            <div class="modal-header-icon modal-header-icon--error">
+              <i data-lucide="x-circle"></i>
+            </div>
+            <h2 class="modal-title" id="otp-maxattempts-title">Too many attempts</h2>
+          </div>
+          <div class="modal-body">
+            We couldn't verify your Aadhaar with the OTP provided. Don't worry, you can still complete your KYC
+            using
+            another method.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="otp-try-another" name="otp-try-another"
+              data-action="close-modal">Try Another Method</button>
           </div>
         </div>
       </div>
@@ -1702,6 +1849,60 @@
         </div>
 
       </div>
+      <div class="modal-backdrop" id="reupload-modal" role="dialog" aria-modal="true" aria-labelledby="reupload-title">
+        <div class="modal modal-confirmation size-md reupload-modal">
+          <div class="modal-header no-border">
+            <div class="modal-header-icon modal-header-icon--warning">
+              <i data-lucide="upload"></i>
+            </div>
+
+            <h2 class="modal-title" id="reupload-title">
+              Re-upload Document?
+            </h2>
+          </div>
+
+          <div class="modal-body"></div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-action="close-modal">
+              Cancel
+            </button>
+
+            <button type="button" class="btn btn-primary" id="confirm-reupload">
+              Re-upload
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-backdrop" id="document-error-modal" role="dialog" aria-modal="true"
+        aria-labelledby="document-error-title">
+        <div class="modal modal-confirmation size-md document-error-modal">
+          <div class="modal-header no-border">
+            <div class="modal-header-icon modal-header-icon--error">
+              <i data-lucide="circle-x"></i>
+            </div>
+
+            <h2 class="modal-title" id="document-error-title">
+              We couldn't read your document
+            </h2>
+          </div>
+
+          <div class="modal-body" id="document-error-message">
+            Your file is a bit unclear. Please upload a clearer image or PDF.
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-action="close-modal">
+              Try another method
+            </button>
+
+            <button type="button" class="btn btn-primary" id="document-error-reupload">
+              Re-upload
+            </button>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="ekyc-screen" id="screen-document-scanning" data-screen="document-scanning" hidden>
@@ -1810,7 +2011,7 @@
               </h1>
             </div>
 
-            <div class="pan-sub-card review-card">
+            <div class="review-content">
 
               <div class="review-title">
                 Review & Submit
@@ -1941,36 +2142,48 @@
 
             <!-- Consents -->
 
-            <div class="pan-sub-card review-consent-card">
+            <div class="review-consent-card" id="review-consents">
 
               <div class="review-consent-title">
                 Please confirm the following to proceed
               </div>
 
-              <label class="checkbox">
-                <input type="checkbox" />
-                I/We hereby consent to BGIL verifying the details provided by me/us for the purpose of KYC through
-                independent and/or third-party sources, as may be required.
+              <label class="pan-check">
+                <input type="checkbox" class="review-consent-checkbox" />
+                <span class="pan-check__box" aria-hidden="true"></span>
+
+                <span class="pan-check__label">
+                  I/We hereby consent to BGIL verifying the details provided by me/us for the purpose of KYC through
+                  independent and/or third-party sources, as may be required.
+                </span>
               </label>
 
-              <label class="checkbox">
-                <input type="checkbox" />
-                In case of change in KYC documents/status of any of the Applicant, the Applicant shall immediately
-                inform BGIL regarding the said change and submit the revised KYC documents/ updated status to BGIL
-                within 30 days of such change, failing which BGIL shall not be held responsible for any consequences,
-                actions, claims, loss due to the said change in KYC.
+              <label class="pan-check">
+                <input type="checkbox" class="review-consent-checkbox" />
+                <span class="pan-check__box" aria-hidden="true"></span>
+
+                <span class="pan-check__label">
+                  In case of change in KYC documents/status of any of the Applicant, the Applicant shall immediately
+                  inform BGIL regarding the said change and submit the revised KYC documents/updated status to BGIL
+                  within 30 days of such change, failing which BGIL shall not be held responsible for any consequences,
+                  actions, claims, loss due to the said change in KYC.
+                </span>
               </label>
 
-              <label class="checkbox">
-                <input type="checkbox" />
-                I/We consent to BGIL updating/downloading my/our CKYC records with CERSAI/CKYCR using the CKYC Number
-                (KIN) provided by me/us or shared data. I/We also consent to receiving CKYC-related communications from
-                CERSAI via SMS/email on my/our registered contact details.
+              <label class="pan-check">
+                <input type="checkbox" class="review-consent-checkbox" />
+                <span class="pan-check__box" aria-hidden="true"></span>
+
+                <span class="pan-check__label">
+                  I/We consent to BGIL updating/downloading my/our CKYC records with CERSAI/CKYCR using the CKYC Number
+                  (KIN) provided by me/us or shared data. I/We also consent to receiving CKYC-related communications
+                  from CERSAI via SMS/email on my/our registered contact details.
+                </span>
               </label>
 
             </div>
 
-            <button type="button" class="btn btn-primary pan-submit" disabled>
+            <button type="button" class="btn btn-primary pan-submit" id="confirm-submit-btn">
               Confirm & Submit
             </button>
 
@@ -2159,6 +2372,7 @@
   <script src="assets/atlas/atlas.js"></script>
   <script src="js/app.js"></script>
   <script src="js/kyc-aadhaar.js"></script>
+  <script src="js/kyc-pan.js"></script>
 
   <!-- ===== Inline SPA router + per-screen logic =================================
      The router maintains a screen stack, exposes window.ekyc, and dispatches
@@ -2174,7 +2388,7 @@
         'initiation', 'send-link', 'send-link-sent',
         'landing', 'aadhaar', 'aadhaar-otp', 'aadhaar-review', 'aadhaar-done',
         'pan', 'pan-otp', 'pan-verifying', 'pan-address-proof', 'document-scanning',
-        'review-submit',
+        'review-submit', 'pan-done',
         'face-scan', 'face-scan-misaligned', 'success'
       ];
 
@@ -2230,6 +2444,10 @@
           show('initiation', { pop: true });
         }
       }
+
+      window.show = show;
+      window.goto = goto;
+      window.back = back;
 
       window.ekyc = {
         goto: goto, back: back,
@@ -2412,7 +2630,8 @@
       /* =========================================================================
          Per-screen init functions (ported from js/<page>.js, re-scoped to screen)
          ========================================================================= */
-      var INITS = {};
+      window.INITS = window.INITS || {};
+      var INITS = window.INITS;
 
       /* ----- Aadhaar flow (delegated to js/kyc-aadhaar.js) ----- */
       var aadhaarModule = window.ekycAadhaar.init({ goto: goto, openModal: openModal, $: $, $$: $$, screenEl: screenEl });
@@ -2530,207 +2749,7 @@
 
       // aadhaar + aadhaar-otp INITs live in js/kyc-aadhaar.js
 
-      /* ---- initScreen_PAN ---- */
-      INITS['pan'] = function () {
-        var root = screenEl('pan');
-        if (!root || root.dataset.inited) return;
-        root.dataset.inited = '1';
 
-        var panInput = root.querySelector('#pan-num');
-        var mobile = root.querySelector('#pan-mobile');
-        var submit = root.querySelector('#pan-submit');
-
-        var SECURITY_ANSWER = '14';
-
-        var security = root.querySelector('#pan-sec');
-        var consent1 = root.querySelector('#pan-c1');
-        var consent2 = root.querySelector('#pan-c2');
-        var card = root.querySelector('.pan-card');
-
-        function isPanValid() {
-          return /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(
-            (panInput.value || '').trim()
-          );
-        }
-
-        function isMobileValid() {
-          return /^\d{10}$/.test(
-            (mobile.value || '').trim()
-          );
-        }
-
-        function isSecurityValid() {
-          return security &&
-            (security.value || '').trim() === SECURITY_ANSWER;
-        }
-
-        function isConsented() {
-          return consent1 &&
-            consent2 &&
-            consent1.checked &&
-            consent2.checked;
-        }
-
-        function fieldOf(el) {
-          return el ? el.closest('.form-field') : null;
-        }
-
-        function setValid(el, ok) {
-          var field = fieldOf(el);
-          if (field) {
-            field.classList.toggle('is-valid', !!ok);
-          }
-        }
-
-        function validate() {
-          setValid(panInput, isPanValid());
-          setValid(mobile, isMobileValid());
-          setValid(security, isSecurityValid());
-
-          var extended = isPanValid() && isMobileValid();
-
-          if (card) {
-            card.classList.toggle('is-extended', extended);
-          }
-
-          if (submit) {
-            submit.disabled = !(
-              extended &&
-              isSecurityValid() &&
-              isConsented()
-            );
-          }
-        }
-
-        if (panInput) {
-          panInput.addEventListener('input', function () {
-            panInput.value = panInput.value
-              .toUpperCase()
-              .replace(/[^A-Z0-9]/g, '')
-              .slice(0, 10);
-
-            validate();
-          });
-        }
-
-        if (mobile) {
-          mobile.addEventListener('input', function () {
-            mobile.value = mobile.value
-              .replace(/\D/g, '')
-              .slice(0, 10);
-
-            validate();
-          });
-        }
-
-        if (security) {
-          security.addEventListener('input', function () {
-            security.value = security.value
-              .replace(/\D/g, '')
-              .slice(0, 3);
-
-            validate();
-          });
-        }
-
-        if (consent1) {
-          consent1.addEventListener('change', validate);
-        }
-
-        if (consent2) {
-          consent2.addEventListener('change', validate);
-        }
-
-        if (submit) {
-          submit.addEventListener('click', function () {
-            if (submit.disabled) return;
-
-            console.log('PAN Verification', {
-              pan: panInput.value,
-              mobile: mobile.value
-            });
-
-            // Navigate to next step
-            goto('pan-otp'); // replace with pan-otp if you create one
-          });
-        }
-
-        validate();
-      };
-
-      INITS['pan-otp'] = function () {
-        var root = screenEl('pan-otp');
-        if (!root || root.dataset.inited) return;
-        root.dataset.inited = '1';
-
-        var boxes = Array.from(
-          root.querySelectorAll('.pan-otp__box')
-        );
-
-        var verifyBtn = root.querySelector('#pan-verify');
-        var resendBtn = root.querySelector('#pan-resend');
-
-        function updateButton() {
-          var otp = boxes.map(function (b) {
-            return b.value;
-          }).join('');
-
-          verifyBtn.disabled = otp.length !== 6;
-        }
-
-        boxes.forEach(function (box, index) {
-          box.addEventListener('input', function () {
-            box.value = box.value.replace(/\D/g, '').slice(0, 1);
-
-            if (box.value && boxes[index + 1]) {
-              boxes[index + 1].focus();
-            }
-
-            updateButton();
-          });
-
-          box.addEventListener('keydown', function (e) {
-            if (
-              e.key === 'Backspace' &&
-              !box.value &&
-              boxes[index - 1]
-            ) {
-              boxes[index - 1].focus();
-            }
-          });
-        });
-
-        if (resendBtn) {
-          resendBtn.addEventListener('click', function (e) {
-            e.preventDefault();
-
-            boxes.forEach(function (box) {
-              box.value = '';
-            });
-
-            verifyBtn.disabled = true;
-            boxes[0].focus();
-
-            console.log('PAN OTP resent');
-          });
-        }
-
-        if (verifyBtn) {
-          verifyBtn.addEventListener('click', function () {
-            if (verifyBtn.disabled) return;
-
-            var otp = boxes.map(function (b) {
-              return b.value;
-            }).join('');
-
-            console.log('PAN OTP Verified:', otp);
-
-            goto('pan-verifying');
-          });
-        }
-
-        updateButton();
-      };
 
       INITS['pan-verifying'] = function () {
         var root = screenEl('pan-verifying');
@@ -2761,138 +2780,7 @@
 
         }, 400);
       };
-      INITS['pan-address-proof'] = function () {
-        var root = screenEl('pan-address-proof');
-        if (!root || root.dataset.inited) return;
 
-        root.dataset.inited = '1';
-
-        var dropdown = root.querySelector('.dropdown-input-wrapper');
-        var menu = root.querySelector('#document-type-menu');
-        var value =
-          root.querySelector('.dropdown-input-value') ||
-          root.querySelector('.dropdown-input-placeholder');
-
-        if (!dropdown || !menu || !value) return;
-
-        menu.querySelectorAll('.dropdown-menu-item')
-          .forEach(function (item) {
-            item.addEventListener('click', function () {
-
-              value.textContent = item.dataset.value;
-
-              value.classList.remove('dropdown-input-placeholder');
-              value.classList.add('dropdown-input-value');
-
-              menu.classList.remove('dropdown-menu--open');
-            });
-          });
-
-        dropdown.addEventListener('click', function (e) {
-          e.stopPropagation();
-
-          var rect = dropdown.getBoundingClientRect();
-
-          menu.style.left = rect.left + 'px';
-          menu.style.top = (rect.bottom + 4) + 'px';
-          menu.style.width = rect.width + 'px';
-
-          menu.classList.toggle('dropdown-menu--open');
-        });
-
-
-        var fileInput = root.querySelector('#address-proof-file');
-        var dropzone = root.querySelector('#address-proof-dropzone');
-
-        var successRow = root.querySelector('#upload-success-row');
-        var fileName = root.querySelector('#upload-file-name');
-        var reuploadBtn = root.querySelector('#reupload-btn');
-
-        var proceedBtn = root.querySelector('.pan-submit');
-
-        var preview = root.querySelector('#upload-preview');
-        var previewImage = root.querySelector('#upload-preview-image');
-        var placeholder = root.querySelector('#upload-placeholder');
-
-
-        function handleFile(file) {
-          if (!file) return;
-
-          fileName.textContent =
-            file.name + ' uploaded successfully';
-
-          successRow.hidden = false;
-
-          placeholder.style.display = 'none';
-          preview.style.display = 'flex';
-
-          if (proceedBtn) {
-            proceedBtn.disabled = false;
-            proceedBtn.addEventListener('click', function () {
-              if (proceedBtn.disabled) return;
-
-              goto('document-scanning');
-            });
-          }
-
-          if (file.type.startsWith('image/')) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-              previewImage.src = e.target.result;
-            };
-
-            reader.readAsDataURL(file);
-          }
-        }
-
-        dropzone.addEventListener('click', function () {
-          fileInput.click();
-        });
-
-        fileInput.addEventListener('change', function () {
-          if (fileInput.files.length) {
-            handleFile(fileInput.files[0]);
-          }
-        });
-
-        dropzone.addEventListener('dragover', function (e) {
-          e.preventDefault();
-
-          dropzone.classList.add(
-            'atlas-drag-drop--is-dragging'
-          );
-        });
-
-        dropzone.addEventListener('dragleave', function () {
-          dropzone.classList.remove(
-            'atlas-drag-drop--is-dragging'
-          );
-        });
-
-        dropzone.addEventListener('drop', function (e) {
-          e.preventDefault();
-
-          dropzone.classList.remove(
-            'atlas-drag-drop--is-dragging'
-          );
-
-          var file = e.dataTransfer.files[0];
-
-          handleFile(file);
-        });
-
-        reuploadBtn.addEventListener('click', function () {
-          fileInput.value = '';
-
-          placeholder.style.display = 'flex';
-          preview.style.display = 'none';
-
-          previewImage.src = '';
-
-          fileInput.click();
-        });
-      };
 
       INITS['document-scanning'] = function () {
         var root = screenEl('document-scanning');

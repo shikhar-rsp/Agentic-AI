@@ -17,6 +17,7 @@
         flex-direction: column;
         gap: 12px;
         position: relative;
+
     }
 
     /* Gold/orange decorative banner — shown on both mobile and web */
@@ -113,6 +114,8 @@
         display: flex;
         flex-direction: column;
         gap: 16px;
+
+
     }
 
     .pan-details__head {
@@ -139,26 +142,34 @@
     }
 
     /* ---- Field wrapper ---- */
-    .pan-field {
+    .pan-field .otp-field {
         display: flex;
         flex-direction: column;
         gap: 8px;
         width: 100%;
-        justify-content: center;
         align-items: center;
+
     }
 
     .pan-field-container {
         display: flex;
         flex-direction: column;
-        width: fit-content;
         gap: 8px;
+        width: 100%;
+        max-width: 424px;
+        margin: 0 auto;
     }
 
     .pan-field__label {
         font: 400 14px/20px 'Rubik', sans-serif;
         color: var(--color-neutral-700);
 
+    }
+
+
+
+    #pan-otp-field.is-error .otp-hint {
+        color: #B91C1C !important;
     }
 
     /* ---- Radio buttons (verification type) ----
@@ -336,7 +347,7 @@
     height: 20px;
     border-radius: 50%;
     background:
-        var(--color-emerald-600) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>") center / 12px no-repeat;
+        #65A30D url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>") center / 12px no-repeat;
     pointer-events: none;
     z-index: 2;
 }
@@ -692,8 +703,8 @@
         border-radius: 8px;
     }
 
-    .review-card {
-        padding: 16px;
+    .review-content {
+        padding: 20px;
         border: 1px solid #E2E8F0;
         border-radius: 8px;
         background: #FFFFFF;
@@ -704,7 +715,7 @@
 
     .review-title {
         color: #1E293B;
-        font: 600 18px/28px 'Rubik', sans-serif;
+        font: 600 20px 'Rubik', sans-serif;
     }
 
     .review-info-banner {
@@ -712,18 +723,18 @@
         align-items: center;
         gap: 8px;
 
-        padding: 10px 12px;
+        padding: 8px;
 
         background: #EFF6FF;
-        border-radius: 4px;
+        border-radius: 8px;
 
         color: #334155;
-        font: 400 12px/16px 'Rubik', sans-serif;
+        font: 400 14px/16px 'Rubik', sans-serif;
     }
 
     .review-info-banner svg {
-        width: 16px;
-        height: 16px;
+        width: 24px;
+        height: 24px;
         color: #2563EB;
         flex-shrink: 0;
     }
@@ -736,48 +747,45 @@
 
     .review-section__header {
         background: #EFF6FF;
-        border-radius: 4px;
+        border-radius: 8px;
 
-        padding: 8px 12px;
+        padding: 12px;
 
-        color: #334155;
-        font: 500 14px/20px 'Rubik', sans-serif;
+        color: #1E293B;
+        font: 500 16px/24px 'Rubik', sans-serif;
     }
 
     .review-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 16px 24px;
-        padding: 0 4px;
+        padding: 0 3px;
+        margin-bottom: 8px;
     }
 
     .review-label {
-        color: #64748B;
-        font: 400 12px/16px 'Rubik', sans-serif;
-
-        margin-bottom: 2px;
+        color: #475569;
+        font: 400 14px/20px 'Rubik', sans-serif;
     }
 
     .review-value {
         color: #1E293B;
-        font: 500 14px/20px 'Rubik', sans-serif;
+        font: 500 14px 'Rubik', sans-serif;
 
         word-break: break-word;
     }
 
     .review-consent-card {
-        margin-top: 8px;
 
-        padding: 16px;
+        padding: 12px;
 
         border: 1px solid #E2E8F0;
         border-radius: 8px;
 
-        background: #FFFFFF;
 
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 8px;
     }
 
     .review-consent-title {
@@ -796,15 +804,53 @@
         cursor: pointer;
     }
 
-    .review-consent-card .checkbox input {
-        margin-top: 2px;
-        flex-shrink: 0;
-    }
-
     .review-submit-btn,
     .pan-submit {
         margin-top: 16px;
     }
+
+    .otp-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 8px;
+        gap: 12px;
+    }
+
+    .otp-footer .otp-hint {
+        margin: 0;
+        flex: 1;
+    }
+
+    .otp-footer .pan-resend {
+        margin-left: auto;
+        white-space: nowrap;
+    }
+
+    .reupload-modal {
+        overflow: visible;
+        max-height: none;
+    }
+
+    .reupload-modal .modal-body {
+        overflow: visible;
+        max-height: none;
+    }
+
+    .reupload-modal,
+    .reupload-modal .modal-body,
+    .reupload-modal .modal-content {
+        overflow: visible !important;
+        max-height: none !important;
+        height: auto !important;
+    }
+
+
+    .modal-backdrop.is-open {
+        display: flex;
+    }
+
 
     @media (max-width: 640px) {
         .review-grid {
