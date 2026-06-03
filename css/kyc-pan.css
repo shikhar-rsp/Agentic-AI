@@ -642,10 +642,10 @@
         font-weight: 400;
         font-size: 14px;
         color: #475569;
+        margin-bottom: 32px;
     }
 
     .dropdown-input-container {
-        margin-top: 32px;
         width: 100% !important;
 
     }

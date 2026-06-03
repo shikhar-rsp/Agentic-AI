@@ -1,0 +1,17 @@
+
+
+@layer app {
+
+
+    
+    .document-upload-bg {
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 280px;
+        background: #6EE7B7 url('../assets/img/kyc_doc-frame.png') top center / cover no-repeat;
+        overflow: hidden;
+        z-index: 0;
+    }
+
+
+}

@@ -126,6 +126,7 @@
   <link rel="stylesheet" href="css/kyc-pan.css" />
   <link rel="stylesheet" href="css/kyc-aadhaar.css" />
   <link rel="stylesheet" href="css/kyc-success.css" />
+  <link rel="stylesheet" href="css/kyc-document-upload.css" />
 
   <style>
     /* ===== Journey-level SPA chrome ===== */
@@ -662,15 +663,14 @@
             </div>
 
             <div class="submit-bar-mobile kyc-proceed-wrap ">
-              <button type="button" class="btn btn-primary kyc-proceed-btn"
-                      id="landing-proceed-btn" name="landing-proceed-btn"
-                      data-action="select-method:aadhaar">
+              <button type="button" class="btn btn-primary kyc-proceed-btn" id="landing-proceed-btn"
+                name="landing-proceed-btn" data-action="select-method:aadhaar">
                 <span id="landing-proceed-label">Proceed with Aadhaar eKYC</span>
                 <i data-lucide="arrow-right"></i>
               </button>
             </div>
 
-          <div class="toast toast-info kyc-info" role="status">
+            <div class="toast toast-info kyc-info" role="status">
               <span class="toast-icon"><i data-lucide="info"></i></span>
               <div class="toast-body">
                 <div class="toast-content">
@@ -855,11 +855,10 @@
                 </span>
               </label>
             </div>
-    
+
             <div class="submit-bar-mobile">
-              <button type="button" class="btn btn-primary aadhaar-submit"
-                      id="aadhaar-submit" name="aadhaar-submit"
-                      data-action="submit:aadhaar" disabled>
+              <button type="button" class="btn btn-primary aadhaar-submit" id="aadhaar-submit" name="aadhaar-submit"
+                data-action="submit:aadhaar" disabled>
                 Send OTP
               </button>
             </div>
@@ -969,11 +968,10 @@
               </div>
 
             </div>
-    
+
             <div class="submit-bar-mobile">
-              <button type="button" class="btn btn-primary aadhaar-submit"
-                      id="otp-verify" name="otp-verify"
-                      data-action="submit:aadhaar-otp" disabled>
+              <button type="button" class="btn btn-primary aadhaar-submit" id="otp-verify" name="otp-verify"
+                data-action="submit:aadhaar-otp" disabled>
                 Verify OTP
               </button>
             </div>
@@ -1206,13 +1204,12 @@
             </div>
 
             <div class="submit-bar-mobile">
-              <button type="button" class="btn btn-primary aadhaar-submit"
-                      id="review-submit" name="review-submit"
-                      data-action="submit:aadhaar-review" disabled>
+              <button type="button" class="btn btn-primary aadhaar-submit" id="review-submit" name="review-submit"
+                data-action="submit:aadhaar-review" disabled>
                 Confirm &amp; Submit
               </button>
             </div>
-    
+
           </form>
         </div>
       </div>
@@ -1301,11 +1298,11 @@
             <div class="submit-bar-mobile">
               <button type="button" class="btn btn-primary adone-btn" id="adone-back" name="adone-back"
                 data-action="goto:initiation">
-              Back to Module
-            </button>
+                Back to Module
+              </button>
+            </div>
           </div>
         </div>
-      </div>
     </section>
 
     <section class="ekyc-screen" id="screen-pan-done" data-screen="pan-done" hidden>
@@ -1381,12 +1378,12 @@
             </div>
 
             <button type="button" class="btn btn-primary adone-btn" id="adone-back" name="adone-back"
-                data-action="goto:initiation">
-                Back to Module
-              </button>
-            </div>
+              data-action="goto:initiation">
+              Back to Module
+            </button>
           </div>
         </div>
+      </div>
       </div>
     </section>
 
@@ -2238,6 +2235,463 @@
     </section>
 
     <!-- =========================================================================
+     SCREEN: document-upload
+     slug: document-upload
+     ========================================================================= -->
+    <section class="ekyc-screen" id="screen-document-upload" data-screen="document-upload" hidden>
+      <div class="pan-page">
+        <div class="document-upload-bg" aria-hidden="true"></div>
+
+        <header class="kyc-header">
+          <div class="kyc-header__row">
+            <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+            <div class="kyc-header__agent">
+              <div class="kyc-agent-info">
+                <span class="kyc-agent-name">Rajesh Chaurasia</span>
+                <span class="kyc-agent-id">BA786314</span>
+              </div>
+              <div class="kyc-avatar">
+                <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
+                <span class="kyc-avatar__dot" aria-hidden="true"></span>
+              </div>
+            </div>
+          </div>
+
+          <span class="badge badge-sm badge-light badge-red">
+            <i data-lucide="alert-circle" style="width:16px;height:16px"></i>
+            Link expires in 12hr 32mins
+          </span>
+        </header>
+
+        <div class="pan-body">
+          <div class="pan-card">
+
+            <div class="pan-head">
+              <img class="pan-logo" src="assets/img/doc-icon.svg" alt="Document Upload" />
+              <h1 class="pan-title">Document Upload</h1>
+              <p class="pan-subtitle">
+                Upload a valid government-issued document to complete KYC verification.
+              </p>
+            </div>
+
+            <a class="pan-back" data-action="goto:landing">
+              <i data-lucide="arrow-left"></i>
+              Back
+            </a>
+
+            <div class="pan-details">
+              <div class="pan-details__head">
+                <h3 class="pan-details__title">Upload Document</h3>
+                <p class="pan-details__hint">
+                  Make sure the uploaded document is clear, valid and fully visible.
+                </p>
+              </div>
+
+              <div class="dropdown-input-container">
+                <label class="dropdown-input-label">
+                  Document Type <span class="pan-req">*</span>
+                </label>
+
+                <div class="dropdown-input-wrapper" id="doc-upload-dropdown">
+                  <span class="dropdown-input-placeholder" id="doc-upload-value">
+                    eg. Aadhaar Card
+                  </span>
+
+                  <span class="dropdown-input-chevron">
+                    <i data-lucide="chevron-down"></i>
+                  </span>
+                </div>
+
+                <div class="dropdown-menu" id="doc-upload-menu">
+                  <button type="button" class="dropdown-menu-item" data-value="Aadhaar Card">
+                    <div class="dropdown-menu-item__content">
+                      <span class="dropdown-menu-item__text">Aadhaar Card</span>
+                    </div>
+                  </button>
+
+                  <button type="button" class="dropdown-menu-item" data-value="Pan Card">
+                    <div class="dropdown-menu-item__content">
+                      <span class="dropdown-menu-item__text">Pan Card</span>
+                    </div>
+                  </button>
+
+                </div>
+              </div>
+
+              <div class="atlas-drag-drop-wrapper" id="document-upload-container" hidden>
+                <label class="atlas-drag-drop-label">
+                  Aadhar Card Document
+                </label>
+
+                <input type="file" id="document-file" accept=".pdf,.jpg,.jpeg,.png" hidden />
+
+                <div class="atlas-drag-drop" id="document-dropzone">
+                  <div class="upload-preview" id="document-preview">
+                    <img id="document-preview-image" alt="Uploaded document" />
+                  </div>
+
+                  <div class="atlas-drag-drop-content" id="document-placeholder">
+                    <div class="atlas-drag-drop-icon-container">
+                      <i data-lucide="upload"></i>
+                    </div>
+
+                    <div class="atlas-drag-drop-text-container">
+                      <div class="atlas-drag-drop-header">
+                        Click or drag to upload
+                      </div>
+
+                      <div class="atlas-drag-drop-support">
+                        PDF, JPG or PNG (Max 10MB)
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="upload-success-row" id="document-success-row" hidden>
+                  <span class="upload-success-name" id="document-file-name"></span>
+
+                  <button type="button" class="btn-link" id="document-reupload-btn">
+                    Re-upload
+                  </button>
+                </div>
+              </div>
+
+
+
+            </div>
+
+            <div class="aadhaar-consent aadhaar-extra" id="document-consent" hidden>
+              <h3 class="aadhaar-consent__title">
+                Please confirm the following to proceed
+              </h3>
+
+              <label class="aadhaar-check">
+                <input type="checkbox" id="document-c1" />
+                <span class="aadhaar-check__box" aria-hidden="true"></span>
+                <span class="aadhaar-check__label">
+                  I/We hereby authorize BGIL to use the uploaded document
+                  for identity and address verification.
+                </span>
+              </label>
+
+              <label class="aadhaar-check">
+                <input type="checkbox" id="document-c2" />
+                <span class="aadhaar-check__box" aria-hidden="true"></span>
+                <span class="aadhaar-check__label">
+                  I confirm that the uploaded document is valid, belongs to me,
+                  and the information provided is accurate.
+                </span>
+              </label>
+            </div>
+
+            <div class="submit-bar-mobile">
+              <button type="button" class="btn btn-primary pan-submit" id="document-upload-submit" disabled>
+                Submit for verification
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ekyc-screen" id="screen-document-verifying" data-screen="document-verifying" hidden>
+      <div class="pan-page">
+        <div class="document-upload-bg" aria-hidden="true"></div>
+
+        <!-- Header -->
+        <header class="kyc-header">
+          <div class="kyc-header__row">
+            <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+
+            <div class="kyc-header__agent">
+              <div class="kyc-agent-info">
+                <span class="kyc-agent-name">Rajesh Chaurasia</span>
+                <span class="kyc-agent-id">BA786314</span>
+              </div>
+
+              <div class="kyc-avatar">
+                <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
+                <span class="kyc-avatar__dot" aria-hidden="true"></span>
+              </div>
+            </div>
+          </div>
+
+          <span class="badge badge-sm badge-light badge-red">
+            <i data-lucide="alert-circle" style="width:16px;height:16px"></i>
+            Link expires in 12hr 32mins
+          </span>
+        </header>
+
+        <div class="pan-body">
+          <div class="pan-card pan-verifying-card">
+
+            <div class="pan-verifying">
+
+              <h2 class="pan-verifying__title">
+                Verifying your document
+              </h2>
+
+              <div class="pan-verifying__loader">
+                <span class="loader"></span>
+                <span>Verifying uploaded document</span>
+              </div>
+
+              <div class="pan-verifying__progress">
+
+                <div class="progress" id="document-verify-progress">
+                  <div class="progress-header">
+                    <span class="progress-label" id="document-verify-text">
+                      Processing document...
+                    </span>
+
+                    <span class="progress-value" id="document-verify-percent">
+                      50%
+                    </span>
+                  </div>
+
+                  <div class="progress-track">
+                    <div class="progress-fill" id="document-verify-progress-fill" style="width:50%"></div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="pan-verifying-note">
+            Please keep your browser window open. This process usually
+            takes less than 30 seconds to securely verify your uploaded
+            document.
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="ekyc-screen" id="screen-document-review-submit" data-screen="document-review-submit" hidden>
+      <div class="pan-page">
+        <div class="document-upload-bg"></div>
+
+        <!-- ============ Header ============ -->
+        <header class="kyc-header">
+          <div class="kyc-header__row">
+            <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+            <div class="kyc-header__agent">
+              <div class="kyc-agent-info">
+                <span class="kyc-agent-name">Rajesh Chaurasia</span>
+                <span class="kyc-agent-id">BA786314</span>
+              </div>
+              <div class="kyc-avatar">
+                <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
+                <span class="kyc-avatar__dot" aria-hidden="true"></span>
+              </div>
+            </div>
+          </div>
+          <span class="badge badge-sm badge-light badge-red">
+            <i data-lucide="alert-circle" style="width: 16px; height: 16px"></i>
+            Link expires in 12hr 32mins
+          </span>
+        </header>
+
+        <div class="pan-body">
+
+          <div class="pan-card">
+
+            <div class="pan-head">
+              <img class="pan-logo" src="assets/img/doc-icon.svg" alt="pan" />
+
+              <h1 class="pan-title">
+                Verify with Documents
+              </h1>
+            </div>
+
+            <div class="review-content">
+
+              <div class="review-title">
+                Review & Submit
+              </div>
+
+              <div class="review-info-banner">
+                <i data-lucide="info"></i>
+                Your data is secured. Sensitive fields are partially masked below.
+              </div>
+
+              <!-- Personal Details -->
+
+              <div class="review-section">
+
+                <div class="review-section__header">
+                  Personal Details
+                </div>
+
+                <div class="review-grid">
+
+                  <div>
+                    <div class="review-label">Name</div>
+                    <div class="review-value">
+                      Mahesh Marilingappa
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="review-label">DOB</div>
+                    <div class="review-value">
+                      XX-XX-1979
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+              <!-- Address -->
+
+              <div class="review-section">
+
+                <div class="review-section__header">
+                  Address Details
+                </div>
+
+                <div class="review-grid">
+
+                  <div>
+                    <div class="review-label">
+                      Permanent Address
+                    </div>
+
+                    <div class="review-value">
+                      5-9/12, XXXX
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="review-label">
+                      City/District
+                    </div>
+
+                    <div class="review-value">
+                      Gurugram
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="review-label">
+                      State
+                    </div>
+
+                    <div class="review-value">
+                      Haryana
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="review-label">
+                      Pincode
+                    </div>
+
+                    <div class="review-value">
+                      XXXX004
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+              <!-- Documents -->
+
+              <div class="review-section">
+
+                <div class="review-section__header">
+                  Verification Documents
+                </div>
+
+                <div class="review-grid">
+
+                  <div>
+                    <div class="review-label">
+                      Proof of Identity
+                    </div>
+
+                    <div class="review-value">
+                      Pan Card (ABXXXXX2R)
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="review-label">
+                      Proof of Address
+                    </div>
+
+                    <div class="review-value">
+                      Voter ID
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- Consents -->
+
+            <div class="review-consent-card" id="review-consents">
+
+              <div class="review-consent-title">
+                Please confirm the following to proceed
+              </div>
+
+              <label class="pan-check">
+                <input type="checkbox" class="review-consent-checkbox" />
+                <span class="pan-check__box" aria-hidden="true"></span>
+
+                <span class="pan-check__label">
+                  I/We hereby consent to BGIL verifying the details provided by me/us for the purpose of KYC through
+                  independent and/or third-party sources, as may be required.
+                </span>
+              </label>
+
+              <label class="pan-check">
+                <input type="checkbox" class="document-review-consent-checkbox" />
+                <span class="pan-check__box" aria-hidden="true"></span>
+
+                <span class="pan-check__label">
+                  In case of change in KYC documents/status of any of the Applicant, the Applicant shall immediately
+                  inform BGIL regarding the said change and submit the revised KYC documents/updated status to BGIL
+                  within 30 days of such change, failing which BGIL shall not be held responsible for any consequences,
+                  actions, claims, loss due to the said change in KYC.
+                </span>
+              </label>
+
+              <label class="pan-check">
+                <input type="checkbox" class="document-review-consent-checkbox" />
+                <span class="pan-check__box" aria-hidden="true"></span>
+
+                <span class="pan-check__label">
+                  I/We consent to BGIL updating/downloading my/our CKYC records with CERSAI/CKYCR using the CKYC Number
+                  (KIN) provided by me/us or shared data. I/We also consent to receiving CKYC-related communications
+                  from CERSAI via SMS/email on my/our registered contact details.
+                </span>
+              </label>
+
+            </div>
+
+            <button type="button" class="btn btn-primary pan-submit" id="document-confirm-submit-btn">
+              Confirm & Submit
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
        SCREEN: face-scan
        slug: face-scan
        Purpose: Camera live view — face capture within the KYC card flow.
@@ -2309,9 +2763,8 @@
             </div>
 
             <div class="facescan-submit-bar">
-              <button type="button" class="btn btn-primary facescan-capture-btn"
-                      id="face-capture" name="face-capture"
-                      data-action="face-capture" disabled>
+              <button type="button" class="btn btn-primary facescan-capture-btn" id="face-capture" name="face-capture"
+                data-action="face-capture" disabled>
                 Start Face Scan
               </button>
             </div>
@@ -2416,6 +2869,7 @@
   <script src="js/app.js"></script>
   <script src="js/kyc-aadhaar.js"></script>
   <script src="js/kyc-pan.js"></script>
+  <script src="js/kyc-document-upload.js"></script>
 
   <!-- ===== Inline SPA router + per-screen logic =================================
      The router maintains a screen stack, exposes window.ekyc, and dispatches
@@ -2431,7 +2885,7 @@
         'initiation', 'send-link', 'send-link-sent',
         'landing', 'aadhaar', 'aadhaar-otp', 'aadhaar-review', 'aadhaar-done',
         'pan', 'pan-otp', 'pan-verifying', 'pan-address-proof', 'document-scanning',
-        'review-submit', 'pan-done',
+        'review-submit', 'pan-done', 'document-upload', 'document-verifying', 'document-review-submit',
         'face-scan', 'face-scan-misaligned', 'success'
       ];
 
@@ -2529,6 +2983,10 @@
             goto('pan');
             return;
           }
+          if (m === 'document') {
+            goto('document-upload');
+            return;
+          }
           if (m === 'face') { openModal('landing-camera-modal'); return; }
           // pan / document — no UI flow yet
           console.log('[ekyc] method selected (no-op):', m);
@@ -2596,7 +3054,7 @@
             ta.style.position = 'fixed'; ta.style.opacity = '0';
             document.body.appendChild(ta);
             ta.focus(); ta.select();
-            try { document.execCommand('copy'); } catch (err) {}
+            try { document.execCommand('copy'); } catch (err) { }
             document.body.removeChild(ta);
           }
           var copyIcon = t.querySelector('[data-lucide]');
@@ -2766,10 +3224,10 @@
         var proceedBtn = $('#landing-proceed-btn', root);
         var proceedLabel = $('#landing-proceed-label', root);
         var METHOD_LABELS = {
-          'aadhaar':  'Aadhaar eKYC',
-          'pan':      'PAN Card',
+          'aadhaar': 'Aadhaar eKYC',
+          'pan': 'PAN Card',
           'document': 'Document Upload',
-          'face':     'Face Scan'
+          'face': 'Face Scan'
         };
         function select(card) {
           cards.forEach(function (c) { c.classList.toggle('is-selected', c === card); });
