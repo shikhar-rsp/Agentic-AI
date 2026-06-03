@@ -15,8 +15,17 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    gap: 12px;
   }
-
+  /* Show the full-width banner */
+  .kyc-bg {
+    display: block;
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 360px;
+    background: #60a5fa url('../assets/img/kycinit-bg-web.png') top center / cover no-repeat;
+    z-index: 0;
+  }
   /* Header styles now live in css/header.css (shared across screens). */
 
   /* ---- Blue hero ------------------------------------------------------- */
@@ -48,9 +57,9 @@
   /* ---- White panel (overlaps hero) ------------------------------------ */
   .kyc-panel-wrap {
     padding: 0 16px 48px;
-    margin-top: -48px;
     position: relative;
     z-index: 1;
+    margin-bottom: 96px;
   }
   .kyc-panel {
     background: var(--color-neutral-0);
@@ -121,11 +130,11 @@
   .method-card {
     border: 1px solid var(--color-neutral-200);
     border-radius: 8px;
-    padding: 16px;
     text-decoration: none;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0;
+    position: relative;
   }
 
   /* Centered, single-title method cards (PAN / Doc / Face) */
@@ -135,13 +144,12 @@
     text-align: center;
   }
   .method-card__icon {
-    width: 52px;
-    height: 52px;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 16px 14px 0;
   }
-  .method-card__icon img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .method-card__icon img { max-width: 100%; max-height: 44px; object-fit: contain; }
   .method-card__icon-box {
     width: 44px;
     height: 44px;
@@ -156,34 +164,35 @@
     margin: 0;
     font-family: 'Rubik', sans-serif;
     font-weight: 600;
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 24px;
+    line-height: 32px;
+    padding: 16px 14px;
   }
 
   /* Per-method gradients + accent text (radial: white -> tint) */
   .method-card--pan {
+    border: 1px solid  #BFDBFE;
     background: radial-gradient(120% 130% at 50% 0%, #ffffff 0%, var(--color-indigo-50) 100%);
   }
   .method-card--pan .method-card__title { color: var(--color-blue-standard-600); }
 
   .method-card--doc {
+    border: 1px solid #CCFBF1;
     background: radial-gradient(120% 130% at 50% 0%, #ffffff 0%, var(--color-teal-50) 100%);
   }
   .method-card--doc .method-card__title { color: var(--color-emerald-600); }
 
   .method-card--face {
+    border: 1px solid #FBCFE8;
     background: radial-gradient(120% 130% at 50% 0%, #ffffff 0%, var(--color-pink-50) 100%);
   }
   .method-card--face .method-card__title {
     color: var(--color-pink-600);
-    font-size: 20px;
-    line-height: 24px;
   }
 
   /* Featured Aadhaar card */
   .method-card--aadhaar {
-    border: 1.5px solid var(--color-blue-600);
-    gap: 8px;
+    border: 1px solid  #FED7AA;
     background: linear-gradient(
       122.88deg,
       #ffffff 0%,
@@ -200,17 +209,23 @@
     width: 100%;
   }
   .method-card__row--icon { align-items: flex-start; }
+  .method-card--aadhaar .badge{
+    position: absolute;
+    top: 8px;
+    right: 8px;
+  }
   .method-card__aadhaar-logo { height: 44px; width: auto; }
   .method-card__aadhaar-title {
     margin: 0;
     flex: 1 0 0;
     font-family: 'Rubik', sans-serif;
     font-weight: 600;
-    font-size: 20px;
-    line-height: 24px;
+    font-size: 24px;
+    line-height: 32px;
+  }
+  .method-card--aadhaar .method-card__title{
     color: #9a3412; /* color.text.accent.orange — no DS token, kept for fidelity */
   }
-
   /* Start KYC button glow (subtle approximation of the Figma animation) */
   .kyc-start-btn {
     position: relative;
@@ -244,11 +259,13 @@
   }
 
   /* Selected highlight for the non-featured cards */
-  .method-card--center { cursor: pointer; border: 1.5px solid transparent; }
+  .method-card--center { cursor: pointer;}
+  .method-card--aadhaar.is-selected,
   .method-card--pan.is-selected,
   .method-card--doc.is-selected,
   .method-card--face.is-selected {
     border-color: var(--color-blue-600);
+    border-width: 2px;
   }
   .method-card--center:focus-visible {
     outline: 2px solid var(--color-blue-600);
@@ -328,36 +345,28 @@
    tiles (Face Scan hidden on web).
    ========================================================================= */
 @layer app {
-  .kyc-bg { display: none; }
-  /* Web-only title shown inside the panel */
-  .kyc-web-title { display: none; }
 
+  .kyc-web-title {
+    display: block;
+    margin: 0;
+    text-align: center;
+    font-family: 'Familjen Grotesk', 'Rubik', sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 36px;
+    color: var(--color-neutral-800);
+  }
   @media (min-width: 768px) {
-    .kyc-web-title {
-      display: block;
-      margin: 0;
-      text-align: center;
-      font-family: 'Familjen Grotesk', 'Rubik', sans-serif;
-      font-weight: 600;
-      font-size: 28px;
-      line-height: 36px;
-      color: var(--color-neutral-800);
-    }
 
     .kyc-page {
       max-width: none;
       background: var(--color-neutral-50);
     }
 
-    /* Show the full-width banner */
-    .kyc-bg {
-      display: block;
-      position: absolute;
-      inset: 0 0 auto 0;
-      height: 360px;
-      background: #60a5fa url('../assets/img/kycinit-bg-web.png') top center / cover no-repeat;
-      z-index: 0;
+    .kyc-bg{
+      height: 280px;
     }
+  
     .kyc-page > .kyc-header { position: relative; z-index: 2; }
 
     /* Hide the mobile hero (different title was inside it); banner shows instead */
@@ -366,7 +375,7 @@
     /* Centered card (same dimensions as kyc-initiation / kyc-method) */
     .kyc-panel-wrap {
       width: 100%;
-      max-width: 800px;
+      max-width: 1112px;
       margin-inline: auto;
       margin-top: 0;
       padding: 56px 16px 48px;
@@ -382,6 +391,5 @@
     /* 3 method tiles in a row; Face Scan hidden on web (Figma shows 3) */
     .kyc-methods { flex-direction: row; gap: 16px; align-items: stretch; }
     .method-card { flex: 1 0 0; }
-    .method-card--face { display: none; }
   }
 }

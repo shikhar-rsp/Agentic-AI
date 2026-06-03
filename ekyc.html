@@ -564,11 +564,6 @@
           </span>
         </header>
 
-        <section class="kyc-hero">
-          <h1 class="kyc-hero__title">Complete Your KYC Verification</h1>
-          <p class="kyc-hero__subtitle">Choose a KYC verification method below to proceed.</p>
-        </section>
-
         <div class="kyc-panel-wrap">
           <form class="kyc-panel" id="form-landing" novalidate>
             <h1 class="kyc-web-title">Choose your KYC Method</h1>
@@ -585,21 +580,15 @@
             <input type="hidden" id="landing-kyc-method" name="kyc-method" value="aadhaar" />
 
             <div class="kyc-methods">
-              <div class="method-card method-card--aadhaar is-selected" id="landing-method-aadhaar"
+              <div class="method-card method-card--center method-card--aadhaar is-selected" id="landing-method-aadhaar"
                 data-method="aadhaar">
-                <div class="method-card__row method-card__row--icon">
-                  <img class="method-card__aadhaar-logo" src="assets/img/aadhaar-logo.png" alt="Aadhaar" />
-                  <span class="badge badge-sm badge-solid badge-amber">
-                    <i data-lucide="zap" style="width: 14px; height: 14px"></i> Fastest
-                  </span>
-                </div>
-                <div class="method-card__row">
-                  <p class="method-card__aadhaar-title">Aadhaar eKYC</p>
-                  <button type="button" class="btn btn-primary kyc-start-btn method-card__cta"
-                    id="landing-start-aadhaar" name="landing-start-aadhaar" data-action="select-method:aadhaar">
-                    Start KYC <i data-lucide="arrow-right"></i>
-                  </button>
-                </div>
+                <span class="method-card__icon">
+                  <img src="assets/img/aadhaar-logo.png" alt="Aadhaar" />
+                </span>
+                <p class="method-card__title">Aadhaar eKYC</p>
+                <span class="badge badge-sm badge-solid badge-blue">
+                  <i data-lucide="zap" style="width: 14px; height: 14px"></i> Fastest
+                </span>
               </div>
 
               <div class="method-card method-card--center method-card--pan" id="landing-method-pan" data-method="pan"
@@ -608,10 +597,6 @@
                   <img src="assets/img/ashoka-emblem.png" alt="" />
                 </span>
                 <p class="method-card__title">PAN Card</p>
-                <button type="button" class="btn btn-primary kyc-start-btn method-card__cta" id="landing-start-pan"
-                  name="landing-start-pan" data-action="select-method:pan">
-                  Start KYC <i data-lucide="arrow-right"></i>
-                </button>
               </div>
 
               <div class="method-card method-card--center method-card--doc" id="landing-method-doc"
@@ -622,10 +607,6 @@
                   </span>
                 </span>
                 <p class="method-card__title">Document Upload</p>
-                <button type="button" class="btn btn-primary kyc-start-btn method-card__cta" id="landing-start-doc"
-                  name="landing-start-doc" data-action="select-method:document">
-                  Start KYC <i data-lucide="arrow-right"></i>
-                </button>
               </div>
 
               <div class="method-card method-card--center method-card--face" id="landing-method-face" data-method="face"
@@ -634,14 +615,19 @@
                   <img src="assets/img/face-scan.svg" alt="" style="width: 40px; height: 40px" />
                 </span>
                 <p class="method-card__title">Face Scan</p>
-                <button type="button" class="btn btn-primary kyc-start-btn method-card__cta" id="landing-start-face"
-                  name="landing-start-face" data-action="select-method:face">
-                  Start KYC <i data-lucide="arrow-right"></i>
-                </button>
               </div>
             </div>
 
-            <div class="toast toast-info kyc-info" role="status">
+            <div class="submit-bar-mobile kyc-proceed-wrap ">
+              <button type="button" class="btn btn-primary kyc-proceed-btn"
+                      id="landing-proceed-btn" name="landing-proceed-btn"
+                      data-action="select-method:aadhaar">
+                <span id="landing-proceed-label">Proceed with Aadhaar eKYC</span>
+                <i data-lucide="arrow-right"></i>
+              </button>
+            </div>
+
+          <div class="toast toast-info kyc-info" role="status">
               <span class="toast-icon"><i data-lucide="info"></i></span>
               <div class="toast-body">
                 <div class="toast-content">
@@ -2496,10 +2482,21 @@
         var root = screenEl('landing');
         if (root.dataset.inited) return; root.dataset.inited = '1';
         var cards = $$('.method-card', root);
+        var proceedBtn = $('#landing-proceed-btn', root);
+        var proceedLabel = $('#landing-proceed-label', root);
+        var METHOD_LABELS = {
+          'aadhaar':  'Aadhaar eKYC',
+          'pan':      'PAN Card',
+          'document': 'Document Upload',
+          'face':     'Face Scan'
+        };
         function select(card) {
           cards.forEach(function (c) { c.classList.toggle('is-selected', c === card); });
+          var m = card.getAttribute('data-method');
           var hidden = $('#landing-kyc-method', root);
-          if (hidden) hidden.value = card.getAttribute('data-method');
+          if (hidden) hidden.value = m;
+          if (proceedBtn) proceedBtn.setAttribute('data-action', 'select-method:' + m);
+          if (proceedLabel) proceedLabel.textContent = 'Proceed with ' + (METHOD_LABELS[m] || m);
         }
         cards.forEach(function (card) {
           card.addEventListener('click', function () { select(card); });
@@ -2507,6 +2504,9 @@
             if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(card); }
           });
         });
+        // sync button with default selected card
+        var pre = $('.method-card.is-selected', root) || cards[0];
+        if (pre) select(pre);
       };
 
       // aadhaar + aadhaar-otp INITs live in js/kyc-aadhaar.js

@@ -832,12 +832,12 @@
   }
 }
 
-@media (max-width: 567px) {
+@media (max-width: 767px) {
   /* prevent button bar from covering last form content */
   .aadhaar-card { margin-bottom: 96px; }
 }
 
-@media (max-width: 567px) {
+@media (max-width: 767px) {
 
   .aadhaar-otp,
   .aadhaar-field {

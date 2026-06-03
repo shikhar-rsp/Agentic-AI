@@ -59,7 +59,7 @@
   }
 }
 
-@media (max-width: 567px) {
+@media (max-width: 767px) {
   /* Wrapper becomes the sticky bar on mobile */
   .submit-bar-mobile {
     position: fixed;

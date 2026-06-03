@@ -258,3 +258,8 @@
     }
   }
 }
+
+
+/* Proceed button wrapper */
+.kyc-proceed-wrap { display: flex; justify-content: center; padding-top: 20px; padding-bottom: 20px; }
+.kyc-proceed-btn  { width: fit-content; }
