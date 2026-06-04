@@ -3080,78 +3080,99 @@
          id=face-flip     data-action="face-flip"
          id=face-capture  data-action="face-capture"  -> face-scan-misaligned / success
        ========================================================================= -->
-    <section class="ekyc-screen" id="screen-face-scan" data-screen="face-scan" hidden>
-      <div class="facescan-page">
-        <div class="facescan-bg" aria-hidden="true"></div>
-
-        <header class="kyc-header">
-          <div class="kyc-header__row">
-            <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
-            <div class="kyc-header__agent">
-              <div class="kyc-agent-info">
-                <span class="kyc-agent-name">Rajesh Chaurasia</span>
-                <span class="kyc-agent-id">BA786314</span>
-              </div>
-              <div class="kyc-avatar">
-                <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
-                <span class="kyc-avatar__dot" aria-hidden="true"></span>
-              </div>
-            </div>
-          </div>
-          <span class="badge badge-sm badge-light badge-red">
-            <i class="ph ph-warning-circle ph-sm"></i>
-            Link expires in 12hr 32mins
-          </span>
-        </header>
-
-        <div class="facescan-body">
-          <div class="facescan-card">
-            <div class="facescan-head">
-              <img class="facescan-icon" src="assets/img/ScanSmiley.svg" alt="" aria-hidden="true" />
-              <h1 class="facescan-card-title">KYC via Face Scan</h1>
-              <div class="toast toast-info facescan-info" role="note">
-                <span class="toast-icon"><i class="ph ph-info ph-md"></i></span>
-                <div class="toast-body">
-                  <div class="toast-content">
-                    <p class="toast-description">
-                      Look directly at the camera and keep your face within the circle frame
-                    </p>
-                  </div>
+       <section class="ekyc-screen" id="screen-face-scan" data-screen="face-scan" hidden>
+        <div class="facescan-page">
+          <div class="facescan-bg" aria-hidden="true"></div>
+  
+          <header class="kyc-header">
+            <div class="kyc-header__row">
+              <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+              <div class="kyc-header__agent">
+                <div class="kyc-agent-info">
+                  <span class="kyc-agent-name">Rajesh Chaurasia</span>
+                  <span class="kyc-agent-id">BA786314</span>
+                </div>
+                <div class="kyc-avatar">
+                  <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
+                  <span class="kyc-avatar__dot" aria-hidden="true"></span>
                 </div>
               </div>
             </div>
-
-
-            <a class="facescan-back" id="face-back" data-action="open-modal:facescan-leave-modal" role="button" tabindex="0">
-              <i class="ph ph-arrow-left ph-md-20"></i> Back
-            </a>
-
-            <div class="facescan-camera-wrap" id="face-camera">
-              <div class="facescan-camtopbar">
-                <span class="facescan-cam-pill">
-                  <i class="ph ph-lightning ph-sm"></i> Auto capture is off
-                </span>
+            <span class="badge badge-sm badge-light badge-red">
+              <i class="ph ph-warning-circle ph-sm"></i>
+              Link expires in 12hr 32mins
+            </span>
+          </header>
+  
+          <div class="facescan-body">
+            <div class="facescan-card">
+              <div class="facescan-head">
+                <img class="facescan-icon" src="assets/img/ScanSmiley.svg" alt="" aria-hidden="true" />
+                <h1 class="facescan-card-title">KYC via Face Scan</h1>
+                <div class="toast toast-info facescan-info" role="note">
+                  <span class="toast-icon"><i class="ph ph-info ph-md"></i></span>
+                  <div class="toast-body">
+                    <div class="toast-content">
+                      <p class="toast-description">
+                        Look directly at the camera and keep your face within the circle frame
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
-
-              <div class="facescan-frame" aria-hidden="true">
-                <img class="facescan-frame__feed" src="assets/img/face-sample.png" alt="" />
+  
+  
+              <a class="facescan-back" id="face-back" data-action="open-modal:facescan-leave-modal" role="button" tabindex="0">
+                <i class="ph ph-arrow-left ph-md-20"></i> Back
+              </a>
+  
+              <div class="facescan-camera-wrap" id="face-camera">
+                <div class="facescan-camtopbar">
+                  <span class="facescan-cam-pill">
+                    <i class="ph ph-lightning ph-sm"></i> Auto capture is off
+                  </span>
+                </div>
+  
+                <div class="facescan-frame" aria-hidden="true">
+                  <img class="facescan-frame__feed" src="assets/img/face-sample.png" alt="" />
+                </div>
+  
+                <p class="facescan-hint" id="face-hint">
+                  Make sure you're in well-lit area with plain background
+                </p>
               </div>
-
-              <p class="facescan-hint" id="face-hint">
-                Make sure you're in well-lit area with plain background
-              </p>
-            </div>
-
-            <div class="facescan-submit-bar submit-bar-mobile">
-              <button type="button" class="btn btn-primary facescan-capture-btn" id="face-capture" name="face-capture"
-                data-action="face-capture" disabled>
-                Start Face Scan
-              </button>
+  
+              <div class="facescan-submit-bar submit-bar-mobile">
+                <button type="button" class="btn btn-primary facescan-capture-btn" id="face-capture" name="face-capture"
+                  data-action="face-capture" disabled>
+                  Start Face Scan
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+  
+        <div class="modal-backdrop" id="facescan-leave-modal" role="dialog" aria-modal="true"
+          aria-labelledby="facescan-leave-title">
+          <div class="modal modal-confirmation size-md">
+            <div class="modal-header no-border">
+              <div class="modal-header-icon modal-header-icon--warning">
+                <i data-lucide="alert-circle"></i>
+              </div>
+              <h2 class="modal-title" id="facescan-leave-title">Leave this page?</h2>
+            </div>
+            <div class="modal-body">
+              The details you entered may not be saved if you leave this page.
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary"
+                data-action="leave-goto:landing" data-modal-close>Go Back</button>
+              <button type="button" class="btn btn-primary"
+                data-action="close-modal" data-modal-close>Continue filling KYC</button>
+            </div>
+          </div>
+        </div>
+      </section>
 
     <!-- =========================================================================
        SCREEN: face-scan-misaligned
