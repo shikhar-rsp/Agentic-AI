@@ -155,6 +155,11 @@
   .ekyc-screen .kycinit-bg{
     height: 280px;
   }
+
+  .back-to-module{
+    width: 100%;
+    margin-top: 0px !important;
+  }
 }
 
 @media (max-width: 767px) {
