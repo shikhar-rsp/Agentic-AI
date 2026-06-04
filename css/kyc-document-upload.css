@@ -1,9 +1,7 @@
-
-
 @layer app {
 
 
-    
+
     .document-upload-bg {
         position: absolute;
         inset: 0 0 auto 0;
@@ -11,6 +9,31 @@
         background: #6EE7B7 url('../assets/img/kyc_doc-frame.png') top center / cover no-repeat;
         overflow: hidden;
         z-index: 0;
+    }
+
+    .review-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    .document-upload-consent {
+        display: none;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .document-upload-consent.is-visible {
+        display: flex;
+    }
+
+    .document-upload-container {
+        display: none;
+    }
+
+    .document-upload-container.is-visible {
+        display: flex;
     }
 
 

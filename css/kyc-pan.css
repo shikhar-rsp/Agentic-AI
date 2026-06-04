@@ -673,6 +673,10 @@
     }
 
     .atlas-drag-drop-wrapper {
+        margin-top: 0px;
+    }
+
+    .document-upload-wrapper{
         margin-top: 20px;
     }
 

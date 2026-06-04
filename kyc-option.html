@@ -1841,7 +1841,7 @@
 
 
 
-              <div class="atlas-drag-drop-wrapper">
+              <div class="atlas-drag-drop-wrapper document-upload-wrapper">
                 <label class="atlas-drag-drop-label">
                   Address Proof
                 </label>
@@ -1855,7 +1855,7 @@
 
                   <div class="atlas-drag-drop-content" id="upload-placeholder">
                     <div class="atlas-drag-drop-icon-container">
-                      <i data-lucide="upload"></i>
+                      <i class="ph ph-file-arrow-up" style="font-size: 24px;"></i>
                     </div>
 
                     <div class="atlas-drag-drop-text-container">
@@ -1893,7 +1893,7 @@
         <div class="modal modal-confirmation size-md reupload-modal">
           <div class="modal-header no-border">
             <div class="modal-header-icon modal-header-icon--warning">
-              <i data-lucide="upload"></i>
+              <i class="ph ph-file-arrow-up" style="font-size: 24px;"></i>
             </div>
 
             <h2 class="modal-title" id="reupload-title">
@@ -1978,10 +1978,10 @@
             The details you entered may not be saved if you leave this page.
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary"
-              data-action="leave-goto:pan-otp" data-modal-close>Go Back</button>
-            <button type="button" class="btn btn-primary"
-              data-action="close-modal" data-modal-close>Continue filling KYC</button>
+            <button type="button" class="btn btn-secondary" data-action="leave-goto:pan-otp" data-modal-close>Go
+              Back</button>
+            <button type="button" class="btn btn-primary" data-action="close-modal" data-modal-close>Continue filling
+              KYC</button>
           </div>
         </div>
       </div>
@@ -2360,9 +2360,9 @@
                 </div>
               </div>
 
-              <div class="atlas-drag-drop-wrapper" id="document-upload-container" hidden>
-                <label class="atlas-drag-drop-label">
-                  Aadhar Card Document
+              <div class="atlas-drag-drop-wrapper document-upload-container" id="document-upload-container">
+                <label class="atlas-drag-drop-label" id="document-upload-label">
+                  Aadhaar Card Document
                 </label>
 
                 <input type="file" id="document-file" accept=".pdf,.jpg,.jpeg,.png" hidden />
@@ -2374,7 +2374,7 @@
 
                   <div class="atlas-drag-drop-content" id="document-placeholder">
                     <div class="atlas-drag-drop-icon-container">
-                      <i data-lucide="upload"></i>
+                      <i class="ph ph-file-arrow-up" style="font-size: 24px;"></i>
                     </div>
 
                     <div class="atlas-drag-drop-text-container">
@@ -2398,17 +2398,70 @@
                 </div>
               </div>
 
+            </div>
+            <div class="modal-backdrop" id="document-reupload-modal" role="dialog" aria-modal="true"
+              aria-labelledby="reupload-title">
+              <div class="modal modal-confirmation size-md reupload-modal">
+                <div class="modal-header no-border">
+                  <div class="modal-header-icon modal-header-icon--warning">
+                    <i class="ph ph-file-arrow-up" style="font-size: 24px;"></i>
+                  </div>
 
+                  <h2 class="modal-title" id="reupload-title">
+                    Re-upload Document?
+                  </h2>
+                </div>
 
+                <div class="modal-body"></div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-action="close-modal">
+                    Cancel
+                  </button>
+
+                  <button type="button" class="btn btn-primary" id="confirm-document-reupload">
+                    Re-upload
+                  </button>
+                </div>
+              </div>
             </div>
 
-            <div class="aadhaar-consent aadhaar-extra" id="document-consent" hidden>
+            <div class="modal-backdrop" id="document-file-error-modal" role="dialog" aria-modal="true"
+              aria-labelledby="document-error-title">
+              <div class="modal modal-confirmation size-md document-error-modal">
+                <div class="modal-header no-border">
+                  <div class="modal-header-icon modal-header-icon--error">
+                    <i data-lucide="circle-x"></i>
+                  </div>
+
+                  <h2 class="modal-title" id="document-upload-error-title">
+                    We couldn't read your document
+                  </h2>
+                </div>
+
+                <div class="modal-body" id="document-upload-error-message">
+                  Your file is a bit unclear. Please upload a clearer image or PDF.
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-action="close-modal">
+                    Try another method
+                  </button>
+
+                  <button type="button" class="btn btn-primary" id="document-upload-error-reupload">
+                    Re-upload
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="aadhaar-consent aadhaar-extra document-upload-consent" id="document-upload-consent" hidden>
               <h3 class="aadhaar-consent__title">
                 Please confirm the following to proceed
               </h3>
 
               <label class="aadhaar-check">
-                <input type="checkbox" id="document-c1" />
+                <input type="checkbox" id="document-upload-c1" />
                 <span class="aadhaar-check__box" aria-hidden="true"></span>
                 <span class="aadhaar-check__label">
                   I/We hereby authorize BGIL to use the uploaded document
@@ -2417,7 +2470,7 @@
               </label>
 
               <label class="aadhaar-check">
-                <input type="checkbox" id="document-c2" />
+                <input type="checkbox" id="document-upload-c2" />
                 <span class="aadhaar-check__box" aria-hidden="true"></span>
                 <span class="aadhaar-check__label">
                   I confirm that the uploaded document is valid, belongs to me,
@@ -2435,6 +2488,257 @@
           </div>
         </div>
       </div>
+    </section>
+
+    <section class="ekyc-screen" id="screen-doc-pan-address-proof" data-screen="pan-address-proof" hidden>
+      <div class="pan-page">
+        <div class="pan-bg"></div>
+
+        <!-- ============ Header ============ -->
+        <header class="kyc-header">
+          <div class="kyc-header__row">
+            <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+            <div class="kyc-header__agent">
+              <div class="kyc-agent-info">
+                <span class="kyc-agent-name">Rajesh Chaurasia</span>
+                <span class="kyc-agent-id">BA786314</span>
+              </div>
+              <div class="kyc-avatar">
+                <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
+                <span class="kyc-avatar__dot" aria-hidden="true"></span>
+              </div>
+            </div>
+          </div>
+          <span class="badge badge-sm badge-light badge-red">
+            <i data-lucide="alert-circle" style="width: 16px; height: 16px"></i>
+            Link expires in 12hr 32mins
+          </span>
+        </header>
+
+        <div class="pan-body">
+          <div class="pan-card">
+            <!-- Top section -->
+            <div class="pan-head">
+              <img class="pan-logo" src="assets/img/doc-icon.svg" alt="pan" />
+              <h1 class="pan-title">Verify with PAN Card</h1>
+              <p class="pan-subtitle">
+                Please follow the instructions below to complete KYC. This will only take a while.
+              </p>
+            </div>
+
+            <!-- Back -->
+            <a class="pan-back" id="document-address-back-btn">
+              <i data-lucide="arrow-left"></i>
+              Back
+            </a>
+
+            <div class="pan-sub-card">
+
+              <div class="pan-address-title">
+                Almost done! one more step
+              </div>
+
+              <div class="pan-address-subtitle">
+                Your identity is verified. Now, upload a document to confirm your address.
+              </div>
+
+              <div class="dropdown-input-container">
+                <label class="dropdown-input-label">
+                  Choose Document Type<span class="pan-req">*</span>
+                </label>
+
+                <div class="dropdown-input-wrapper">
+                  <span class="dropdown-input-placeholder">
+                    eg. Voter ID
+                  </span>
+
+                  <span class="dropdown-input-chevron">
+                    <i data-lucide="chevron-down"></i>
+                  </span>
+
+
+                </div>
+
+                <div class="dropdown-menu" id="document-address-type-menu">
+                  <button type="button" class="dropdown-menu-item" data-value="Voter ID">
+                    <div class="dropdown-menu-item__content">
+                      <span class="dropdown-menu-item__text">
+                        Voter ID
+                      </span>
+                    </div>
+                  </button>
+
+                  <button type="button" class="dropdown-menu-item" data-value="Driving License">
+                    <div class="dropdown-menu-item__content">
+                      <span class="dropdown-menu-item__text">
+                        Driving License
+                      </span>
+                    </div>
+                  </button>
+
+                  <button type="button" class="dropdown-menu-item" data-value="Passport">
+                    <div class="dropdown-menu-item__content">
+                      <span class="dropdown-menu-item__text">
+                        Passport
+                      </span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+
+              <div class="atlas-drag-drop-wrapper document-upload-container" id="document-upload-container">
+                <label class="atlas-drag-drop-label" id="document-upload-label">
+                  Address Proof
+                </label>
+
+                <input type="file" id="document-file" accept=".pdf,.jpg,.jpeg,.png" hidden />
+
+                <div class="atlas-drag-drop" id="document-dropzone">
+                  <div class="upload-preview" id="document-preview">
+                    <img id="document-preview-image" alt="Uploaded document" />
+                  </div>
+
+                  <div class="atlas-drag-drop-content" id="document-placeholder">
+                    <div class="atlas-drag-drop-icon-container">
+                      <i class="ph ph-file-arrow-up" style="font-size: 24px;"></i>
+                    </div>
+
+                    <div class="atlas-drag-drop-text-container">
+                      <div class="atlas-drag-drop-header">
+                        Click or drag to upload
+                      </div>
+
+                      <div class="atlas-drag-drop-support">
+                        PDF, JPG or PNG (Max 10MB)
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="upload-success-row" id="document-success-row" hidden>
+                  <span class="upload-success-name" id="document-file-name"></span>
+
+                  <button type="button" class="btn-link" id="document-reupload-btn">
+                    Re-upload
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="modal-backdrop" id="document-address-reupload-modal" role="dialog" aria-modal="true"
+              aria-labelledby="reupload-title">
+              <div class="modal modal-confirmation size-md reupload-modal">
+                <div class="modal-header no-border">
+                  <div class="modal-header-icon modal-header-icon--warning">
+                    <i class="ph ph-file-arrow-up" style="font-size: 24px;"></i>
+                  </div>
+
+                  <h2 class="modal-title" id="reupload-title">
+                    Re-upload Document?
+                  </h2>
+                </div>
+
+                <div class="modal-body"></div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-action="close-modal">
+                    Cancel
+                  </button>
+
+                  <button type="button" class="btn btn-primary" id="confirm-document-address-reupload">
+                    Re-upload
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-backdrop" id="document-address-file-error-modal" role="dialog" aria-modal="true"
+              aria-labelledby="document-error-title">
+              <div class="modal modal-confirmation size-md document-error-modal">
+                <div class="modal-header no-border">
+                  <div class="modal-header-icon modal-header-icon--error">
+                    <i data-lucide="circle-x"></i>
+                  </div>
+
+                  <h2 class="modal-title" id="document-address-upload-error-title">
+                    We couldn't read your document
+                  </h2>
+                </div>
+
+                <div class="modal-body" id="document-address-upload-error-message">
+                  Your file is a bit unclear. Please upload a clearer image or PDF.
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-action="close-modal">
+                    Try another method
+                  </button>
+
+                  <button type="button" class="btn btn-primary" id="document-address-upload-error-reupload">
+                    Re-upload
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Leave-page confirmation modal (pan-address-proof screen) -->
+            <div class="modal-backdrop pan-leave-modal" id="document-address-leave-modal" role="dialog" aria-modal="true"
+              aria-labelledby="document-address-leave-title">
+              <div class="modal modal-confirmation size-md">
+                <div class="modal-header no-border">
+                  <div class="modal-header-icon modal-header-icon--warning">
+                    <i data-lucide="alert-circle"></i>
+                  </div>
+                  <h2 class="modal-title" id="document-address-leave-title">Leave this page?</h2>
+                </div>
+                <div class="modal-body">
+                  The details you entered may not be saved if you leave this page.
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" id="document-address-go-back-btn"  data-modal-close>Go
+                    Back</button>
+                  <button type="button" class="btn btn-primary" data-action="close-modal" data-modal-close>Continue
+                    filling
+                    KYC</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="aadhaar-consent aadhaar-extra document-upload-consent" id="document-upload-consent" hidden>
+              <h3 class="aadhaar-consent__title">
+                Please confirm the following to proceed
+              </h3>
+
+              <label class="aadhaar-check">
+                <input type="checkbox" id="document-upload-c1" />
+                <span class="aadhaar-check__box" aria-hidden="true"></span>
+                <span class="aadhaar-check__label">
+                  I/We hereby authorize BGIL to use the uploaded document
+                  for identity and address verification.
+                </span>
+              </label>
+
+              <label class="aadhaar-check">
+                <input type="checkbox" id="document-upload-c2" />
+                <span class="aadhaar-check__box" aria-hidden="true"></span>
+                <span class="aadhaar-check__label">
+                  I confirm that the uploaded document is valid, belongs to me,
+                  and the information provided is accurate.
+                </span>
+              </label>
+            </div>
+
+            <button type="button" class="btn btn-primary pan-submit" id="document-address-upload-submit" disabled>
+              Proceed
+            </button>
+
+          </div>
+        </div>
+
+      </div>
+
     </section>
 
     <section class="ekyc-screen" id="screen-document-verifying" data-screen="document-verifying" hidden>
@@ -2552,8 +2856,15 @@
 
             <div class="review-content">
 
-              <div class="review-title">
-                Review & Submit
+              <div class="review-header">
+                <div class="review-title">
+                  Review & Submit
+                </div>
+
+                <button type="button" class="btn-link review-reupload-btn" id="review-reupload-btn">
+                  Re-upload
+                  <i class="ph ph-pencil-simple"></i>
+                </button>
               </div>
 
               <div class="review-info-banner">
@@ -2677,6 +2988,33 @@
 
               </div>
 
+            </div>
+
+            <div class="modal-backdrop" id="document-review-reupload-modal" role="dialog" aria-modal="true"
+              aria-labelledby="reupload-title">
+              <div class="modal modal-confirmation size-md reupload-modal">
+                <div class="modal-header no-border">
+                  <div class="modal-header-icon modal-header-icon--warning">
+                    <i class="ph ph-file-arrow-up" style="font-size: 24px;"></i>
+                  </div>
+
+                  <h2 class="modal-title" id="reupload-title">
+                    Re-upload Document?
+                  </h2>
+                </div>
+
+                <div class="modal-body"></div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-action="close-modal">
+                    Cancel
+                  </button>
+
+                  <button type="button" class="btn btn-primary" id="confirm-reupload">
+                    Re-upload
+                  </button>
+                </div>
+              </div>
             </div>
 
             <!-- Consents -->
@@ -2927,7 +3265,7 @@
         'initiation', 'send-link', 'send-link-sent',
         'landing', 'aadhaar', 'aadhaar-otp', 'aadhaar-review', 'aadhaar-done',
         'pan', 'pan-otp', 'pan-verifying', 'pan-address-proof', 'document-scanning',
-        'review-submit', 'pan-done', 'document-upload', 'document-verifying', 'document-review-submit',
+        'review-submit', 'pan-done', 'document-upload', 'doc-pan-address-proof', 'document-verifying', 'document-review-submit',
         'face-scan', 'face-scan-misaligned', 'success'
       ];
 
