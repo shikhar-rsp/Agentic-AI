@@ -211,166 +211,89 @@
     INITS['pan-otp'] = function () {
         var root = document.getElementById('screen-pan-otp');
         if (!root || root.dataset.inited) return;
-
         root.dataset.inited = '1';
 
-        var boxes = Array.from(
-            root.querySelectorAll('.pan-otp__box')
-        );
+        var CORRECT_OTP   = '000000';
+        var MAX_ATTEMPTS  = 3;
+        var attemptsLeft  = MAX_ATTEMPTS;
 
-        var verifyBtn = root.querySelector('#pan-verify');
-        var resendBtn = root.querySelector('#pan-resend');
+        var boxes        = Array.from(root.querySelectorAll('.pan-otp__box'));
+        var otpWrap      = root.querySelector('.pan-otp');
+        var verifyBtn    = root.querySelector('#pan-verify');
+        var resendBtn    = root.querySelector('#pan-resend');
+        var otpError     = root.querySelector('#pan-otp-error');
+        var attemptsSpan = root.querySelector('#pan-otp-attempts-left');
 
-        var otpField = root.querySelector('#pan-otp-field');
-        var otpHint = root.querySelector('#pan-otp-error');
-
-        var MAX_ATTEMPTS = 3;
-        var attemptsLeft = MAX_ATTEMPTS;
+        function collectOtp() {
+            return boxes.map(function (b) { return b.value; }).join('');
+        }
 
         function updateButton() {
-            var otp = boxes.map(function (b) {
-                return b.value;
-            }).join('');
-
-            verifyBtn.disabled = otp.length !== 6;
+            if (verifyBtn) verifyBtn.disabled = collectOtp().length !== 6;
         }
 
         function clearError() {
-            if (otpField) {
-                otpField.classList.remove('is-error');
-            }
-
-            boxes.forEach(function (box) {
-                box.classList.remove('is-error');
-            });
-
-            if (otpHint) {
-                otpHint.style.display = 'none';
-            }
+            if (otpWrap)  otpWrap.classList.remove('is-error');
+            if (otpError) otpError.hidden = true;
         }
 
         boxes.forEach(function (box, index) {
-
             box.addEventListener('input', function () {
-
-                box.value = box.value
-                    .replace(/\D/g, '')
-                    .slice(0, 1);
-
+                box.value = box.value.replace(/\D/g, '').slice(0, 1);
                 clearError();
-
                 if (box.value && boxes[index + 1]) {
-                    setTimeout(function () {
-                        boxes[index + 1].focus();
-                    }, 0);
+                    setTimeout(function () { boxes[index + 1].focus(); }, 0);
                 }
-
                 updateButton();
             });
 
             box.addEventListener('keydown', function (e) {
-
-                if (
-                    e.key === 'Backspace' &&
-                    !box.value &&
-                    boxes[index - 1]
-                ) {
+                if (e.key === 'Backspace' && !box.value && boxes[index - 1]) {
                     boxes[index - 1].focus();
                 }
             });
         });
 
-
-
         if (resendBtn) {
             resendBtn.addEventListener('click', function (e) {
                 e.preventDefault();
-
                 attemptsLeft = MAX_ATTEMPTS;
-
-                boxes.forEach(function (box) {
-                    box.value = '';
-                    box.classList.remove('is-error');
-                });
-
+                boxes.forEach(function (b) { b.value = ''; });
                 clearError();
-
-                verifyBtn.disabled = true;
-                boxes[0].focus();
+                if (verifyBtn) verifyBtn.disabled = true;
+                if (boxes[0]) boxes[0].focus();
             });
         }
 
         if (verifyBtn) {
             verifyBtn.addEventListener('click', function () {
-
                 if (verifyBtn.disabled) return;
 
-                var otp = boxes.map(function (b) {
-                    return b.value;
-                }).join('');
+                var otp = collectOtp();
 
-                if (otp === '000000') {
-
+                if (otp === CORRECT_OTP) {
                     clearError();
-
                     window.ekyc.goto('pan-verifying');
                     return;
                 }
 
-                if (otpField) {
-                    otpField.classList.add('is-error');
-                }
-
-                boxes.forEach(function (box) {
-                    box.classList.add('is-error');
-                });
-
-                attemptsLeft--;
-                console.log(
-                    document.getElementById('otp-maxattempts-modal')
-                );
+                if (otpWrap) otpWrap.classList.add('is-error');
+                attemptsLeft -= 1;
 
                 if (attemptsLeft <= 0) {
-                    console.log('opening modal');
-                    verifyBtn.disabled = true;
-
-                    boxes.forEach(function (box) {
-                        box.value = '';
-                    });
-
-                    var modal = document.getElementById('otp-maxattempts-modal');
-                    console.log('modal=', modal);
-                    console.log(getComputedStyle(modal).display);
-                    console.log(getComputedStyle(modal).visibility);
-                    console.log(getComputedStyle(modal).opacity);
-                    console.log(getComputedStyle(modal).zIndex);
-
-                    if (modal) {
-                        modal.hidden = false;
-                        modal.style.setProperty('display', 'flex', 'important');
-                        modal.classList.add('is-open');
-                    }
-
-                    return;
+                    clearError();
+                    if (otpWrap) otpWrap.classList.remove('is-error');
+                    window.ekyc.openModal('pan-otp-maxattempts-modal');
+                    attemptsLeft = MAX_ATTEMPTS;
+                } else {
+                    if (attemptsSpan) attemptsSpan.textContent = attemptsLeft;
+                    if (otpError)     otpError.hidden = false;
                 }
-
-                otpHint.style.display = 'block';
-                otpHint.textContent =
-                    'OTP does not match. You have ' +
-                    attemptsLeft +
-                    ' attempt' +
-                    (attemptsLeft > 1 ? 's' : '') +
-                    ' left.';
-
-
             });
         }
 
         updateButton();
-
-        if (boxes.length) {
-            boxes[0].focus();
-        }
+        if (boxes[0]) boxes[0].focus();
     };
 
     INITS['pan-address-proof'] = function () {

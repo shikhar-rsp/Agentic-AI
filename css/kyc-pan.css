@@ -509,8 +509,30 @@
         border-color: var(--color-blue-600);
     }
 
+    /* OTP error state — mirrors aadhaar-otp__footer pattern */
+    .pan-otp.is-error .pan-otp__box {
+        border-color: var(--color-red-600);
+        box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+    }
+
+    .pan-otp__footer {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 8px;
+    }
+
+    .pan-otp__error {
+        flex: 1;
+        margin: 0;
+        font: 400 13px/18px 'Rubik', sans-serif;
+        color: var(--color-red-600);
+    }
+
+    .pan-otp__error[hidden] { display: none !important; }
+
     .pan-resend {
-        align-self: flex-end;
+        margin-left: auto;
         font: 500 14px/20px 'Rubik', sans-serif;
         color: var(--color-blue-600);
         text-decoration: none;

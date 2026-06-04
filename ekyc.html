@@ -1567,7 +1567,7 @@
             </div>
 
             <!-- Back -->
-            <a class="pan-back" id="pan-back" data-action="open-modal:pan-leave-modal">
+            <a class="pan-back" id="pan-otp-back" data-action="open-modal:pan-otp-leave-modal">
               <i data-lucide="arrow-left"></i>
               Back
             </a>
@@ -1598,14 +1598,11 @@
                     <input class="pan-otp__box otp-input-box" type="tel" inputmode="numeric" maxlength="1"
                       aria-label="Digit 6" />
                   </div>
-                  <div class="otp-footer">
-                    <p id="pan-otp-error" class="otp-hint" style="display:none;">
-                      OTP does not match. You have 2 attempts left.
+                  <div class="pan-otp__footer">
+                    <p class="pan-otp__error" id="pan-otp-error" hidden>
+                      OTP doesn't match. <span id="pan-otp-attempts-left"></span> attempts left.
                     </p>
-
-                    <a href="#" class="pan-resend" id="pan-resend">
-                      Resend OTP
-                    </a>
+                    <a href="#" class="pan-resend" id="pan-resend">Resend OTP</a>
                   </div>
                 </div>
               </div>
@@ -1618,36 +1615,35 @@
         </div>
       </div>
 
-      <div class="modal-backdrop otp-maxattempts-modal" id="otp-maxattempts-modal" role="dialog" aria-modal="true"
-        aria-labelledby="otp-maxattempts-title">
+      <div class="modal-backdrop otp-maxattempts-modal" id="pan-otp-maxattempts-modal" role="dialog" aria-modal="true"
+        aria-labelledby="pan-otp-maxattempts-title">
         <div class="modal modal-confirmation size-md">
           <div class="modal-header no-border">
             <div class="modal-header-icon modal-header-icon--error">
               <i data-lucide="x-circle"></i>
             </div>
-            <h2 class="modal-title" id="otp-maxattempts-title">Too many attempts</h2>
+            <h2 class="modal-title" id="pan-otp-maxattempts-title">Too many attempts</h2>
           </div>
           <div class="modal-body">
-            We couldn't verify your Aadhaar with the OTP provided. Don't worry, you can still complete your KYC
-            using
+            We couldn't verify your PAN with the OTP provided. Don't worry, you can still complete your KYC using
             another method.
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" id="otp-try-another" name="otp-try-another"
+            <button type="button" class="btn btn-primary" id="pan-otp-try-another" name="pan-otp-try-another"
               data-action="close-modal">Try Another Method</button>
           </div>
         </div>
       </div>
 
       <!-- Leave-page confirmation modal -->
-      <div class="modal-backdrop pan-leave-modal" id="pan-leave-modal" role="dialog" aria-modal="true"
-        aria-labelledby="pan-leave-title">
+      <div class="modal-backdrop pan-leave-modal" id="pan-otp-leave-modal" role="dialog" aria-modal="true"
+        aria-labelledby="pan-otp-leave-title">
         <div class="modal modal-confirmation size-md">
           <div class="modal-header no-border">
             <div class="modal-header-icon modal-header-icon--warning">
               <i data-lucide="alert-circle"></i>
             </div>
-            <h2 class="modal-title" id="pan-leave-title">Leave this page?</h2>
+            <h2 class="modal-title" id="pan-otp-leave-title">Leave this page?</h2>
           </div>
           <div class="modal-body">
             The details you entered may not be saved if you leave this page.
@@ -1766,7 +1762,7 @@
             </div>
 
             <!-- Back -->
-            <a class="pan-back" id="pan-back" data-action="back">
+            <a class="pan-back" id="pan-address-back" data-action="open-modal:pan-address-leave-modal">
               <i data-lucide="arrow-left"></i>
               Back
             </a>
@@ -1940,6 +1936,28 @@
             <button type="button" class="btn btn-primary" id="document-error-reupload">
               Re-upload
             </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Leave-page confirmation modal (pan-address-proof screen) -->
+      <div class="modal-backdrop pan-leave-modal" id="pan-address-leave-modal" role="dialog" aria-modal="true"
+        aria-labelledby="pan-address-leave-title">
+        <div class="modal modal-confirmation size-md">
+          <div class="modal-header no-border">
+            <div class="modal-header-icon modal-header-icon--warning">
+              <i data-lucide="alert-circle"></i>
+            </div>
+            <h2 class="modal-title" id="pan-address-leave-title">Leave this page?</h2>
+          </div>
+          <div class="modal-body">
+            The details you entered may not be saved if you leave this page.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary"
+              data-action="leave-goto:pan-otp" data-modal-close>Go Back</button>
+            <button type="button" class="btn btn-primary"
+              data-action="close-modal" data-modal-close>Continue filling KYC</button>
           </div>
         </div>
       </div>
@@ -2948,6 +2966,7 @@
 
       window.ekyc = {
         goto: goto, back: back,
+        openModal: openModal,
         get currentScreen() { return current; },
         get history() { return nav.slice(); }
       };
@@ -3014,6 +3033,14 @@
           var mm = t.closest('.modal-backdrop');
           if (mm) closeModalEl(mm);
           back();
+          return;
+        }
+        // leave-goto:<slug> — close modal then navigate to specific screen
+        if (action.indexOf('leave-goto:') === 0) {
+          e.preventDefault();
+          var lmm = t.closest('.modal-backdrop');
+          if (lmm) closeModalEl(lmm);
+          goto(action.slice('leave-goto:'.length));
           return;
         }
         // submit:<form-slug>
