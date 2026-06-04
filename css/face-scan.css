@@ -43,7 +43,7 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 220px;
+    height: 280px;
     background: url('../assets/img/face-scan.png') center / cover no-repeat;
     z-index: 0;
   }
@@ -54,17 +54,17 @@
     z-index: 1;
     display: flex;
     justify-content: center;
-    padding: 0 16px 40px;
+    padding: 56px 16px 40px;
   }
 
   /* White card */
   .facescan-card {
     width: 100%;
-    max-width: 696px;
+    max-width: 800px;
     background: var(--color-neutral-0);
     border-radius: 16px;
     box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
-    padding: 24px 24px 0;
+    padding: 24px 32px;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -88,12 +88,12 @@
 
   .facescan-card-title {
     margin: 0;
-    font: 500 24px/32px 'Rubik', sans-serif;
+    font: 600 32px/36px 'Familjen Grotesk', sans-serif;
     color: var(--color-neutral-900);
   }
 
   /* ---- Info toast ---- */
-  .facescan-info { margin: 0; }
+  .facescan-info { margin: 4px auto 16px; width: fit-content;}
 
   /* ---- Back link ---- */
   .facescan-back {
@@ -111,13 +111,13 @@
   .facescan-camera-wrap {
     width: 100%;
     background: #2e2e2e;
-    border-radius: 12px;
+    border-radius: 20px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
     min-height: 300px;
-    padding-bottom: 20px;
+    padding-bottom: 24px;
   }
 
   /* Top bar: auto-capture pill flush to the right */
@@ -132,25 +132,25 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: var(--color-blue-standard-600);
+    background: var(--color-neutral-600);
     color: var(--color-neutral-0);
     padding: 4px 12px;
     border-radius: 256px;
-    font: 400 12px/18px 'Rubik', sans-serif;
+    font: 400 14px/20px 'Rubik', sans-serif;
   }
   .facescan-cam-pill [data-lucide] { width: 14px; height: 14px; }
 
   /* White rectangular viewfinder frame */
   .facescan-frame {
     width: calc(100% - 48px);
-    max-width: 380px;
-    margin-top: 12px;
+    max-width: 480px;
+    margin-top: 48px;
     border: 1.5px solid rgba(255, 255, 255, 0.85);
     border-radius: 4px;
     overflow: hidden;
     position: relative;
     flex: 1;
-    min-height: 180px;
+    min-height: 320px;
   }
 
   .facescan-frame__feed {
@@ -164,20 +164,20 @@
 
   /* Hint text at bottom of camera wrap */
   .facescan-hint {
-    margin: 16px 0 0;
-    background: #1e1e1e;
+    margin: 26px 0 0;
+    background: #1E1E1E;
     color: var(--color-neutral-0);
     border-radius: 12px;
-    padding: 8px 16px;
-    font: 400 13px/18px 'Rubik', sans-serif;
+    padding: 8px 9.5px;
+    font: 400 14px/20px 'Rubik', sans-serif;
     text-align: center;
     max-width: calc(100% - 32px);
   }
 
   /* ---- Submit bar ---- */
-  .facescan-submit-bar {
+/*   .facescan-submit-bar {
     padding: 16px 0 24px;
-  }
+  } */
 
   .facescan-capture-btn {
     width: 100%;
@@ -328,5 +328,11 @@
     font-size: 16px;
     line-height: 24px;
     color: var(--color-neutral-800);
+  }
+
+  @media (max-width: 767px) {
+    .facescan-card{
+      margin-bottom: 96px;
+    }
   }
 }

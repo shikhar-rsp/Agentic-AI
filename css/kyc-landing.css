@@ -336,8 +336,6 @@
 
   /* Brand-blue featured icon circle (DS ships success/error/info only) */
   .modal-header-icon--brand {
-    background: var(--color-blue-50);
-    color: var(--color-blue-600);
     margin-bottom: 12px;
   }
   .modal-header-icon--brand .lucide,

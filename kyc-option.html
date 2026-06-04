@@ -694,10 +694,10 @@
       <!-- Allow camera modal (scoped to landing screen) -->
       <div class="modal-backdrop kyc-modal" id="landing-camera-modal" role="dialog" aria-modal="true"
         aria-labelledby="landing-camera-modal-title">
-        <div class="modal modal-confirmation">
+        <div class="modal modal-confirmation size-md">
           <div class="modal-header no-border">
             <div class="modal-header-icon modal-header-icon--brand">
-              <i data-lucide="camera"></i>
+              <i class="ph ph-warning-circle ph-md-20"></i>
             </div>
             <h2 class="modal-title" id="landing-camera-modal-title">Allow camera access</h2>
           </div>
@@ -3107,29 +3107,29 @@
         <div class="facescan-body">
           <div class="facescan-card">
             <div class="facescan-head">
-              <img class="facescan-icon" src="assets/img/face-scan.svg" alt="" aria-hidden="true" />
+              <img class="facescan-icon" src="assets/img/ScanSmiley.svg" alt="" aria-hidden="true" />
               <h1 class="facescan-card-title">KYC via Face Scan</h1>
-            </div>
-
-            <div class="toast toast-info facescan-info" role="note">
-              <span class="toast-icon"><i data-lucide="info"></i></span>
-              <div class="toast-body">
-                <div class="toast-content">
-                  <p class="toast-description">
-                    Look directly at the camera and keep your face within the circle frame
-                  </p>
+              <div class="toast toast-info facescan-info" role="note">
+                <span class="toast-icon"><i class="ph ph-info ph-md"></i></span>
+                <div class="toast-body">
+                  <div class="toast-content">
+                    <p class="toast-description">
+                      Look directly at the camera and keep your face within the circle frame
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <a class="facescan-back" id="face-back" data-action="back" role="button" tabindex="0">
+
+            <a class="facescan-back" id="face-back" data-action="open-modal:facescan-leave-modal" role="button" tabindex="0">
               <i class="ph ph-arrow-left ph-md-20"></i> Back
             </a>
 
             <div class="facescan-camera-wrap" id="face-camera">
               <div class="facescan-camtopbar">
                 <span class="facescan-cam-pill">
-                  <i data-lucide="zap"></i> Auto capture is off
+                  <i class="ph ph-lightning ph-sm"></i> Auto capture is off
                 </span>
               </div>
 
@@ -3142,7 +3142,7 @@
               </p>
             </div>
 
-            <div class="facescan-submit-bar">
+            <div class="facescan-submit-bar submit-bar-mobile">
               <button type="button" class="btn btn-primary facescan-capture-btn" id="face-capture" name="face-capture"
                 data-action="face-capture" disabled>
                 Start Face Scan
