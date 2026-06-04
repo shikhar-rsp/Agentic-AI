@@ -50,6 +50,11 @@
     overflow: hidden;
   }
 
+  .kycinit-card[hidden] {
+    display: none !important;
+  }
+
+
   .kycinit-card .toast {
     padding: 16px !important;
   }
@@ -72,6 +77,74 @@
     color: var(--color-blue-700);
   }
 
+  .kyc-org-title-wrapper {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .kycinit-org-title {
+    margin: 0;
+    font-family: 'Familjen Grotesk', 'Rubik', sans-serif;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 34px;
+    color: #1E293B;
+  }
+
+  .kycinit-org-card {
+    padding: 16px;
+    border-radius: 16px;
+    background: radial-gradient(116.62% 116.62% at 50% 0%,
+        #FFFFFF 0%,
+        #EFF6FF 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .kycinit-org-card-title {
+    color: #2563EB;
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 600;
+    margin: 0;
+
+  }
+
+  .kycinit-org-card-desc {
+    margin: 0;
+    color: #1E293B;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .org-emblem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    max-width: 30px;
+    max-height: 44px;
+  }
+
+  .org-emblem img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .kycinit-org-card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding-top: 12px;
+    padding-bottom: 8px;
+  }
+
   .kycinit-subtitle {
     margin: 0;
     font: 400 16px/24px 'Rubik', sans-serif;
@@ -82,7 +155,7 @@
   .kycinit-customer {
     background: var(--color-blue-50);
     border-radius: 12px;
-    padding:  8px;
+    padding: 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -226,6 +299,8 @@
     width: 20px;
     height: 20px;
   }
+
+
 }
 
 /* =========================================================================
@@ -289,55 +364,68 @@
   }
 
   @media (max-width: 768px) {
-    .kycinit-card{
+    .kycinit-card {
       margin-bottom: 96px;
     }
-    .kycinit-head{
+
+    .kycinit-head {
       margin-bottom: 0px;
     }
+
     .kycinit-title {
       font-size: 28px;
       line-height: 32px;
     }
-    .kycinit-subtitle{
+
+    .kycinit-subtitle {
       font-size: 14px;
       line-height: 20px;
     }
-    .kycinit-customer__label{
+
+    .kycinit-customer__label {
       font-size: 12px;
       line-height: 16px;
     }
-    .kycinit-customer__value{
+
+    .kycinit-customer__value {
       font-size: 16px;
       line-height: 24px;
     }
-    .kycinit-customer__meta{
+
+    .kycinit-customer__meta {
       font-size: 12px;
       line-height: 16px;
     }
-    .kycinit-customer__meta strong{
+
+    .kycinit-customer__meta strong {
       font-weight: 400;
-    } 
-    .kycinit-tile__icon{
+    }
+
+    .kycinit-tile__icon {
       padding: 6px;
     }
-    .kycinit-tile__icon .ph{
+
+    .kycinit-tile__icon .ph {
       font-size: 20px !important;
     }
-    .kycinit-tile__title{
+
+    .kycinit-tile__title {
       font-size: 14px;
       line-height: 20px;
     }
-    .kycinit-tile__desc{
+
+    .kycinit-tile__desc {
       font-size: 12px;
       line-height: 16px;
     }
-    .kycinit-toast .toast-title{
+
+    .kycinit-toast .toast-title {
       font-size: 14px;
       line-height: 20px;
       font-weight: 500;
     }
-    .kycinit-list{
+
+    .kycinit-list {
       font-size: 12px;
       line-height: 16px;
     }

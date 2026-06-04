@@ -127,6 +127,7 @@
   <link rel="stylesheet" href="css/kyc-aadhaar.css" />
   <link rel="stylesheet" href="css/kyc-success.css" />
   <link rel="stylesheet" href="css/kyc-document-upload.css" />
+  <link rel="stylesheet" href="css/kyc-org-pan.css" />
 
   <style>
     /* ===== Journey-level SPA chrome ===== */
@@ -199,34 +200,35 @@
        Primary button: id=init-submit, data-action chosen at runtime by JS
        Navigation: complete -> landing ; send-link -> send-link
        ========================================================================= -->
-       <section class="ekyc-screen" id="screen-initiation" data-screen="initiation" hidden>
-        <div class="kycinit-page">
-          <div class="kycinit-bg" aria-hidden="true"></div>
-          <header class="kyc-header">
-            <div class="kyc-header__row">
-              <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
-              <div class="kyc-header__agent">
-                <div class="kyc-agent-info">
-                  <span class="kyc-agent-name">Rajesh Chaurasia</span>
-                  <span class="kyc-agent-id">BA786314</span>
-                </div>
-                <div class="kyc-avatar">
-                  <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
-                  <span class="kyc-avatar__dot" aria-hidden="true"></span>
-                </div>
+    <section class="ekyc-screen" id="screen-initiation" data-screen="initiation" hidden>
+      <div class="kycinit-page">
+        <div class="kycinit-bg" aria-hidden="true"></div>
+        <header class="kyc-header">
+          <div class="kyc-header__row">
+            <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+            <div class="kyc-header__agent">
+              <div class="kyc-agent-info">
+                <span class="kyc-agent-name">Rajesh Chaurasia</span>
+                <span class="kyc-agent-id">BA786314</span>
+              </div>
+              <div class="kyc-avatar">
+                <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
+                <span class="kyc-avatar__dot" aria-hidden="true"></span>
               </div>
             </div>
-          </header>
-  
-          <div class="kycinit-body">
-            <form class="kycinit-card" id="form-initiation" novalidate>
+          </div>
+        </header>
+
+        <div class="kycinit-body">
+          <form id="form-initiation" novalidate>
+            <div class="kycinit-card" id="individual-initiation-content">
               <div class="kycinit-head">
                 <h1 class="kycinit-title">Initiate KYC</h1>
                 <p class="kycinit-subtitle">
                   Complete the customer's KYC yourself or send them a secure KYC verification link.
                 </p>
               </div>
-  
+
               <div class="kycinit-customer">
                 <div class="kycinit-customer__name">
                   <span class="kycinit-customer__label">Customer Name</span>
@@ -234,10 +236,15 @@
                 </div>
                 <div class="kycinit-customer__meta-group">
                   <p class="kycinit-customer__meta">Partner ID: <strong>C1738E474E73</strong></p>
-                  <p class="kycinit-customer__meta">Customer Type: <strong>Individual</strong></p>
+                  <p class="kycinit-customer__meta">
+                    Customer Type:
+                    <strong id="customer-type-value">Individual</strong>
+                  </p>
                 </div>
               </div>
-  
+
+
+
               <div class="kycinit-tiles" role="radiogroup" aria-label="KYC method">
                 <div class="kycinit-tile is-selected" id="init-tile-complete" data-option="complete" role="radio"
                   aria-checked="true" tabindex="0">
@@ -249,7 +256,7 @@
                     </p>
                   </div>
                 </div>
-  
+
                 <div class="kycinit-tile" id="init-tile-send-link" data-option="send-link" role="radio"
                   aria-checked="false" tabindex="0">
                   <span class="kycinit-tile__icon"><i class="ph ph-paper-plane-tilt ph-md"></i></span>
@@ -261,7 +268,7 @@
                   </div>
                 </div>
               </div>
-  
+
               <div class="toast toast-neutral kycinit-toast" role="note" id="init-requirements">
                 <span class="toast-icon"><i class="ph ph-info ph-md"></i></span>
                 <div class="toast-body">
@@ -278,17 +285,471 @@
                   </div>
                 </div>
               </div>
-  
+
               <div class="submit-bar-mobile">
                 <button type="button" class="btn btn-primary kycinit-submit" id="init-submit" name="init-submit">
                   <span id="init-submit-label">Start KYC Verification</span>
                   <i class="ph ph-arrow-right ph-md-20"></i>
                 </button>
               </div>
-            </form>
-          </div>
+            </div>
+
+            <div class="kycinit-card" id="organisation-kyc-section" hidden>
+              <div class="kyc-org-title-wrapper">
+                <h2 class="kycinit-org-title">
+                  KYC Verification for Organisations
+                </h2>
+              </div>
+
+
+              <div class="kycinit-org-card">
+
+                <div class="org-emblem-wrapper" role="button" tabindex="0">
+                  <span class="org-emblem">
+                    <img src="assets/img/ashoka-emblem.png" alt="" />
+                  </span>
+                </div>
+
+                <div class="kycinit-org-card-body">
+                  <p class="kycinit-org-card-title">PAN Card</p>
+
+                  <p class="kycinit-org-card-desc">
+                    Use your PAN and mobile number for instant identity checks.
+                    May require address proof.
+                  </p>
+
+                  <button type="button" class="btn btn-primary" id="organisation-start-btn">
+                    Start KYC
+                    <i class="ph ph-arrow-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="toast toast-info kycinit-toast">
+
+                <span class="toast-icon">
+                  <i class="ph ph-info" style="font-size: 24px;"></i>
+                </span>
+
+                <div class="toast-body">
+                  <div class="toast-content">
+
+                    <p class="toast-title">
+                      Before proceeding with KYC, you will need:
+                    </p>
+
+                    <p class="toast-description">
+                      Please keep the organisation PAN number and GST number ready.
+                      If CKYC verification cannot be completed, you will be required
+                      to upload a valid GST document for verification.
+                      Ensure all uploaded documents are clear, valid,
+                      and up to date before continuing.
+                    </p>
+
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
-      </section>
+
+        </form>
+      </div>
+      </div>
+    </section>
+
+    <section class="ekyc-screen" id="screen-org-pan" data-screen="org-pan" hidden>
+      <div class="pan-page">
+
+        <div class="pan-bg" aria-hidden="true"></div>
+
+        <!-- Header -->
+        <header class="kyc-header">
+
+          <div class="kyc-header__row">
+
+            <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+
+            <div class="kyc-header__agent">
+
+              <div class="kyc-agent-info">
+                <span class="kyc-agent-name">
+                  Rajesh Chaurasia
+                </span>
+
+                <span class="kyc-agent-id">
+                  BA786314
+                </span>
+              </div>
+
+              <div class="kyc-avatar">
+                <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
+
+                <span class="kyc-avatar__dot" aria-hidden="true"></span>
+              </div>
+
+            </div>
+
+          </div>
+
+          <span class="badge badge-sm badge-light badge-red">
+            <i class="ph ph-warning-circle ph-sm"></i>
+            Link expires in 12hr 32mins
+          </span>
+
+        </header>
+
+        <!-- Body -->
+        <div class="pan-body">
+
+          <div class="pan-card">
+
+            <div class="pan-head">
+
+              <img class="pan-logo" src="assets/img/ashoka-emblem.png" alt="pan" />
+
+              <h1 class="pan-title">
+                Verify with PAN Card
+              </h1>
+
+              <p class="pan-subtitle">
+                Please enter organisation PAN details
+                to continue KYC verification.
+              </p>
+
+            </div>
+
+            <!-- Back -->
+            <a class="pan-back" id="org-pan-back" data-action="open-modal:org-pan-leave-modal">
+              <i class="ph ph-arrow-left ph-md-20"></i>
+              Back
+            </a>
+
+            <!-- Details -->
+            <div class="pan-details">
+
+              <div class="pan-details__head">
+
+                <h3 class="pan-details__title">
+                  Verify Organisation Details
+                </h3>
+
+                <p class="pan-details__hint">
+                  Enter the organization PAN details to begin secure KYC verification
+                </p>
+
+              </div>
+
+              <!-- PAN Number -->
+              <div class="form-field pan-field">
+                <label class="form-label" for="org-pan-num">
+                  <span id="pan-num-label">PAN Number</span><span class="pan-req">*</span>
+                </label>
+
+                <div class="form-input-wrapper">
+                  <input class="form-input" id="org-pan-num" type="text" maxlength="10"
+                    placeholder="Enter 10-digit PAN Number" />
+                </div>
+                <p class="form-error">Invalid PAN Format. Must be 5 letters, 4 digits, 1 letter</p>
+              </div>
+
+              <!--Security Question -->
+              <div class="form-field pan-field">
+
+                <label class="form-label" for="org-pan-sec">
+                  What is 5 + 9? (Security Question)
+                  <span class="pan-req">*</span>
+                </label>
+
+                <div class="form-input-wrapper">
+
+                  <input class="form-input" id="org-pan-sec" type="tel" maxlength="10" placeholder="Enter answer" />
+
+                </div>
+
+                <p class="form-error">
+                  Incorrect answer to security question
+                </p>
+
+              </div>
+
+              <!-- Consent -->
+              <div class="org-pan-consent" id="org-pan-consent">
+
+                <h3 class="pan-consent__title">
+                  Please confirm the following to proceed
+                </h3>
+
+                <label class="pan-check">
+
+                  <input type="checkbox" id="org-pan-c1" />
+
+                  <span class="pan-check__box" aria-hidden="true"></span>
+
+                  <span class="pan-check__label">
+                    I/We hereby authorize BGIL to print my/our name/mobile number on the policy document as received
+                    through KYC.
+                  </span>
+
+                </label>
+
+                <label class="pan-check">
+
+                  <input type="checkbox" id="org-pan-c2" />
+
+                  <span class="pan-check__box" aria-hidden="true"></span>
+
+                  <span class="pan-check__label">
+                    I accept the CKYC terms and conditions <a href="#" class="pan-readmore">Read More</a>
+                  </span>
+
+                </label>
+
+              </div>
+
+            </div>
+
+            <!-- Submit -->
+            <button type="button" class="btn btn-primary pan-submit" id="org-pan-submit" disabled>
+              Verify and Proceed
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Leave modal -->
+      <div class="modal-backdrop pan-leave-modal" id="org-pan-leave-modal" role="dialog" aria-modal="true"
+        aria-labelledby="org-pan-leave-title">
+
+        <div class="modal modal-confirmation size-md">
+
+          <div class="modal-header no-border">
+
+            <div class="modal-header-icon modal-header-icon--warning">
+              <i data-lucide="alert-circle"></i>
+            </div>
+
+            <h2 class="modal-title" id="org-pan-leave-title">
+              Leave this page?
+            </h2>
+
+          </div>
+
+          <div class="modal-body">
+            The details you entered may not be saved.
+          </div>
+
+          <div class="modal-footer">
+
+            <button type="button" class="btn btn-secondary" data-action="leave-confirm">
+              Go Back
+            </button>
+
+            <button type="button" class="btn btn-primary" data-action="close-modal">
+              Continue filling KYC
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="ekyc-screen" id="screen-org-pan-address" data-screen="org-pan-address" hidden>
+      <div class="pan-page">
+
+        <div class="pan-bg" aria-hidden="true"></div>
+
+        <!-- Header -->
+        <header class="kyc-header">
+
+          <div class="kyc-header__row">
+
+            <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+
+            <div class="kyc-header__agent">
+
+              <div class="kyc-agent-info">
+                <span class="kyc-agent-name">
+                  Rajesh Chaurasia
+                </span>
+
+                <span class="kyc-agent-id">
+                  BA786314
+                </span>
+              </div>
+
+              <div class="kyc-avatar">
+                <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
+
+                <span class="kyc-avatar__dot" aria-hidden="true"></span>
+              </div>
+
+            </div>
+
+          </div>
+
+          <span class="badge badge-sm badge-light badge-red">
+            <i class="ph ph-warning-circle ph-sm"></i>
+            Link expires in 12hr 32mins
+          </span>
+
+        </header>
+
+        <!-- Body -->
+        <div class="pan-body">
+
+          <div class="pan-card">
+
+            <div class="pan-head">
+
+              <img class="pan-logo" src="assets/img/ashoka-emblem.png" alt="pan" />
+
+              <h1 class="pan-title">
+                Verify with PAN Card
+              </h1>
+
+              <p class="pan-subtitle">
+                Please enter organisation PAN details
+                to continue KYC verification.
+              </p>
+
+            </div>
+
+            <!-- Back -->
+            <a class="pan-back" id="org-pan-back" data-action="open-modal:org-pan-leave-modal">
+              <i class="ph ph-arrow-left ph-md-20"></i>
+              Back
+            </a>
+
+            <div class="toast toast-danger org-gst-toast" id="org-gst-error-toast" hidden>
+              <span class="toast-icon">
+                <i class="ph ph-warning-circle" style="font-size: 24px;"></i>
+              </span>
+
+              <div class="toast-body">
+                <div class="toast-content">
+
+                  <p class="toast-title">
+                    GSTIN verification failed
+                  </p>
+
+                  <p class="toast-description">
+                    We could not verify the GSTIN entered.
+                    Please check the GSTIN details and try again.
+                  </p>
+
+                </div>
+              </div>
+            </div>
+
+            <!-- Details -->
+            <div class="pan-details">
+
+              <div class="pan-details__head">
+
+                <h3 class="pan-details__title">
+                  Verify Proof of Address
+                </h3>
+
+                <p class="pan-details__hint">
+                  Enter the GSTIN number linked to this organisation.
+                </p>
+
+              </div>
+
+              <!-- GSTIN Number -->
+              <div class="form-field pan-field">
+                <label class="form-label" for="org-gst-num">
+                  <span id="gst-num-label">GSTIN Number</span><span class="pan-req">*</span>
+                </label>
+
+                <div class="form-input-wrapper">
+                  <input class="form-input" id="org-gst-num" type="text" maxlength="15"
+                    placeholder="Enter GSTIN Number" />
+                </div>
+                <p class="form-error">
+                  Invalid GSTIN format. Please enter a valid GSTIN number.
+                </p>
+              </div>
+
+              <!--Security Question -->
+              <div class="form-field pan-field">
+
+                <label class="form-label" for="org-pan-sec">
+                  What is 5 + 9? (Security Question)
+                  <span class="pan-req">*</span>
+                </label>
+
+                <div class="form-input-wrapper">
+
+                  <input class="form-input" id="org-pan-sec" type="tel" maxlength="10" placeholder="Enter answer" />
+
+                </div>
+
+                <p class="form-error">
+                  Incorrect answer to security question
+                </p>
+
+              </div>
+
+
+
+            </div>
+
+            <!-- Submit -->
+            <button type="button" class="btn btn-primary pan-submit" id="org-gst-submit" disabled>
+              Verify Details
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Leave modal -->
+      <div class="modal-backdrop pan-leave-modal" id="org-pan-leave-modal" role="dialog" aria-modal="true"
+        aria-labelledby="org-pan-leave-title">
+
+        <div class="modal modal-confirmation size-md">
+
+          <div class="modal-header no-border">
+
+            <div class="modal-header-icon modal-header-icon--warning">
+              <i data-lucide="alert-circle"></i>
+            </div>
+
+            <h2 class="modal-title" id="org-pan-leave-title">
+              Leave this page?
+            </h2>
+
+          </div>
+
+          <div class="modal-body">
+            The details you entered may not be saved.
+          </div>
+
+          <div class="modal-footer">
+
+            <button type="button" class="btn btn-secondary" data-action="leave-confirm">
+              Go Back
+            </button>
+
+            <button type="button" class="btn btn-primary" data-action="close-modal">
+              Continue filling KYC
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
 
     <!-- =========================================================================
        SCREEN: send-link
@@ -845,15 +1306,19 @@
                     I accept the UIDAI terms and conditions
                     <span class="aadhaar-readmore__extra" hidden><br />
                       I/We hereby authorize BGIL, its representatives and service providers to carry out Aadhaar-based
-                      authentication/e-KYC through UIDAI using the Aadhaar/VID details and/or documents submitted by me/us
-                      including masked Aadhaar, Secure QR, e-Aadhaar, XML/Offline e-KYC. For this purpose, I/We consent to
+                      authentication/e-KYC through UIDAI using the Aadhaar/VID details and/or documents submitted by
+                      me/us
+                      including masked Aadhaar, Secure QR, e-Aadhaar, XML/Offline e-KYC. For this purpose, I/We consent
+                      to
                       the collection, use, storage and processing of my/our identity and address details including name,
                       address, DOB, gender, mobile/email and photograph. I/We understand that BGIL will share my/our
                       Aadhaar number/VID and/or required demographic information with UIDAI solely for
-                      authentication/e-KYC, and UIDAI may return authentication/verification response and permitted e-KYC
+                      authentication/e-KYC, and UIDAI may return authentication/verification response and permitted
+                      e-KYC
                       data to BGIL.
                     </span>
-                    <a href="#" class="aadhaar-readmore" id="aadhaar-readmore-toggle" aria-expanded="false">Read More</a>
+                    <a href="#" class="aadhaar-readmore" id="aadhaar-readmore-toggle" aria-expanded="false">Read
+                      More</a>
                   </span>
                 </label>
               </div>
@@ -1450,12 +1915,12 @@
                 <label class="form-label" for="pan-num">
                   <span id="pan-num-label">PAN Number</span><span class="pan-req">*</span>
                 </label>
+
                 <div class="form-input-wrapper">
                   <input class="form-input" id="pan-num" type="text" maxlength="10"
                     placeholder="Enter 10-digit PAN Number" />
                 </div>
                 <p class="form-error">Invalid PAN Format. Must be 5 letters, 4 digits, 1 letter</p>
-
               </div>
 
               <!-- Mobile Number -->
@@ -2700,8 +3165,8 @@
             </div>
 
             <!-- Leave-page confirmation modal (pan-address-proof screen) -->
-            <div class="modal-backdrop pan-leave-modal" id="document-address-leave-modal" role="dialog" aria-modal="true"
-              aria-labelledby="document-address-leave-title">
+            <div class="modal-backdrop pan-leave-modal" id="document-address-leave-modal" role="dialog"
+              aria-modal="true" aria-labelledby="document-address-leave-title">
               <div class="modal modal-confirmation size-md">
                 <div class="modal-header no-border">
                   <div class="modal-header-icon modal-header-icon--warning">
@@ -2713,7 +3178,7 @@
                   The details you entered may not be saved if you leave this page.
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" id="document-address-go-back-btn"  data-modal-close>Go
+                  <button type="button" class="btn btn-secondary" id="document-address-go-back-btn" data-modal-close>Go
                     Back</button>
                   <button type="button" class="btn btn-primary" data-action="close-modal" data-modal-close>Continue
                     filling
@@ -3287,6 +3752,7 @@
   <script src="js/kyc-aadhaar.js"></script>
   <script src="js/kyc-pan.js"></script>
   <script src="js/kyc-document-upload.js"></script>
+  <script src="js/kyc-org-pan.js"></script>
 
   <!-- ===== Inline SPA router + per-screen logic =================================
      The router maintains a screen stack, exposes window.ekyc, and dispatches
@@ -3301,7 +3767,9 @@
       var SCREENS = [
         'initiation', 'send-link', 'send-link-sent',
         'landing', 'aadhaar', 'aadhaar-otp', 'aadhaar-review', 'aadhaar-done',
-        'pan', 'pan-otp', 'pan-verifying', 'pan-address-proof', 'document-scanning',
+        'pan', 'pan-otp', 'pan-verifying', 'pan-address-proof',
+        'org-pan', 'org-pan-address',
+        'document-scanning',
         'review-submit', 'pan-done', 'document-upload', 'doc-pan-address-proof', 'document-verifying', 'document-review-submit',
         'face-scan', 'face-scan-misaligned', 'success'
       ];
@@ -3566,33 +4034,190 @@
 
       /* ---- initScreen_initiation ---- */
       INITS['initiation'] = function () {
+
         var root = screenEl('initiation');
-        if (root.dataset.inited) return; root.dataset.inited = '1';
+
+        if (root.dataset.inited) return;
+
+        root.dataset.inited = '1';
+
+        var params = new URLSearchParams(
+          window.location.search
+        );
+
+        var userType =
+          params.get('userType') || 'individual';
+
+        var organisationSection = $(
+          '#organisation-kyc-section',
+          root
+        );
+
+        var organisationStartBtn = $(
+          '#organisation-start-btn',
+          root
+        );
+
+        var individualContent = $(
+          '#individual-initiation-content',
+          root
+        );
+
+        var customerTypeValue = $(
+          '#customer-type-value',
+          root
+        );
+
         var tiles = $$('.kycinit-tile', root);
-        var requirements = $('#init-requirements', root);
+
+        var requirements = $(
+          '#init-requirements',
+          root
+        );
+
         var submit = $('#init-submit', root);
-        var submitLabel = $('#init-submit-label', root);
+
+        var submitLabel = $(
+          '#init-submit-label',
+          root
+        );
+
+        // hide org section by default
+        if (organisationSection) {
+          organisationSection.setAttribute(
+            'hidden',
+            ''
+          );
+        }
+
+        // Organisation flow
+        if (userType === 'organisation') {
+
+          if (customerTypeValue) {
+            customerTypeValue.textContent =
+              'Organisation';
+          }
+
+          // hide all individual content
+          if (individualContent) {
+            individualContent.style.display =
+              'none';
+          }
+
+          // show only org section
+          if (organisationSection) {
+            organisationSection.removeAttribute(
+              'hidden'
+            );
+          }
+
+          if (organisationStartBtn) {
+
+            organisationStartBtn.addEventListener(
+              'click',
+              function () {
+
+                goto('org-pan');
+
+                if (INITS['org-pan']) {
+                  INITS['org-pan']();
+                }
+              }
+            );
+          }
+
+          return;
+        }
+
+        // Individual flow
+        if (customerTypeValue) {
+          customerTypeValue.textContent =
+            'Individual';
+        }
+
+        if (organisationSection) {
+          organisationSection.setAttribute(
+            'hidden',
+            ''
+          );
+        }
 
         function select(tile) {
+
           tiles.forEach(function (t) {
+
             var on = t === tile;
-            t.classList.toggle('is-selected', on);
-            t.setAttribute('aria-checked', on ? 'true' : 'false');
+
+            t.classList.toggle(
+              'is-selected',
+              on
+            );
+
+            t.setAttribute(
+              'aria-checked',
+              on ? 'true' : 'false'
+            );
           });
-          var sendLink = tile.getAttribute('data-option') === 'send-link';
-          if (requirements) requirements.style.display = sendLink ? 'none' : '';
-          if (submitLabel) submitLabel.textContent = sendLink ? 'Next' : 'Start KYC Verification';
-          submit.setAttribute('data-action', sendLink ? 'goto:send-link' : 'goto:landing');
+
+          var sendLink =
+            tile.getAttribute('data-option') ===
+            'send-link';
+
+          if (requirements) {
+
+            requirements.style.display =
+              sendLink ? 'none' : '';
+          }
+
+          if (submitLabel) {
+
+            submitLabel.textContent =
+              sendLink
+                ? 'Next'
+                : 'Start KYC Verification';
+          }
+
+          submit.setAttribute(
+            'data-action',
+            sendLink
+              ? 'goto:send-link'
+              : 'goto:landing'
+          );
         }
+
         tiles.forEach(function (tile) {
-          tile.addEventListener('click', function () { select(tile); });
-          tile.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(tile); }
-          });
+
+          tile.addEventListener(
+            'click',
+            function () {
+              select(tile);
+            }
+          );
+
+          tile.addEventListener(
+            'keydown',
+            function (e) {
+
+              if (
+                e.key === 'Enter' ||
+                e.key === ' '
+              ) {
+
+                e.preventDefault();
+
+                select(tile);
+              }
+            }
+          );
         });
-        // initialize default selection -> wire submit's data-action
-        var pre = $('.kycinit-tile.is-selected', root) || tiles[0];
-        if (pre) select(pre);
+
+        var pre =
+          $('.kycinit-tile.is-selected', root) ||
+          tiles[0];
+
+        if (pre) {
+          select(pre);
+        }
       };
 
       /* ---- initScreen_send-link ---- */
@@ -3698,10 +4323,27 @@
           percent.textContent = progress + '%';
 
           if (progress >= 100) {
+
             clearInterval(timer);
 
             setTimeout(function () {
-              goto('pan-address-proof');
+
+              var params = new URLSearchParams(
+                window.location.search
+              );
+
+              var userType =
+                params.get('userType') || 'individual';
+
+              if (userType === 'organisation') {
+
+                goto('org-pan-address');
+
+              } else {
+
+                goto('pan-address-proof');
+              }
+
             }, 500);
           }
 
