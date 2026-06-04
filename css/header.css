@@ -81,7 +81,7 @@
     .kyc-header {
       flex-direction: row;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
       padding: 12px 32px;
     }
     .kyc-header__row { display: contents; }

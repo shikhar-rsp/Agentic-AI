@@ -3946,6 +3946,7 @@
         font-weight: var(--font-weight-medium);
         line-height: var(--line-height-sm);
         color: var(--color-text);
+        margin: 0;
     }
 
     /* Description */

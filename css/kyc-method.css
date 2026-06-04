@@ -261,5 +261,5 @@
 
 
 /* Proceed button wrapper */
-.kyc-proceed-wrap { display: flex; justify-content: center; padding-top: 20px; padding-bottom: 20px; }
-.kyc-proceed-btn  { width: fit-content; }
+.kyc-proceed-wrap { display: flex; justify-content: center; padding-top: 24px; padding-bottom: 24px; }
+.kyc-proceed-btn  { width: fit-content; font-size: 14px; line-height: 20px; padding: 8px 32px; border-radius: 12px !important; }
