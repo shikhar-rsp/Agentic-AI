@@ -70,7 +70,7 @@
     margin: 0;
     font-family: 'Familjen Grotesk', 'Rubik', sans-serif;
     font-weight: 600;
-    font-size: 24px;
+    font-size: 28px;
     line-height: 32px;
     color: var(--color-neutral-800);
   }
@@ -742,8 +742,8 @@
   .varifying-details-body-info {
     max-width: 696px;
     margin: 56px auto 0;
-    font: 400 13px/20px 'Rubik', sans-serif;
-    color: var(--color-neutral-500);
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: #000000;
     text-align: center;
     padding: 10px;
   }
@@ -834,12 +834,15 @@
 }
 
 @media (max-width: 767px) {
+  .aadhaar-bg{
+    height: 240px;
+  }
   /* prevent button bar from covering last form content */
-  .aadhaar-card { margin-bottom: 96px; }
-}
+  .aadhaar-card { margin-bottom: 96px; padding: 16px; }
 
-@media (max-width: 767px) {
-
+  .varifying-details-body .aadhaar-card{
+    margin-bottom: 0;
+  }
   .aadhaar-otp,
   .aadhaar-field {
     width: 100%;
@@ -877,5 +880,16 @@
   .review-field {
     flex-direction: row;
     justify-content: space-between;
+  }
+  .aadhaar-logo {
+    margin-bottom: 6px;
+  }
+  .aadhaar-head{
+    gap: 2px;
+    margin-bottom: 8px;
+  }
+  .aadhaar-radio__label{
+    font-size: 14px;
+    line-height: 20px;
   }
 }

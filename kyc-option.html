@@ -279,10 +279,12 @@
                 </div>
               </div>
   
-              <button type="button" class="btn btn-primary kycinit-submit" id="init-submit" name="init-submit">
-                <span id="init-submit-label">Start KYC Verification</span>
-                <i data-lucide="arrow-right"></i>
-              </button>
+              <div class="submit-bar-mobile">
+                <button type="button" class="btn btn-primary kycinit-submit" id="init-submit" name="init-submit">
+                  <span id="init-submit-label">Start KYC Verification</span>
+                  <i data-lucide="arrow-right"></i>
+                </button>
+              </div>
             </form>
           </div>
         </div>
@@ -427,11 +429,13 @@
               </div>
             </div>
 
-            <button type="button" class="btn btn-primary sendlink-submit" id="sl-submit" name="sl-submit"
-              data-action="submit:send-link" disabled>
-              <span id="sl-submit-label">Send Link to Customer</span>
-              <i data-lucide="send"></i>
-            </button>
+            <div class="submit-bar-mobile">
+              <button type="button" class="btn btn-primary sendlink-submit" id="sl-submit" name="sl-submit"
+                data-action="submit:send-link" disabled>
+                <span id="sl-submit-label">Send Link to Customer</span>
+                <i data-lucide="send"></i>
+              </button>
+            </div>
           </form>
         </div>
       </div>
@@ -824,37 +828,37 @@
                 </div>
                 <p class="form-error">Incorrect answer. Please try again.</p>
               </div>
+              <div class="aadhaar-consent aadhaar-extra" id="aadhaar-consent">
+                <h3 class="aadhaar-consent__title">Please confirm the following to proceed</h3>
+                <label class="aadhaar-check">
+                  <input type="checkbox" id="aadhaar-c1" name="consent-data-sharing" />
+                  <span class="aadhaar-check__box" aria-hidden="true"></span>
+                  <span class="aadhaar-check__label">
+                    I/We hereby authorize BGIL to print my/our name/mobile number on the policy
+                    document as received through Aadhaar e-KYC..
+                  </span>
+                </label>
+                <label class="aadhaar-check">
+                  <input type="checkbox" id="aadhaar-c2" name="consent-uidai-terms" />
+                  <span class="aadhaar-check__box" aria-hidden="true"></span>
+                  <span class="aadhaar-check__label">
+                    I accept the UIDAI terms and conditions
+                    <span class="aadhaar-readmore__extra" hidden><br />
+                      I/We hereby authorize BGIL, its representatives and service providers to carry out Aadhaar-based
+                      authentication/e-KYC through UIDAI using the Aadhaar/VID details and/or documents submitted by me/us
+                      including masked Aadhaar, Secure QR, e-Aadhaar, XML/Offline e-KYC. For this purpose, I/We consent to
+                      the collection, use, storage and processing of my/our identity and address details including name,
+                      address, DOB, gender, mobile/email and photograph. I/We understand that BGIL will share my/our
+                      Aadhaar number/VID and/or required demographic information with UIDAI solely for
+                      authentication/e-KYC, and UIDAI may return authentication/verification response and permitted e-KYC
+                      data to BGIL.
+                    </span>
+                    <a href="#" class="aadhaar-readmore" id="aadhaar-readmore-toggle" aria-expanded="false">Read More</a>
+                  </span>
+                </label>
+              </div>
             </div>
 
-            <div class="aadhaar-consent aadhaar-extra" id="aadhaar-consent">
-              <h3 class="aadhaar-consent__title">Please confirm the following to proceed</h3>
-              <label class="aadhaar-check">
-                <input type="checkbox" id="aadhaar-c1" name="consent-data-sharing" />
-                <span class="aadhaar-check__box" aria-hidden="true"></span>
-                <span class="aadhaar-check__label">
-                  I/We hereby authorize BGIL to print my/our name/mobile number on the policy
-                  document as received through Aadhaar e-KYC..
-                </span>
-              </label>
-              <label class="aadhaar-check">
-                <input type="checkbox" id="aadhaar-c2" name="consent-uidai-terms" />
-                <span class="aadhaar-check__box" aria-hidden="true"></span>
-                <span class="aadhaar-check__label">
-                  I accept the UIDAI terms and conditions
-                  <span class="aadhaar-readmore__extra" hidden><br />
-                    I/We hereby authorize BGIL, its representatives and service providers to carry out Aadhaar-based
-                    authentication/e-KYC through UIDAI using the Aadhaar/VID details and/or documents submitted by me/us
-                    including masked Aadhaar, Secure QR, e-Aadhaar, XML/Offline e-KYC. For this purpose, I/We consent to
-                    the collection, use, storage and processing of my/our identity and address details including name,
-                    address, DOB, gender, mobile/email and photograph. I/We understand that BGIL will share my/our
-                    Aadhaar number/VID and/or required demographic information with UIDAI solely for
-                    authentication/e-KYC, and UIDAI may return authentication/verification response and permitted e-KYC
-                    data to BGIL.
-                  </span>
-                  <a href="#" class="aadhaar-readmore" id="aadhaar-readmore-toggle" aria-expanded="false">Read More</a>
-                </span>
-              </label>
-            </div>
 
             <div class="submit-bar-mobile">
               <button type="button" class="btn btn-primary aadhaar-submit" id="aadhaar-submit" name="aadhaar-submit"

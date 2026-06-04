@@ -2017,7 +2017,6 @@
 /* Responsive Overrides */
 @media (max-width: 640px) {
   .modal {
-    width: calc(100% - 32px) !important;
     height: auto !important;
     max-height: 80vh;
   }
