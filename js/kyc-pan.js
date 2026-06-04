@@ -354,7 +354,7 @@
             if (!file) return;
             // File size > 10MB
             if (file.size > 10 * 1024 * 1024) {
-                showDocumentError('file-size');
+                window.ekyc.openModal('file-size-modal');
                 return;
             }
 

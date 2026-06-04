@@ -1940,6 +1940,26 @@
         </div>
       </div>
 
+      <!-- File size error modal -->
+      <div class="modal-backdrop" id="file-size-modal" role="dialog" aria-modal="true"
+        aria-labelledby="file-size-modal-title">
+        <div class="modal modal-confirmation size-md">
+          <div class="modal-header no-border">
+            <div class="modal-header-icon modal-header-icon--error">
+              <i data-lucide="circle-x"></i>
+            </div>
+            <h2 class="modal-title" id="file-size-modal-title">File size too large</h2>
+          </div>
+          <div class="modal-body">
+            Upload a document smaller than 10 MB to continue.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-action="close-modal">Try another method</button>
+            <button type="button" class="btn btn-primary" data-action="close-modal">Re-upload</button>
+          </div>
+        </div>
+      </div>
+
       <!-- Leave-page confirmation modal (pan-address-proof screen) -->
       <div class="modal-backdrop pan-leave-modal" id="pan-address-leave-modal" role="dialog" aria-modal="true"
         aria-labelledby="pan-address-leave-title">
