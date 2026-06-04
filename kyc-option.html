@@ -1350,7 +1350,7 @@
                     <span class="adone-id-value">BGIL-KYC-MNPTT1N6</span>
                     <button type="button" class="adone-copy-btn" id="adone-copy" name="adone-copy"
                       data-action="copy-kyc-id" aria-label="Copy KYC ID">
-                      <i data-lucide="copy" style="width:18px;height:18px;"></i>
+                      <i class="ph ph-copy ph-md-20"></i>
                     </button>
                   </div>
                 </div>
@@ -1360,31 +1360,33 @@
                     <span class="adone-row__label">eKYC</span>
                     <span class="adone-row__method">PAN Card</span>
                     <span class="adone-row__status">
-                      <i data-lucide="check-circle" style="width:16px;height:16px;"></i> Success
+                      <i class="ph ph-check-circle ph-md"></i> Success
                     </span>
                   </div>
                   <div class="adone-row">
                     <span class="adone-row__label">Proof of Identity</span>
                     <span class="adone-row__method">PAN Card</span>
                     <span class="adone-row__status">
-                      <i data-lucide="check-circle" style="width:16px;height:16px;"></i> Success
+                      <i class="ph ph-check-circle ph-md"></i> Success
                     </span>
                   </div>
                   <div class="adone-row">
                     <span class="adone-row__label">Proof of Address</span>
                     <span class="adone-row__method">Voter ID</span>
                     <span class="adone-row__status">
-                      <i data-lucide="check-circle" style="width:16px;height:16px;"></i> Success
+                      <i class="ph ph-check-circle ph-md"></i> Success
                     </span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <button type="button" class="btn btn-primary adone-btn" id="adone-back" name="adone-back"
-              data-action="goto:initiation">
-              Back to Module
-            </button>
+            <div class="submit-bar-mobile back-to-module">
+              <button type="button" class="btn btn-primary adone-btn" id="adone-back" name="adone-back"
+                data-action="goto:initiation">
+                Back to Module
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1503,9 +1505,11 @@
             </div>
 
             <!-- Send OTP -->
-            <button type="button" class="btn btn-primary pan-submit" id="pan-submit" disabled>
-              Send OTP
-            </button>
+            <div class="submit-bar-mobile">
+              <button type="button" class="btn btn-primary pan-submit" id="pan-submit" disabled>
+                Send OTP
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1612,9 +1616,11 @@
               </div>
             </div>
             <!-- Verify OTP -->
-            <button type="button" class="btn btn-primary pan-submit" id="pan-verify" disabled>
-              Verify OTP
-            </button>
+            <div class="submit-bar-mobile">
+              <button type="button" class="btn btn-primary pan-submit" id="pan-verify" disabled>
+                Verify OTP
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1771,9 +1777,9 @@
               Back
             </a>
 
-            <div class="toast toast-success">
+            <div class="toast toast-success verify-success-toast">
               <span class="toast-icon">
-                <i data-lucide="check"></i>
+                <i class="ph-fill ph-check-circle ph-md"></i>
               </span>
 
               <div class="toast-body">
@@ -1855,7 +1861,7 @@
 
                   <div class="atlas-drag-drop-content" id="upload-placeholder">
                     <div class="atlas-drag-drop-icon-container">
-                      <i class="ph ph-file-arrow-up" style="font-size: 24px;"></i>
+                      <i class="ph ph-upload-simple ph-md"></i>
                     </div>
 
                     <div class="atlas-drag-drop-text-container">
@@ -1881,9 +1887,11 @@
 
             </div>
 
-            <button type="button" class="btn btn-primary pan-submit" disabled>
-              Proceed
-            </button>
+            <div class="submit-bar-mobile">
+              <button type="button" class="btn btn-primary pan-submit" disabled>
+                Proceed
+              </button>
+            </div>
 
           </div>
         </div>
@@ -2100,7 +2108,7 @@
               </div>
 
               <div class="review-info-banner">
-                <i data-lucide="info"></i>
+                <i class="ph ph-info ph-md"></i>
                 Your data is secured. Sensitive fields are partially masked below.
               </div>
 
@@ -2114,20 +2122,19 @@
 
                 <div class="review-grid">
 
-                  <div>
+                  <div class="review-field">
                     <div class="review-label">Name</div>
                     <div class="review-value">
                       Mahesh Marilingappa
                     </div>
                   </div>
 
-                  <div>
+                  <div class="review-field">
                     <div class="review-label">DOB</div>
                     <div class="review-value">
                       XX-XX-1979
                     </div>
                   </div>
-
                 </div>
 
               </div>
@@ -2142,7 +2149,7 @@
 
                 <div class="review-grid">
 
-                  <div>
+                  <div class="review-field">
                     <div class="review-label">
                       Permanent Address
                     </div>
@@ -2152,7 +2159,7 @@
                     </div>
                   </div>
 
-                  <div>
+                  <div class="review-field">
                     <div class="review-label">
                       City/District
                     </div>
@@ -2162,7 +2169,7 @@
                     </div>
                   </div>
 
-                  <div>
+                  <div class="review-field">
                     <div class="review-label">
                       State
                     </div>
@@ -2172,7 +2179,7 @@
                     </div>
                   </div>
 
-                  <div>
+                  <div class="review-field">
                     <div class="review-label">
                       Pincode
                     </div>
@@ -2196,7 +2203,7 @@
 
                 <div class="review-grid">
 
-                  <div>
+                  <div class="review-field">
                     <div class="review-label">
                       Proof of Identity
                     </div>
@@ -2206,7 +2213,7 @@
                     </div>
                   </div>
 
-                  <div>
+                  <div class="review-field">
                     <div class="review-label">
                       Proof of Address
                     </div>
@@ -2265,9 +2272,11 @@
 
             </div>
 
-            <button type="button" class="btn btn-primary pan-submit" id="confirm-submit-btn">
-              Confirm & Submit
-            </button>
+            <div class="submit-bar-mobile">
+              <button type="button" class="btn btn-primary pan-submit" id="confirm-submit-btn">
+                Confirm & Submit
+              </button>
+            </div>
 
           </div>
 

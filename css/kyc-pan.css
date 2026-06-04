@@ -42,7 +42,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-
+        padding: 0 16px 24px;
     }
 
     /* ---- Card ---- */
@@ -50,7 +50,7 @@
         background: var(--color-neutral-0);
         border-radius: 16px;
         box-shadow: 0 1px 4px rgba(10, 13, 18, 0.1), 0 1px 2px rgba(10, 13, 18, 0.06);
-        padding: 24px;
+        padding: 16px;
         display: flex;
         flex-direction: column;
         gap: 16px;
@@ -63,6 +63,7 @@
         align-items: center;
         gap: 8px;
         text-align: center;
+        margin-bottom: 16px;
     }
 
     .pan-logo {
@@ -74,7 +75,7 @@
         margin: 0;
         font-family: 'Familjen Grotesk', 'Rubik', sans-serif;
         font-weight: 600;
-        font-size: 24px;
+        font-size: 28px;
         line-height: 32px;
         color: var(--color-neutral-800);
     }
@@ -108,7 +109,7 @@
 
     /* ---- Details box (bordered card) ---- */
     .pan-details {
-        padding: 16px;
+        padding: 20px;
         border-radius: 8px;
         border: 1px solid var(--color-neutral-200);
         display: flex;
@@ -122,11 +123,12 @@
         display: flex;
         flex-direction: column;
         gap: 4px;
+        margin-bottom: 8px;
     }
 
     .pan-details__title {
         margin: 0;
-        font: 600 16px/24px 'Rubik', sans-serif;
+        font: 600 20px/24px 'Rubik', sans-serif;
         color: var(--color-neutral-800);
     }
 
@@ -381,13 +383,13 @@
         .pan-card {
             width: 100%;
             max-width: 800px;
-            padding: 32px;
-            gap: 20px;
+            padding: 24px 32px;
+            gap: 16px;
         }
 
         .pan-title {
-            font-size: 28px;
-            line-height: 36px;
+            font-size: 30px;
+            line-height: 34px;
         }
 
         /* On web, show the full "pan Number" label */
@@ -491,7 +493,7 @@
         aspect-ratio: 1 / 1;
         padding: 8px;
         border: 1px solid var(--color-neutral-300);
-        border-radius: 8px;
+        border-radius: 8px !important;
         background: var(--color-neutral-0);
         text-align: center;
         font: 500 22px/28px 'Rubik', sans-serif;
@@ -529,7 +531,9 @@
         color: var(--color-red-600);
     }
 
-    .pan-otp__error[hidden] { display: none !important; }
+    .pan-otp__error[hidden] {
+        display: none !important;
+    }
 
     .pan-resend {
         margin-left: auto;
@@ -676,7 +680,7 @@
         margin-top: 0px;
     }
 
-    .document-upload-wrapper{
+    .document-upload-wrapper {
         margin-top: 20px;
     }
 
@@ -691,12 +695,20 @@
 
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
+        gap: 8px;
     }
 
     .upload-success-name {
         font: 400 14px/20px 'Rubik', sans-serif;
         color: #475569;
+        word-break: break-all;
+        overflow-wrap: break-word;
+        white-space: normal;
+    }
+
+    .btn-link {
+        flex-shrink: 0;
     }
 
     .upload-success-row[hidden] {
@@ -737,12 +749,12 @@
 
     .review-title {
         color: #1E293B;
-        font: 600 20px 'Rubik', sans-serif;
+        font: 500 20px/24px 'Rubik', sans-serif;
     }
 
     .review-info-banner {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         gap: 8px;
 
         padding: 8px;
@@ -754,9 +766,7 @@
         font: 400 14px/16px 'Rubik', sans-serif;
     }
 
-    .review-info-banner svg {
-        width: 24px;
-        height: 24px;
+    .review-info-banner i {
         color: #2563EB;
         flex-shrink: 0;
     }
@@ -777,7 +787,7 @@
         font: 500 16px/24px 'Rubik', sans-serif;
     }
 
-    .review-grid {
+    .pan-card .review-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 16px 24px;
@@ -812,7 +822,8 @@
 
     .review-consent-title {
         color: #1E293B;
-        font: 600 14px/20px 'Rubik', sans-serif;
+        font: 600 16px/24px 'Rubik', sans-serif;
+        margin-bottom: 4px;
     }
 
     .review-consent-card .checkbox {
@@ -824,11 +835,6 @@
         font: 400 12px/18px 'Rubik', sans-serif;
 
         cursor: pointer;
-    }
-
-    .review-submit-btn,
-    .pan-submit {
-        margin-top: 16px;
     }
 
     .otp-footer {
@@ -875,7 +881,7 @@
 
 
     @media (max-width: 640px) {
-        .review-grid {
+        .pan-card .review-grid {
             grid-template-columns: 1fr;
             gap: 12px;
         }
@@ -885,5 +891,70 @@
         to {
             transform: rotate(360deg);
         }
+    }
+
+    .verify-success-toast.toast-success::before {
+        content: none !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .pan-card {
+        margin-bottom: 96px;
+        width: 100%;
+    }
+
+    .pan-verifying-card {
+        padding: 24px;
+        margin-bottom: 0;
+    }
+
+    .pan-verifying-note {
+        margin-top: 0;
+        padding: 10px;
+    }
+
+    .pan-verifying__title {
+        margin-top: 0;
+        margin-bottom: 12px;
+    }
+
+    .pan-verifying__progress {
+        margin-top: 4px;
+    }
+
+    .verify-success-toast.toast-success {
+        padding: 4px 8px;
+    }
+
+    .pan-address-title {
+        font-size: 20px;
+        line-height: 24px;
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+
+    .pan-address-subtitle {
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 400;
+        margin-bottom: 24px;
+    }
+
+    .review-content {
+        gap: 8px;
+    }
+
+    .review-title {
+        margin-bottom: 4px;
+    }
+
+    .review-section {
+        gap: 0;
+    }
+
+    .pan-card .review-grid {
+        padding-top: 12px !important;
+        margin-bottom: 0 !important;
     }
 }
