@@ -437,11 +437,6 @@
    ========================================================================= */
 
 /* Scrim + sizing (mirrors the kyc-modal pattern) */
-.aadhaar-leave-modal.modal-backdrop {
-  background: rgba(26, 26, 26, 0.36);
-  backdrop-filter: none;
-  padding-inline: 16px;
-}
 
 .aadhaar-leave-modal .modal-confirmation {
   width: 100%;

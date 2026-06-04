@@ -205,6 +205,19 @@
             });
         }
 
+        // Read More / Read Less toggle
+        var readmoreToggle = root.querySelector('#pan-readmore-toggle');
+        var readmoreExtra  = root.querySelector('.pan-readmore__extra');
+        if (readmoreToggle && readmoreExtra) {
+            readmoreToggle.addEventListener('click', function (e) {
+                e.preventDefault();
+                var expanded = readmoreExtra.hidden === false;
+                readmoreExtra.hidden = expanded;
+                readmoreToggle.textContent = expanded ? 'Read More' : 'Read Less';
+                readmoreToggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+            });
+        }
+
         validate();
     };
 

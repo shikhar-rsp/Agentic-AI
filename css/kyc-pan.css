@@ -312,6 +312,11 @@
         color: var(--color-neutral-800);
     }
 
+    .pan-readmore__extra[hidden] { display: none !important; }
+    .pan-readmore__extra {
+        font: 400 14px/20px 'Rubik', sans-serif;
+        color: var(--color-neutral-700);
+    }
     .pan-readmore {
         color: var(--color-blue-600);
         text-decoration: underline;
