@@ -207,7 +207,7 @@
 
         // Read More / Read Less toggle
         var readmoreToggle = root.querySelector('#pan-readmore-toggle');
-        var readmoreExtra  = root.querySelector('.pan-readmore__extra');
+        var readmoreExtra = root.querySelector('.pan-readmore__extra');
         if (readmoreToggle && readmoreExtra) {
             readmoreToggle.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -226,15 +226,15 @@
         if (!root || root.dataset.inited) return;
         root.dataset.inited = '1';
 
-        var CORRECT_OTP   = '000000';
-        var MAX_ATTEMPTS  = 3;
-        var attemptsLeft  = MAX_ATTEMPTS;
+        var CORRECT_OTP = '000000';
+        var MAX_ATTEMPTS = 3;
+        var attemptsLeft = MAX_ATTEMPTS;
 
-        var boxes        = Array.from(root.querySelectorAll('.pan-otp__box'));
-        var otpWrap      = root.querySelector('.pan-otp');
-        var verifyBtn    = root.querySelector('#pan-verify');
-        var resendBtn    = root.querySelector('#pan-resend');
-        var otpError     = root.querySelector('#pan-otp-error');
+        var boxes = Array.from(root.querySelectorAll('.pan-otp__box'));
+        var otpWrap = root.querySelector('.pan-otp');
+        var verifyBtn = root.querySelector('#pan-verify');
+        var resendBtn = root.querySelector('#pan-resend');
+        var otpError = root.querySelector('#pan-otp-error');
         var attemptsSpan = root.querySelector('#pan-otp-attempts-left');
 
         function collectOtp() {
@@ -246,7 +246,7 @@
         }
 
         function clearError() {
-            if (otpWrap)  otpWrap.classList.remove('is-error');
+            if (otpWrap) otpWrap.classList.remove('is-error');
             if (otpError) otpError.hidden = true;
         }
 
@@ -300,7 +300,7 @@
                     attemptsLeft = MAX_ATTEMPTS;
                 } else {
                     if (attemptsSpan) attemptsSpan.textContent = attemptsLeft;
-                    if (otpError)     otpError.hidden = false;
+                    if (otpError) otpError.hidden = false;
                 }
             });
         }
@@ -558,6 +558,22 @@
         );
 
         if (!root) return;
+
+        var assistToast = document.getElementById(
+            'pan-assist-toast'
+        );
+
+        var assistToggle = document.getElementById(
+            'landing-assist-toggle'
+        );
+
+        if (assistToast) {
+
+            assistToast.hidden = !(
+                assistToggle &&
+                assistToggle.checked
+            );
+        }
 
         var submitBtn = root.querySelector(
             '#confirm-submit-btn'

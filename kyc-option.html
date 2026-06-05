@@ -1371,13 +1371,73 @@
             <h1 class="kyc-web-title">Choose your KYC Method</h1>
 
             <div class="kyc-assist">
-              <input type="checkbox" class="kyc-switch" id="landing-assist-toggle" name="needs-assistance"
-                aria-label="I need assistance completing KYC" />
-              <label class="kyc-assist__text" for="landing-assist-toggle">
-                <span class="kyc-assist__title">I need assistance completing KYC</span>
-                <span class="kyc-assist__hint">Enable agent assisted mode with audio consent</span>
-              </label>
+              <div class="toggle-container">
+                <input type="checkbox" class="kyc-switch" id="landing-assist-toggle" name="needs-assistance"
+                  aria-label="I need assistance completing KYC" />
+
+                <label class="kyc-assist__text" for="landing-assist-toggle">
+
+                  <span class="kyc-assist__title">
+                    I need assistance completing KYC
+                  </span>
+
+                  <span class="kyc-assist__hint">
+                    Enable agent assisted mode with audio consent
+                  </span>
+
+                </label>
+              </div>
+
+              <!-- Assisted mode toast -->
+              <div class="toast toast-info assisted-mode-toast" id="landing-assist-toast" hidden>
+
+                <div class="toast-body kyc-agent-toast-body">
+
+                  <span class="toast-icon kyc-agent-toast-icon">
+                    <i class="ph ph-info"></i>
+                  </span>
+
+                  <p class="toast-description kyc-agent-toast-text">
+                    I understand that my documents, document details,
+                    and personal information will be used for KYC
+                    verification. I authorise the agent to upload my
+                    documents, enter the required document details,
+                    and submit my information on my behalf.
+                  </p>
+
+                  <div class="kyc-agent-toast-actions">
+
+                    <div class="dropdown assist-language-dropdown">
+
+                      <button type="button" class="dropdown-trigger btn btn-secondary-gray lang-button"
+                        data-dropdown-trigger>
+
+                        <span>English</span>
+
+                        <i class="ph ph-caret-down"></i>
+
+                      </button>
+
+                    </div>
+
+                    <button type="button" class="btn btn-secondary audio-button">
+
+                      <i class="ph ph-play"></i>
+
+                      Play Audio
+
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
             </div>
+
+
 
             <input type="hidden" id="landing-kyc-method" name="kyc-method" value="aadhaar" />
 
@@ -1421,6 +1481,19 @@
             </div>
 
             <div class="submit-bar-mobile kyc-proceed-wrap ">
+              <div class="consent-container" id="consent-container">
+                <label class="pan-check">
+
+                  <input type="checkbox" id="org-pan-agent-c1" />
+
+                  <span class="pan-check__box" aria-hidden="true"></span>
+
+                  <span class="pan-check__label" style="font-size: 14px!important;">
+                    I/We hereby consent to agent-assisted KYC verification being completed on my/our behalf.
+                  </span>
+
+                </label>
+              </div>
               <button type="button" class="btn btn-primary kyc-proceed-btn" id="landing-proceed-btn"
                 name="landing-proceed-btn" data-action="select-method:aadhaar">
                 <span id="landing-proceed-label">Proceed with Aadhaar eKYC</span>
@@ -2874,7 +2947,7 @@
 
               <div class="review-info-banner">
                 <i class="ph ph-info ph-md"></i>
-                Your data is secured. Sensitive fields are partially masked below.
+                Your data is secured. Sensitive fields are partially masked below.....
               </div>
 
               <!-- Personal Details -->
@@ -2987,6 +3060,48 @@
                       Voter ID
                     </div>
                   </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- Assisted mode toast -->
+            <div class="toast toast-info assisted-mode-toast" style="margin-top: 0px!important;" id="pan-assist-toast">
+
+              <div class="toast-body kyc-agent-toast-body">
+
+                <span class="toast-icon kyc-agent-toast-icon">
+                  <i class="ph ph-info"></i>
+                </span>
+
+                <p class="toast-description kyc-agent-toast-text">
+                  By continuing I confirm that I am providing my consent to complete this KYC process with assistance.
+                </p>
+
+                <div class="kyc-agent-toast-actions">
+
+                  <div class="dropdown assist-language-dropdown">
+
+                    <button type="button" class="dropdown-trigger btn btn-secondary-gray lang-button"
+                      data-dropdown-trigger>
+
+                      <span>English</span>
+
+                      <i class="ph ph-caret-down"></i>
+
+                    </button>
+
+                  </div>
+
+                  <button type="button" class="btn btn-secondary audio-button">
+
+                    <i class="ph ph-play"></i>
+
+                    Play Audio
+
+                  </button>
 
                 </div>
 
@@ -4735,6 +4850,8 @@
           root
         );
 
+
+
         // hide org section by default
         if (organisationSection) {
           organisationSection.setAttribute(
@@ -4933,6 +5050,92 @@
           'document': 'Document Upload',
           'face': 'Face Scan'
         };
+
+        var assistToggle = document.getElementById(
+          'landing-assist-toggle'
+        );
+
+        var assistToast = document.getElementById(
+          'landing-assist-toast'
+        );
+
+        var consentCheckbox = document.getElementById(
+          'org-pan-agent-c1'
+        );
+
+        var consentContainer = document.getElementById(
+          'consent-container'
+        );
+
+        console.log(
+          'checkbox checked:',
+          consentCheckbox &&
+          consentCheckbox.checked
+        );
+
+
+        function updateAssistState() {
+
+          var enabled =
+            assistToggle &&
+            assistToggle.checked;
+
+          // toast
+          if (assistToast) {
+            assistToast.hidden = !enabled;
+          }
+
+          // consent
+          if (consentContainer) {
+            consentContainer.hidden = !enabled;
+          }
+
+          // reset checkbox when disabled
+          if (!enabled && consentCheckbox) {
+            consentCheckbox.checked = false;
+          }
+
+          // button state
+          if (proceedBtn) {
+
+            if (enabled) {
+
+              proceedBtn.disabled =
+                !(
+                  consentCheckbox &&
+                  consentCheckbox.checked
+                );
+
+            } else {
+
+              proceedBtn.disabled = false;
+            }
+          }
+        }
+
+        // assist toggle
+        if (assistToggle) {
+
+          assistToggle.addEventListener(
+            'change',
+            updateAssistState
+          );
+        }
+
+        // consent checkbox
+        if (consentCheckbox) {
+
+          consentCheckbox.onclick = function () {
+
+            console.log(
+              'CLICK',
+              consentCheckbox.checked
+            );
+
+            updateAssistState();
+          };
+        }
+
         function select(card) {
           cards.forEach(function (c) { c.classList.toggle('is-selected', c === card); });
           var m = card.getAttribute('data-method');
@@ -4950,6 +5153,8 @@
         // sync button with default selected card
         var pre = $('.method-card.is-selected', root) || cards[0];
         if (pre) select(pre);
+        // initial state
+        updateAssistState();
       };
 
       // aadhaar + aadhaar-otp INITs live in js/kyc-aadhaar.js

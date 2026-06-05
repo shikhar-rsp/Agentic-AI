@@ -5,6 +5,7 @@
    ========================================================================= */
 
 @layer app {
+
   /* ---- Mobile frame ---------------------------------------------------- */
   .kyc-page {
     width: 100%;
@@ -17,6 +18,7 @@
     position: relative;
     gap: 12px;
   }
+
   /* Show the full-width banner */
   .kyc-bg {
     display: block;
@@ -26,6 +28,7 @@
     background: #60a5fa url('../assets/img/kycinit-bg-web.png') top center / cover no-repeat;
     z-index: 0;
   }
+
   /* Header styles now live in css/header.css (shared across screens). */
 
   /* ---- Blue hero ------------------------------------------------------- */
@@ -37,6 +40,7 @@
     flex-direction: column;
     gap: 4px;
   }
+
   .kyc-hero__title {
     margin: 0;
     font-family: 'Familjen Grotesk', 'Rubik', sans-serif;
@@ -45,6 +49,7 @@
     line-height: 32px;
     color: var(--color-neutral-0);
   }
+
   .kyc-hero__subtitle {
     margin: 0;
     font-family: 'Rubik', sans-serif;
@@ -61,6 +66,7 @@
     z-index: 1;
     margin-bottom: 96px;
   }
+
   .kyc-panel {
     background: var(--color-neutral-0);
     border-radius: 12px;
@@ -74,6 +80,7 @@
   /* ---- Assistance toggle card ----------------------------------------- */
   .kyc-assist {
     display: flex;
+    flex-direction: column;
     align-items: flex-start;
     gap: 8px;
     padding: 12px;
@@ -81,12 +88,23 @@
     border-radius: 8px;
     background: var(--color-neutral-0);
   }
-  .kyc-assist__text { display: flex; flex-direction: column; }
+
+  .toggle-container{
+    display: flex;
+    gap:8px;
+  }
+
+  .kyc-assist__text {
+    display: flex;
+    flex-direction: column;
+  }
+
   .kyc-assist__title {
     margin: 0;
     font: 400 14px/20px 'Rubik', sans-serif;
     color: var(--color-neutral-800);
   }
+
   .kyc-assist__hint {
     margin: 0;
     font: 400 14px/20px 'Rubik', sans-serif;
@@ -107,10 +125,12 @@
     margin: 0;
     outline: none;
   }
+
   .kyc-switch:focus,
   .kyc-switch:focus-visible {
     box-shadow: 0px 0px 0px 1px #FFFFFF, 0px 0px 0px 4px var(--color-blue-400);
   }
+
   .kyc-switch::after {
     content: '';
     position: absolute;
@@ -123,8 +143,14 @@
     box-shadow: 0 1px 2px rgba(10, 13, 18, 0.15);
     transition: transform 0.2s ease;
   }
-  .kyc-switch:checked { background: var(--color-blue-600); }
-  .kyc-switch:checked::after { transform: translateX(16px); }
+
+  .kyc-switch:checked {
+    background: var(--color-blue-600);
+  }
+
+  .kyc-switch:checked::after {
+    transform: translateX(16px);
+  }
 
   /* ---- Method cards ---------------------------------------------------- */
   .kyc-methods {
@@ -149,13 +175,20 @@
     justify-content: center;
     text-align: center;
   }
+
   .method-card__icon {
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 16px 14px 0;
   }
-  .method-card__icon img { max-width: 100%; max-height: 44px; object-fit: contain; }
+
+  .method-card__icon img {
+    max-width: 100%;
+    max-height: 44px;
+    object-fit: contain;
+  }
+
   .method-card__icon-box {
     width: 44px;
     height: 44px;
@@ -165,7 +198,12 @@
     justify-content: center;
     background: var(--color-emerald-600);
   }
-  .method-card__icon-box img { width: 28px; height: 28px; }
+
+  .method-card__icon-box img {
+    width: 28px;
+    height: 28px;
+  }
+
   .method-card__title {
     margin: 0;
     font-family: 'Rubik', sans-serif;
@@ -177,36 +215,42 @@
 
   /* Per-method gradients + accent text (radial: white -> tint) */
   .method-card--pan {
-    border: 1px solid  #BFDBFE;
+    border: 1px solid #BFDBFE;
     background: radial-gradient(120% 130% at 50% 0%, #ffffff 0%, var(--color-indigo-50) 100%);
   }
-  .method-card--pan .method-card__title { color: var(--color-blue-standard-600); }
+
+  .method-card--pan .method-card__title {
+    color: var(--color-blue-standard-600);
+  }
 
   .method-card--doc {
     border: 1px solid #CCFBF1;
     background: radial-gradient(120% 130% at 50% 0%, #ffffff 0%, var(--color-teal-50) 100%);
   }
-  .method-card--doc .method-card__title { color: var(--color-emerald-600); }
+
+  .method-card--doc .method-card__title {
+    color: var(--color-emerald-600);
+  }
 
   .method-card--face {
     border: 1px solid #FBCFE8;
     background: radial-gradient(120% 130% at 50% 0%, #ffffff 0%, var(--color-pink-50) 100%);
   }
+
   .method-card--face .method-card__title {
     color: var(--color-pink-600);
   }
 
   /* Featured Aadhaar card */
   .method-card--aadhaar {
-    border: 1px solid  #FED7AA;
-    background: linear-gradient(
-      122.88deg,
-      #ffffff 0%,
-      var(--color-amber-50) 28%,
-      #fed7aa 60%,
-      #fef3c7 102%
-    );
+    border: 1px solid #FED7AA;
+    background: linear-gradient(122.88deg,
+        #ffffff 0%,
+        var(--color-amber-50) 28%,
+        #fed7aa 60%,
+        #fef3c7 102%);
   }
+
   .method-card__row {
     display: flex;
     align-items: center;
@@ -214,13 +258,22 @@
     gap: 8px;
     width: 100%;
   }
-  .method-card__row--icon { align-items: flex-start; }
-  .method-card--aadhaar .badge{
+
+  .method-card__row--icon {
+    align-items: flex-start;
+  }
+
+  .method-card--aadhaar .badge {
     position: absolute;
     top: 8px;
     right: 8px;
   }
-  .method-card__aadhaar-logo { height: 44px; width: auto; }
+
+  .method-card__aadhaar-logo {
+    height: 44px;
+    width: auto;
+  }
+
   .method-card__aadhaar-title {
     margin: 0;
     flex: 1 0 0;
@@ -229,9 +282,12 @@
     font-size: 24px;
     line-height: 32px;
   }
-  .method-card--aadhaar .method-card__title{
-    color: #9a3412; /* color.text.accent.orange — no DS token, kept for fidelity */
+
+  .method-card--aadhaar .method-card__title {
+    color: #9a3412;
+    /* color.text.accent.orange — no DS token, kept for fidelity */
   }
+
   /* Start KYC button glow (subtle approximation of the Figma animation) */
   .kyc-start-btn {
     position: relative;
@@ -239,27 +295,43 @@
     gap: 8px;
     border-radius: 12px;
   }
+
   .kyc-start-btn .lucide,
-  .kyc-start-btn [data-lucide] { width: 18px; height: 18px; }
+  .kyc-start-btn [data-lucide] {
+    width: 18px;
+    height: 18px;
+  }
 
   /* ---- Info toast overrides (stack title over description) ------------ */
-  .kyc-info { align-items: flex-start; }
+  .kyc-info {
+    align-items: flex-start;
+  }
+
   .kyc-info .toast-content {
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
   }
-  .kyc-info .toast-description { color: var(--color-neutral-600); }
-  .kyc-info .toast-body { align-items: flex-start; }
-  .kyc-panel .toast{
+
+  .kyc-info .toast-description {
+    color: var(--color-neutral-600);
+  }
+
+  .kyc-info .toast-body {
+    align-items: flex-start;
+  }
+
+  .kyc-panel .toast {
     padding: 16px;
   }
-  .kyc-panel .toast-title{
+
+  .kyc-panel .toast-title {
     font-size: 16px;
     line-height: 24px;
     font-weight: 600;
   }
-  .kyc-panel .toast-description{
+
+  .kyc-panel .toast-description {
     font-size: 14px;
     line-height: 20px;
     font-weight: 400;
@@ -267,8 +339,13 @@
 
   /* ---- Card selection + revealed "Start KYC" CTA ---------------------- */
   /* CTA is hidden until its card is selected */
-  .method-card__cta { display: none; }
-  .method-card.is-selected .method-card__cta { display: inline-flex; }
+  .method-card__cta {
+    display: none;
+  }
+
+  .method-card.is-selected .method-card__cta {
+    display: inline-flex;
+  }
 
   /* Centered cards reveal a full-width CTA below the title */
   .method-card--center .method-card__cta {
@@ -278,7 +355,10 @@
   }
 
   /* Selected highlight for the non-featured cards */
-  .method-card--center { cursor: pointer;}
+  .method-card--center {
+    cursor: pointer;
+  }
+
   .method-card--aadhaar.is-selected,
   .method-card--pan.is-selected,
   .method-card--doc.is-selected,
@@ -286,10 +366,65 @@
     border-color: var(--color-blue-600);
     border-width: 2px;
   }
+
   .method-card--center:focus-visible {
     outline: 2px solid var(--color-blue-600);
     outline-offset: 2px;
   }
+
+  
+
+  .kyc-agent-toast {
+    border-radius: 12px;
+  }
+
+  .kyc-agent-toast-body {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .kyc-agent-toast-icon {
+    color: #2563EB;
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .kyc-agent-toast-text {
+    margin: 0;
+    flex: 1;
+    font-size: 14px;
+    line-height: 22px;
+    color: #475569;
+  }
+
+  .kyc-agent-toast-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .assisted-mode-toast{
+    margin-top: 16px;
+  }
+
+  .lang-button, .audio-button{
+    background-color: #ffffff!important;
+  }
+
+  .consent-container{
+    display: flex;
+    justify-content: center;
+    align-items: center
+  }
+
+  .consent-container[hidden]{
+    display: none!important
+  }
+
 
 }
 
@@ -302,59 +437,69 @@
 
 /* Override DS backdrop to match Figma scrim (lighter, no blur) */
 .kyc-modal.modal-backdrop {
-    background: rgba(26, 26, 26, 0.36);
-    backdrop-filter: none;
-    padding-inline: 16px;
-  }
-  /* Let the confirmation modal size to its content on mobile */
-  .kyc-modal .modal-confirmation {
-    width: 100%;
-    max-width: 370px;
-    height: auto;
-    border-radius: 16px;
-  }
-  .kyc-modal .modal-header {
-    height: auto;
-    padding: 20px 20px 0;
-    gap: 4px;
-  }
-  .kyc-modal .modal-body {
-    height: auto;
-    padding: 8px 20px 20px;
-    text-align: center;
-  }
-  .kyc-modal .modal-footer {
-    height: auto;
-    padding: 20px;
-    gap: 12px;
-    justify-content: center;
-  }
-  .kyc-modal .modal-footer .btn {
-    flex: 1 0 0;
-    width: auto;
-  }
+  background: rgba(26, 26, 26, 0.36);
+  backdrop-filter: none;
+  padding-inline: 16px;
+}
 
-  /* Brand-blue featured icon circle (DS ships success/error/info only) */
-  .modal-header-icon--brand {
-    margin-bottom: 12px;
-  }
-  .modal-header-icon--brand .lucide,
-  .modal-header-icon--brand [data-lucide] { width: 24px; height: 24px; }
+/* Let the confirmation modal size to its content on mobile */
+.kyc-modal .modal-confirmation {
+  width: 100%;
+  max-width: 370px;
+  height: auto;
+  border-radius: 16px;
+}
 
-  .kyc-modal .modal-title {
-    font-family: 'Rubik', sans-serif;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 24px;
-    color: var(--color-neutral-800);
-    height: auto;
-  }
-  .kyc-modal .modal-body {
-    font-family: 'Rubik', sans-serif;
-    font-size: 14px;
-    line-height: 20px;
-    color: var(--color-neutral-600);
-  }
+.kyc-modal .modal-header {
+  height: auto;
+  padding: 20px 20px 0;
+  gap: 4px;
+}
+
+.kyc-modal .modal-body {
+  height: auto;
+  padding: 8px 20px 20px;
+  text-align: center;
+}
+
+.kyc-modal .modal-footer {
+  height: auto;
+  padding: 20px;
+  gap: 12px;
+  justify-content: center;
+}
+
+.kyc-modal .modal-footer .btn {
+  flex: 1 0 0;
+  width: auto;
+}
+
+/* Brand-blue featured icon circle (DS ships success/error/info only) */
+.modal-header-icon--brand {
+  margin-bottom: 12px;
+}
+
+.modal-header-icon--brand .lucide,
+.modal-header-icon--brand [data-lucide] {
+  width: 24px;
+  height: 24px;
+}
+
+.kyc-modal .modal-title {
+  font-family: 'Rubik', sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  color: var(--color-neutral-800);
+  height: auto;
+}
+
+.kyc-modal .modal-body {
+  font-family: 'Rubik', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-neutral-600);
+}
 
 /* =========================================================================
    Web / desktop layout (>= 768px) — Figma node 1240:21525.
@@ -373,6 +518,7 @@
     line-height: 36px;
     color: var(--color-neutral-800);
   }
+
   @media (min-width: 768px) {
 
     .kyc-page {
@@ -380,14 +526,19 @@
       background: var(--color-neutral-50);
     }
 
-    .kyc-bg{
+    .kyc-bg {
       height: 280px;
     }
-  
-    .kyc-page > .kyc-header { position: relative; z-index: 2; }
+
+    .kyc-page>.kyc-header {
+      position: relative;
+      z-index: 2;
+    }
 
     /* Hide the mobile hero (different title was inside it); banner shows instead */
-    .kyc-hero { display: none; }
+    .kyc-hero {
+      display: none;
+    }
 
     /* Centered card (same dimensions as kyc-initiation / kyc-method) */
     .kyc-panel-wrap {
@@ -399,6 +550,7 @@
       position: relative;
       z-index: 1;
     }
+
     .kyc-panel {
       padding: 24px 32px;
       gap: 16px;
@@ -406,11 +558,32 @@
     }
 
     /* 3 method tiles in a row; Face Scan hidden on web (Figma shows 3) */
-    .kyc-methods { flex-direction: row; gap: 16px; align-items: stretch; }
-    .method-card { flex: 1 0 0; }
+    .kyc-methods {
+      flex-direction: row;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .method-card {
+      flex: 1 0 0;
+    }
+
+    .kyc-assist-toast .toast-content {
+      flex-direction: column;
+    }
+
+    .kyc-assist-toast__actions {
+      width: 100%;
+    }
+
+    .kyc-assist-toast__actions .btn,
+    .assist-language-dropdown {
+      flex: 1;
+    }
   }
+
   @media (max-width: 768px) {
-    .kyc-web-title{
+    .kyc-web-title {
       font-size: 28px;
       line-height: 32px;
     }
