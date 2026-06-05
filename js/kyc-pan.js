@@ -1,13 +1,22 @@
 (function () {
     'use strict';
 
+    window.panDetailsVerified = false;
+
     if (!window.INITS) {
         window.INITS = {};
     }
 
+
+
+
     INITS['pan'] = function () {
         var root = document.getElementById('screen-pan');
-        if (!root || root.dataset.inited) return;
+        if (!root) return;
+
+        var alreadyInited =
+            root.dataset.inited === '1';
+
         root.dataset.inited = '1';
 
         var panInput = root.querySelector('#pan-num');
@@ -19,6 +28,22 @@
         var security = root.querySelector('#pan-sec');
         var consent1 = root.querySelector('#pan-c1');
         var consent2 = root.querySelector('#pan-c2');
+
+        var securitySection =
+            root.querySelector('#pan-security');
+
+        var consentSection =
+            root.querySelector('#pan-consent');
+
+        var successToast =
+            root.querySelector(
+                '#pan-return-success-toast'
+            );
+
+
+        var initialPanValue = '';
+        var initialMobileValue = '';
+
         var card = root.querySelector('.pan-card');
 
         function isPanValid() {
@@ -62,11 +87,44 @@
             }
 
             // Mock validation failure
-            return mobile.value.trim() === '9876543210';
+            return (
+                mobile.value.trim() === '9876543210' ||
+                mobile.value.trim() === '9876543211'
+            );
         }
 
         function validate() {
-            console.log('validate called');
+            console.log('--- VALIDATE ---');
+
+            console.log(
+                'panDetailsVerified:',
+                window.panDetailsVerified
+            );
+
+            console.log(
+                'savedPanDetails:',
+                window.savedPanDetails
+            );
+
+            console.log(
+                'initialPanValue:',
+                initialPanValue
+            );
+
+            console.log(
+                'initialMobileValue:',
+                initialMobileValue
+            );
+
+            console.log(
+                'currentPan:',
+                panInput.value
+            );
+
+            console.log(
+                'currentMobile:',
+                mobile.value
+            );
             var panValid = isPanValid();
             var mobileValid = isMobileValid();
             var securityValid = isSecurityValid();
@@ -126,27 +184,89 @@
             var securitySection = root.querySelector('#pan-security');
             var consentSection = root.querySelector('#pan-consent');
 
-            if (securitySection) {
-                securitySection.style.display = extended ? '' : 'none';
+            // already verified + not edited
+            var valuesEdited =
+                panInput.value.trim() !== initialPanValue.trim() ||
+                mobile.value.trim() !== initialMobileValue.trim();
+
+            console.log(
+                'valuesEdited:',
+                valuesEdited
+            );
+
+            var verifiedAndUnedited =
+                window.panDetailsVerified &&
+                !valuesEdited;
+
+            console.log(
+                'verifiedAndUnedited:',
+                verifiedAndUnedited
+            );
+
+            console.log(
+                'toast exists:',
+                !!successToast
+            );
+
+            console.log(
+                'security exists:',
+                !!securitySection
+            );
+
+            console.log(
+                'consent exists:',
+                !!consentSection
+            );
+
+            // TOAST
+            if (successToast) {
+                successToast.hidden =
+                    !verifiedAndUnedited;
             }
 
+            // SECURITY
+            if (securitySection) {
+
+                securitySection.hidden =
+                    verifiedAndUnedited
+                        ? true
+                        : !extended;
+            }
+
+            // CONSENT
             if (consentSection) {
-                consentSection.style.display = extended ? '' : 'none';
+
+                consentSection.hidden =
+                    verifiedAndUnedited
+                        ? true
+                        : !extended;
+            }
+
+            // BUTTON
+            if (submit) {
+
+                submit.textContent =
+                    verifiedAndUnedited
+                        ? 'Proceed'
+                        : 'Send OTP';
+
+                submit.disabled =
+                    verifiedAndUnedited
+                        ? false
+                        : !(
+                            panValid &&
+                            mobileValid &&
+                            mobileMatchesPan &&
+                            securityValid &&
+                            isConsented()
+                        );
             }
 
             if (card) {
                 card.classList.toggle('is-extended', extended);
             }
 
-            if (submit) {
-                submit.disabled = !(
-                    panValid &&
-                    mobileValid &&
-                    mobileMatchesPan &&
-                    securityValid &&
-                    isConsented()
-                );
-            }
+
         }
 
         if (panInput) {
@@ -159,6 +279,8 @@
                     .slice(0, 10);
 
                 validate();
+
+
             });
         }
 
@@ -190,19 +312,52 @@
             consent2.addEventListener('change', validate);
         }
 
-        if (submit) {
-            submit.addEventListener('click', function () {
-                if (submit.disabled) return;
+        if (submit && !submit.dataset.bound) {
 
-                console.log('PAN Verification', {
-                    pan: panInput.value,
-                    mobile: mobile.value
-                });
-                console.log('Navigating to pan-otp');
+            submit.dataset.bound = '1';
 
-                // Navigate to next step
-                window.show('pan-otp');
-            });
+            submit.addEventListener(
+                'click',
+                function () {
+
+                    if (submit.disabled)
+                        return;
+
+                    var valuesEdited =
+                        panInput.value.trim() !== initialPanValue.trim() ||
+                        mobile.value.trim() !== initialMobileValue.trim();
+
+                    var verifiedAndUnedited =
+                        window.panDetailsVerified &&
+                        !valuesEdited;
+
+                    console.log(
+                        'CLICK verifiedAndUnedited:',
+                        verifiedAndUnedited
+                    );
+
+                    // VERIFIED + UNEDITED
+                    if (verifiedAndUnedited) {
+
+                        window.ekyc.goto(
+                            'pan-address-proof'
+                        );
+
+                        return;
+                    }
+
+                    // EDITED OR FRESH FLOW
+                    initialPanValue =
+                        panInput.value;
+
+                    initialMobileValue =
+                        mobile.value;
+
+                    window.ekyc.goto(
+                        'pan-otp'
+                    );
+                }
+            );
         }
 
         // Read More / Read Less toggle
@@ -216,6 +371,29 @@
                 readmoreToggle.textContent = expanded ? 'Read More' : 'Read Less';
                 readmoreToggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
             });
+        }
+
+        if (
+            window.panDetailsVerified &&
+            window.savedPanDetails
+        ) {
+
+            panInput.value =
+                window.savedPanDetails.pan;
+
+            mobile.value =
+                window.savedPanDetails.mobile;
+
+            initialPanValue =
+                window.savedPanDetails.pan;
+
+            initialMobileValue =
+                window.savedPanDetails.mobile;
+
+        } else {
+
+            initialPanValue = '';
+            initialMobileValue = '';
         }
 
         validate();
@@ -286,8 +464,16 @@
 
                 if (otp === CORRECT_OTP) {
                     clearError();
-                    window.ekyc.goto('pan-verifying');
-                    return;
+                    window.panDetailsVerified = true;
+
+                    window.savedPanDetails = {
+                        pan: document.getElementById('pan-num').value,
+                        mobile: document.getElementById('pan-mobile').value
+                    };
+
+                    window.ekyc.goto(
+                        'pan-verifying'
+                    );
                 }
 
                 if (otpWrap) otpWrap.classList.add('is-error');

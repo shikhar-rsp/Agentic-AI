@@ -2274,6 +2274,20 @@
               Back
             </a>
 
+            <div class="toast toast-success verify-success-toast" id="pan-return-success-toast" hidden>
+              <span class="toast-icon">
+                <i class="ph-fill ph-check-circle ph-md"></i>
+              </span>
+
+              <div class="toast-body">
+                <div class="toast-content">
+                  <p class="toast-title">
+                    Proof of identity is verified successfully
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <!-- pan Card Details -->
             <div class="pan-details">
               <div class="pan-details__head">
@@ -2630,7 +2644,7 @@
               <div class="toast-body">
                 <div class="toast-content">
                   <p class="toast-title">
-                    PAN identity is verified successfully
+                    Proof of identity is verified successfully
                   </p>
                 </div>
               </div>
@@ -2831,7 +2845,7 @@
             The details you entered may not be saved if you leave this page.
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-action="leave-goto:pan-otp" data-modal-close>Go
+            <button type="button" class="btn btn-secondary" data-action="leave-goto:pan" data-modal-close>Go
               Back</button>
             <button type="button" class="btn btn-primary" data-action="close-modal" data-modal-close>Continue filling
               KYC</button>
@@ -3490,7 +3504,8 @@
               </div>
 
 
-              <div class="atlas-drag-drop-wrapper document-upload-container" style="margin-top: 16px;" id="document-upload-container">
+              <div class="atlas-drag-drop-wrapper document-upload-container" style="margin-top: 16px;"
+                id="document-upload-container">
                 <label class="atlas-drag-drop-label" id="document-upload-label">
                   Address Proof
                 </label>

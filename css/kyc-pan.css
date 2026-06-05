@@ -63,7 +63,7 @@
         align-items: center;
         gap: 8px;
         text-align: center;
-       
+
     }
 
     .pan-logo {
@@ -252,11 +252,11 @@
 
 
     /* ---- Conditional sections (security question + consent) ---- */
-    .pan-extra {
-        display: none;
+    .pan-extra[hidden] {
+        display: none !important;
     }
 
-    .pan-card.is-extended .pan-extra {
+    .pan-card.is-extended .pan-extra:not([hidden]) {
         display: flex;
     }
 
@@ -313,11 +313,15 @@
         color: var(--color-neutral-800);
     }
 
-    .pan-readmore__extra[hidden] { display: none !important; }
+    .pan-readmore__extra[hidden] {
+        display: none !important;
+    }
+
     .pan-readmore__extra {
         font: 400 14px/20px 'Rubik', sans-serif;
         color: var(--color-neutral-700);
     }
+
     .pan-readmore {
         color: var(--color-blue-600);
         text-decoration: underline;
@@ -974,12 +978,13 @@
         padding: 12px !important;
         margin-bottom: 0 !important;
     }
-    .review-value{
+
+    .review-value {
         text-align: right;
     }
 }
 
-.modal-body-text{
+.modal-body-text {
     margin: 0;
 }
 
@@ -988,9 +993,10 @@
     color: var(--color-neutral-600);
 }
 
-.document-upload-body .review-header{
+.document-upload-body .review-header {
     margin-bottom: 4px;
 }
-.document-upload-body .review-info-banner{
+
+.document-upload-body .review-info-banner {
     margin-bottom: 8px;
 }
