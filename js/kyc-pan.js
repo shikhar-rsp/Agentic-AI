@@ -366,13 +366,13 @@
         function handleFile(file) {
             if (!file) return;
             // File size > 10MB
-            if (file.size > 10 * 1024 * 1024) {
+            if (file.size > 2 * 1024 * 1024) {
                 window.ekyc.openModal('file-size-modal');
                 return;
             }
 
             // Demo: unreadable file
-            if (file.name.toLowerCase().includes('blur')) {
+            if (file.name.toLowerCase().includes('unreadable')) {
                 showDocumentError('unreadable');
                 return;
             }

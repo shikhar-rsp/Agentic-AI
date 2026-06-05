@@ -79,13 +79,13 @@
         font-size: 20px;
     }
 
-    .org-gst-calendar-input{
+    .org-gst-calendar-input {
         width: 100%;
     }
 
     .org-gst-calendar-field {
-        border-radius: 8px!important;
-        width: 100%!important;
+        border-radius: 8px !important;
+        width: 100% !important;
     }
 
     .org-gst-calendar-input-field {
@@ -100,6 +100,23 @@
 
         .org-gst-doc-grid {
             grid-template-columns: 1fr;
+        }
+
+        .kyc-org-title-wrapper {
+            justify-content: center !important;
+        }
+
+        .kycinit-org-title {
+            width: 100%;
+            text-align: center !important;
+        }
+
+        .org-gst-failure-actions {
+            flex-direction: column;
+        }
+
+        .org-gst-failure-actions .btn {
+            width: 100%;
         }
     }
 }
