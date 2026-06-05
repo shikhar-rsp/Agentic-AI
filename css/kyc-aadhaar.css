@@ -730,7 +730,7 @@
     height: 100%;
     width: 0%;
     border-radius: 99px;
-    background: #22c55e;
+    background: var(--color-lime-600);
     transition: width 0.05s linear;
   }
 
@@ -827,18 +827,27 @@
     padding: 20px;
     gap: 8px;
   }
+
+  .review-info-toast {
+    margin-bottom: 8px;
+  }
 }
 
 @media (max-width: 767px) {
-  .aadhaar-bg{
+  .aadhaar-bg {
     height: 240px;
   }
-  /* prevent button bar from covering last form content */
-  .aadhaar-card { margin-bottom: 96px; padding: 16px; }
 
-  .varifying-details-body .aadhaar-card{
+  /* prevent button bar from covering last form content */
+  .aadhaar-card {
+    margin-bottom: 96px;
+    padding: 16px;
+  }
+
+  .varifying-details-body .aadhaar-card {
     margin-bottom: 0;
   }
+
   .aadhaar-otp,
   .aadhaar-field {
     width: 100%;
@@ -877,24 +886,26 @@
     flex-direction: row;
     justify-content: space-between;
   }
+
   .aadhaar-logo {
     margin-bottom: 6px;
   }
-  .aadhaar-head{
+
+  .aadhaar-head {
     gap: 2px;
     margin-bottom: 8px;
   }
-  .aadhaar-radio__label{
+
+  .aadhaar-radio__label {
     font-size: 14px;
     line-height: 20px;
   }
-  .review-info-toast{
-    margin-bottom: 8px;
-  }
-  .review-field__value{
+
+  .review-field__value {
     text-align: right;
   }
-  .review-consent-wrap{
+
+  .review-consent-wrap {
     gap: 8px;
   }
 }
