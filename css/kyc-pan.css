@@ -781,7 +781,8 @@
         border-radius: 8px;
 
         color: #334155;
-        font: 400 14px/16px 'Rubik', sans-serif;
+        font: 400 14px/20px 'Rubik', sans-serif;
+        margin-bottom: 4px;
     }
 
     .review-info-banner i {
@@ -808,8 +809,7 @@
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 16px 24px;
-        padding: 0 3px;
-        margin-bottom: 8px;
+        padding: 12px;
     }
 
     .review-label {
