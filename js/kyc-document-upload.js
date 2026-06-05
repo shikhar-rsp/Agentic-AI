@@ -271,10 +271,10 @@
 
                 var uploadedFileName = fileName.textContent;
 
-                reuploadModal.querySelector('.modal-body').textContent =
-                    'Are you sure you want to re-upload the ' +
+                reuploadModal.querySelector('.modal-body').innerHTML =
+                    '<p class="modal-body-text">Are you sure you want to re-upload the <strong>' +
                     uploadedFileName +
-                    '? The existing file will be replaced with the new upload.';
+                    '</strong>? The existing file will be replaced with the new upload.</p>';
 
                 reuploadModal.classList.add('is-open');
                 reuploadModal.removeAttribute('hidden');
@@ -517,10 +517,10 @@
 
                 var uploadedFileName = fileName.textContent;
 
-                reuploadModal.querySelector('.modal-body').textContent =
-                    'Are you sure you want to re-upload the ' +
+                reuploadModal.querySelector('.modal-body').innerHTML =
+                    '<p class="modal-body-text">Are you sure you want to re-upload the <strong>' +
                     uploadedFileName +
-                    '? The existing file will be replaced with the new upload.';
+                    '</strong>? The existing file will be replaced with the new upload.</p>';
 
                 reuploadModal.classList.add('is-open');
                 reuploadModal.removeAttribute('hidden');

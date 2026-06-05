@@ -708,12 +708,12 @@
     .upload-success-info {
         display: flex;
         flex-direction: column;
-        gap: 2px;
+        gap: 0;
         min-width: 0;
     }
 
     .upload-success-name {
-        font: 400 14px/20px 'Rubik', sans-serif;
+        font: 500 14px/20px 'Rubik', sans-serif;
         color: #475569;
         word-break: break-all;
         overflow-wrap: break-word;
@@ -972,18 +972,26 @@
     }
 
     .pan-card .review-grid {
-        padding-top: 12px !important;
+        padding: 12px !important;
         margin-bottom: 0 !important;
+    }
+    .review-value{
+        text-align: right;
     }
 }
 
-
+.modal-body-text{
+    margin: 0;
+}
 
 /* upload document body css */
 .document-upload-body .pan-details__hint {
     color: var(--color-neutral-600);
 }
 
+.document-upload-body .review-header{
+    margin-bottom: 4px;
+}
 .document-upload-body .review-info-banner{
-
+    margin-bottom: 8px;
 }
