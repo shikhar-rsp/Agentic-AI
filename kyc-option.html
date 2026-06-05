@@ -1198,8 +1198,8 @@
     <!-- =========================================================================
        SCREEN: send-link-sent
        slug: send-link-sent
-       Read-only confirmation; same markup, "sent" state is applied at enter.
-       Back: data-action="back"; Resend: data-action="goto:send-link"
+       Editable confirmation after link sent; values copied from send-link form.
+       Back: data-action="back"; Resend: data-action="resend-send-link" (stays on page)
        ========================================================================= -->
     <section class="ekyc-screen" id="screen-send-link-sent" data-screen="send-link-sent" hidden>
       <div class="sendlink-page" data-sendlink-state="sent">
@@ -1259,18 +1259,20 @@
               <p class="sendlink-section__bar">Required Details</p>
               <div class="sendlink-fields">
                 <div class="form-field">
-                  <label class="form-label" for="sls-mobile">Mobile Number</label>
+                  <label class="form-label" for="sls-mobile">Mobile Number <span class="sendlink-req">*</span></label>
                   <div class="form-input-wrapper">
-                    <input class="form-input" id="sls-mobile" name="mobile-number-sent" type="tel" value="9999999999"
-                      readonly />
+                    <input class="form-input" id="sls-mobile" name="mobile-number-sent" type="tel" inputmode="numeric"
+                      maxlength="10" placeholder="Enter 10-digit mobile number" />
                   </div>
+                  <p class="form-error">Enter a valid 10-digit mobile number.</p>
                 </div>
                 <div class="form-field">
                   <label class="form-label" for="sls-email">Email ID</label>
                   <div class="form-input-wrapper">
                     <input class="form-input" id="sls-email" name="email-sent" type="email"
-                      value="ashok.kumar@email.com" readonly />
+                      placeholder="Enter a valid email ID" />
                   </div>
+                  <p class="form-error">Enter a valid email ID</p>
                 </div>
               </div>
             </section>
@@ -1281,8 +1283,8 @@
                 <div class="form-field">
                   <label class="form-label" for="sls-language">Language</label>
                   <div class="form-input-wrapper sendlink-select-wrap">
-                    <select class="sendlink-select" id="sls-language" name="language-sent" disabled>
-                      <option selected>English</option>
+                    <select class="sendlink-select" id="sls-language" name="language-sent">
+                      <option>English</option>
                       <option>Hindi</option>
                       <option>Marathi</option>
                       <option>Tamil</option>
@@ -1295,8 +1297,8 @@
                 <div class="form-field">
                   <label class="form-label" for="sls-expiry">Link expires in</label>
                   <div class="form-input-wrapper sendlink-select-wrap">
-                    <select class="sendlink-select" id="sls-expiry" name="link-expiry-sent" disabled>
-                      <option selected>48 hrs</option>
+                    <select class="sendlink-select" id="sls-expiry" name="link-expiry-sent">
+                      <option>48 hrs</option>
                       <option>24 hrs</option>
                       <option>72 hrs</option>
                       <option>7 days</option>
@@ -1309,21 +1311,26 @@
 
             <div class="sendlink-fields">
               <div class="form-field">
-                <label class="form-label" for="sls-captcha">Enter Captcha</label>
+                <label class="form-label" for="sls-captcha">Enter Captcha <span class="sendlink-req">*</span></label>
                 <div class="form-input-wrapper">
-                  <input class="form-input" id="sls-captcha" name="captcha-sent" type="text" readonly
-                    placeholder="••••••" />
+                  <input class="form-input" id="sls-captcha" name="captcha-sent" type="text"
+                    placeholder="Enter answer" />
                 </div>
+                <p class="form-error">Incorrect Captcha</p>
               </div>
               <div class="sendlink-captcha">
                 <div class="sendlink-captcha__img">
                   <img src="assets/img/captcha-sample.png" alt="Captcha" />
                 </div>
+                <button type="button" class="sendlink-captcha__refresh" id="sls-captcha-refresh"
+                  name="sls-captcha-refresh" data-action="refresh-captcha" aria-label="Refresh captcha">
+                  <i class="ph ph-arrows-clockwise ph-sm"></i>
+                </button>
               </div>
             </div>
 
             <button type="button" class="btn btn-secondary sendlink-submit" id="sls-resend" name="sls-resend"
-              data-action="goto:send-link">
+              data-action="resend-send-link">
               <span>Re-Send Link to Customer</span>
               <i data-lucide="send"></i>
             </button>
@@ -4737,6 +4744,10 @@
           aadhaarModule.handleResendOtp();
           return;
         }
+        if (action === 'resend-send-link') {
+          e.preventDefault();
+          return;
+        }
       });
 
       /* -------- Modal helpers -------- */
@@ -4767,10 +4778,43 @@
       });
 
       /* -------- Submit handlers -------- */
+      function maskSendLinkMobile(num) {
+        var v = String(num || '').trim();
+        if (v.length !== 10) return v;
+        return v.slice(0, 2) + 'xxxxx' + v.slice(-3);
+      }
+
+      function populateSendLinkSent() {
+        var mobile = document.getElementById('sl-mobile');
+        var email = document.getElementById('sl-email');
+        var language = document.getElementById('sl-language');
+        var expiry = document.getElementById('sl-expiry');
+        var captcha = document.getElementById('sl-captcha');
+        var slsMobile = document.getElementById('sls-mobile');
+        var slsEmail = document.getElementById('sls-email');
+        var slsLanguage = document.getElementById('sls-language');
+        var slsExpiry = document.getElementById('sls-expiry');
+        var slsCaptcha = document.getElementById('sls-captcha');
+        var desc = document.querySelector('#sls-success .toast-description');
+
+        if (mobile && slsMobile) slsMobile.value = mobile.value;
+        if (email && slsEmail) slsEmail.value = email.value;
+        if (language && slsLanguage) slsLanguage.value = language.value;
+        if (expiry && slsExpiry) slsExpiry.value = expiry.value;
+        if (captcha && slsCaptcha) slsCaptcha.value = captcha.value;
+
+        if (desc && mobile) {
+          desc.innerHTML =
+            'KYC link has been sent successfully to the mobile number ' +
+            maskSendLinkMobile(mobile.value) +
+            ' at 08:45 PM. <strong>Valid till 14th April 08:45 PM</strong>';
+        }
+      }
+
       function handleSubmit(slug, btn) {
         if (btn && btn.disabled) return;
         if (slug === 'send-link') {
-          // Mark sent visually then navigate
+          populateSendLinkSent();
           var st = document.getElementById('sl-success');
           if (st) st.classList.add('is-visible');
           goto('send-link-sent');
@@ -5034,7 +5078,41 @@
 
       /* ---- initScreen_send-link-sent ---- */
       INITS['send-link-sent'] = function () {
-        // No interactive logic beyond what router handles.
+        var root = screenEl('send-link-sent');
+        if (root.dataset.inited) return; root.dataset.inited = '1';
+
+        var EXPECTED_CAPTCHA = '2B3J7y';
+        var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        var mobile = $('#sls-mobile', root);
+        var email = $('#sls-email', root);
+        var captcha = $('#sls-captcha', root);
+
+        function val(el) { return el ? el.value.trim() : ''; }
+        function isMobileValid() { return /^\d{10}$/.test(val(mobile)); }
+        function isEmailValid() { var v = val(email); return v === '' || EMAIL_RE.test(v); }
+        function isCaptchaValid() { return val(captcha).toLowerCase() === EXPECTED_CAPTCHA.toLowerCase(); }
+
+        function fieldOf(el) { return el ? el.closest('.form-field') : null; }
+        function setError(el, on) { var f = fieldOf(el); if (f) f.classList.toggle('is-error', !!on); }
+
+        function wireField(el, validFn) {
+          if (!el) return;
+          el.addEventListener('blur', function () { setError(el, !validFn()); });
+          el.addEventListener('input', function () {
+            var f = fieldOf(el);
+            if (f && f.classList.contains('is-error') && validFn()) setError(el, false);
+          });
+        }
+
+        if (mobile) {
+          mobile.addEventListener('input', function () {
+            mobile.value = mobile.value.replace(/\D/g, '').slice(0, 10);
+          });
+        }
+
+        wireField(mobile, isMobileValid);
+        wireField(email, isEmailValid);
+        wireField(captcha, isCaptchaValid);
       };
 
       /* ---- initScreen_landing ---- */
