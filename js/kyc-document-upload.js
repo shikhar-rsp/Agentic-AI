@@ -34,9 +34,6 @@
         var uploadLabel = root.querySelector('#document-upload-label');
         var selectedDoc = '';
 
-        console.log('DOCUMENT INIT');
-        console.log('uploadContainer', uploadContainer);
-        console.log('uploadLabel', uploadLabel);
 
         if (uploadContainer) {
             uploadContainer.classList.remove('is-visible');
@@ -47,17 +44,11 @@
             menu.querySelectorAll('.dropdown-menu-item')
                 .forEach(function (item) {
                     item.addEventListener('click', function () {
-                        console.log('Dropdown clicked');
-                        console.log('Selected:', item.dataset.value);
 
-                        console.log('Before:', uploadContainer.classList.contains('is-visible'));
 
                         if (uploadContainer) {
                             uploadContainer.classList.add('is-visible');
                         }
-
-                        console.log('After:', uploadContainer.hidden);
-                        console.log('Element:', uploadContainer);
 
                         selectedDoc = item.dataset.value;
 
@@ -131,6 +122,8 @@
         var consent1 = root.querySelector('#document-upload-c1');
         var consent2 = root.querySelector('#document-upload-c2');
         var submitBtn = root.querySelector('#document-upload-submit');
+
+
 
         function showDocumentError(type) {
             var modal = document.getElementById(
@@ -256,8 +249,17 @@
 
                     reader.onload = function (e) {
                         previewImage.src = e.target.result;
+
+                        // show preview
                         preview.hidden = false;
+                        preview.style.display = 'flex';
+
+                        // hide upload placeholder
                         placeholder.hidden = true;
+                        placeholder.style.display = 'none';
+
+                        // make image visible inside dropzone
+                        dropzone.classList.add('has-preview');
                     };
 
                     reader.readAsDataURL(file);
@@ -289,6 +291,10 @@
 
                 placeholder.style.display = 'flex';
                 preview.style.display = 'none';
+
+                dropzone.classList.remove(
+                    'has-preview'
+                );
 
                 previewImage.src = '';
 
@@ -501,8 +507,20 @@
                     var reader = new FileReader();
 
                     reader.onload = function (e) {
-                        previewImage.src = e.target.result;
+
+                        previewImage.src =
+                            e.target.result;
+
+                        // show preview
+                        preview.style.display =
+                            'flex';
+
                         preview.hidden = false;
+
+                        // hide upload content
+                        placeholder.style.display =
+                            'none';
+
                         placeholder.hidden = true;
                     };
 
@@ -533,8 +551,15 @@
 
                 fileInput.value = '';
 
-                placeholder.style.display = 'flex';
-                preview.style.display = 'none';
+                placeholder.style.display =
+                    'flex';
+
+                placeholder.hidden = false;
+
+                preview.style.display =
+                    'none';
+
+                preview.hidden = true;
 
                 previewImage.src = '';
 
