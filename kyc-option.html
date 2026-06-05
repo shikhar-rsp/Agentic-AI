@@ -3006,11 +3006,11 @@
       </div>
     </section>
 
-    <!-- =========================================================================
+     <!-- =========================================================================
      SCREEN: document-upload
      slug: document-upload
      ========================================================================= -->
-    <section class="ekyc-screen" id="screen-document-upload" data-screen="document-upload" hidden>
+     <section class="ekyc-screen" id="screen-document-upload" data-screen="document-upload" hidden>
       <div class="pan-page">
         <div class="document-upload-bg" aria-hidden="true"></div>
 
@@ -3035,15 +3035,15 @@
           </span>
         </header>
 
-        <div class="pan-body">
+        <div class="pan-body document-upload-body">
           <div class="pan-card">
 
             <div class="pan-head">
               <img class="pan-logo" src="assets/img/doc-icon.svg" alt="Document Upload" />
               <h1 class="pan-title">Document Upload</h1>
-              <p class="pan-subtitle">
+              <!-- <p class="pan-subtitle">
                 Upload a valid government-issued document to complete KYC verification.
-              </p>
+              </p> -->
             </div>
 
             <a class="pan-back" data-action="goto:landing">
@@ -3120,7 +3120,10 @@
                 </div>
 
                 <div class="upload-success-row" id="document-success-row" hidden>
-                  <span class="upload-success-name" id="document-file-name"></span>
+                  <div class="upload-success-info">
+                    <span class="upload-success-name" id="document-file-name"></span>
+                    <span class="upload-success-status">uploaded successfully.</span>
+                  </div>
 
                   <button type="button" class="btn-link" id="document-reupload-btn">
                     Re-upload
@@ -3194,8 +3197,7 @@
                 <input type="checkbox" id="document-upload-c1" />
                 <span class="aadhaar-check__box" aria-hidden="true"></span>
                 <span class="aadhaar-check__label">
-                  I/We hereby authorize BGIL to use the uploaded document
-                  for identity and address verification.
+                  I/We hereby authorize BGIL to print my/our name on the policy document as received through POI document KYC.
                 </span>
               </label>
 
@@ -3203,8 +3205,11 @@
                 <input type="checkbox" id="document-upload-c2" />
                 <span class="aadhaar-check__box" aria-hidden="true"></span>
                 <span class="aadhaar-check__label">
-                  I confirm that the uploaded document is valid, belongs to me,
-                  and the information provided is accurate.
+                  I accept the Document upload terms and conditions
+                  <span class="aadhaar-readmore__extra" hidden><br />
+                    I/We hereby consent to BGIL verifying the details provided by me/us for the purpose of KYC through independent and/or third-party sources, as may be required.
+                  </span>
+                  <a href="#" class="aadhaar-readmore document-readmore-toggle" aria-expanded="false">Read More</a>
                 </span>
               </label>
             </div>
@@ -3347,7 +3352,10 @@
                 </div>
 
                 <div class="upload-success-row" id="document-success-row" hidden>
-                  <span class="upload-success-name" id="document-file-name"></span>
+                  <div class="upload-success-info">
+                    <span class="upload-success-name" id="document-file-name"></span>
+                    <span class="upload-success-status">uploaded successfully.</span>
+                  </div>
 
                   <button type="button" class="btn-link" id="document-reupload-btn">
                     Re-upload
@@ -3572,7 +3580,7 @@
           </span>
         </header>
 
-        <div class="pan-body">
+        <div class="pan-body document-upload-body">
 
           <div class="pan-card">
 
@@ -3598,7 +3606,7 @@
               </div>
 
               <div class="review-info-banner">
-                <i data-lucide="info"></i>
+                <i class="ph ph-info ph-md"></i>
                 Your data is secured. Sensitive fields are partially masked below.
               </div>
 
@@ -3612,14 +3620,14 @@
 
                 <div class="review-grid">
 
-                  <div>
+                  <div class="review-field ">
                     <div class="review-label">Name</div>
                     <div class="review-value">
                       Mahesh Marilingappa
                     </div>
                   </div>
 
-                  <div>
+                  <div class="review-field">
                     <div class="review-label">DOB</div>
                     <div class="review-value">
                       XX-XX-1979
@@ -3640,7 +3648,7 @@
 
                 <div class="review-grid">
 
-                  <div>
+                  <div class="review-field">
                     <div class="review-label">
                       Permanent Address
                     </div>
@@ -3650,7 +3658,7 @@
                     </div>
                   </div>
 
-                  <div>
+                  <div class="review-field">
                     <div class="review-label">
                       City/District
                     </div>
@@ -3660,7 +3668,7 @@
                     </div>
                   </div>
 
-                  <div>
+                  <div class="review-field">
                     <div class="review-label">
                       State
                     </div>
@@ -3670,7 +3678,7 @@
                     </div>
                   </div>
 
-                  <div>
+                  <div class="review-field">
                     <div class="review-label">
                       Pincode
                     </div>
@@ -3694,7 +3702,7 @@
 
                 <div class="review-grid">
 
-                  <div>
+                  <div class="review-field">
                     <div class="review-label">
                       Proof of Identity
                     </div>
@@ -3704,7 +3712,7 @@
                     </div>
                   </div>
 
-                  <div>
+                  <div class="review-field">
                     <div class="review-label">
                       Proof of Address
                     </div>

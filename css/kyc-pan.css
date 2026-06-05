@@ -63,7 +63,7 @@
         align-items: center;
         gap: 8px;
         text-align: center;
-        margin-bottom: 16px;
+       
     }
 
     .pan-logo {
@@ -84,6 +84,7 @@
         margin: 0;
         font: 400 14px/20px 'Rubik', sans-serif;
         color: var(--color-neutral-600);
+        margin-bottom: 16px;
     }
 
     /* ---- Back link ---- */
@@ -704,12 +705,24 @@
         gap: 8px;
     }
 
+    .upload-success-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+    }
+
     .upload-success-name {
         font: 400 14px/20px 'Rubik', sans-serif;
         color: #475569;
         word-break: break-all;
         overflow-wrap: break-word;
         white-space: normal;
+    }
+
+    .upload-success-status {
+        font: 400 14px/20px 'Rubik', sans-serif;
+        color: #475569;
     }
 
     .btn-link {
@@ -962,4 +975,15 @@
         padding-top: 12px !important;
         margin-bottom: 0 !important;
     }
+}
+
+
+
+/* upload document body css */
+.document-upload-body .pan-details__hint {
+    color: var(--color-neutral-600);
+}
+
+.document-upload-body .review-info-banner{
+
 }

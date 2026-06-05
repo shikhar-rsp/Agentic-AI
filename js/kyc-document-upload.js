@@ -5,6 +5,21 @@
         window.INITS = {};
     }
 
+    function initDocumentReadMore(root) {
+        var readmoreToggle = root.querySelector('.document-readmore-toggle');
+        var readmoreExtra = root.querySelector('.aadhaar-readmore__extra');
+
+        if (!readmoreToggle || !readmoreExtra) return;
+
+        readmoreToggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            var expanded = readmoreExtra.hidden === false;
+            readmoreExtra.hidden = expanded;
+            readmoreToggle.textContent = expanded ? 'Read More' : 'Read Less';
+            readmoreToggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        });
+    }
+
     INITS['document-upload'] = function () {
         var root = document.getElementById('screen-document-upload');
         if (!root || root.dataset.inited) return;
@@ -254,11 +269,7 @@
 
             reuploadBtn.addEventListener('click', function () {
 
-                var uploadedFileName =
-                    fileName.textContent.replace(
-                        ' uploaded successfully',
-                        ''
-                    );
+                var uploadedFileName = fileName.textContent;
 
                 reuploadModal.querySelector('.modal-body').textContent =
                     'Are you sure you want to re-upload the ' +
@@ -308,6 +319,8 @@
         if (consent2) {
             consent2.addEventListener('change', updateSubmitButton);
         }
+
+        initDocumentReadMore(root);
     };
 
     INITS['doc-pan-address-proof'] = function () {
@@ -502,11 +515,7 @@
 
             reuploadBtn.addEventListener('click', function () {
 
-                var uploadedFileName =
-                    fileName.textContent.replace(
-                        ' uploaded successfully',
-                        ''
-                    );
+                var uploadedFileName = fileName.textContent;
 
                 reuploadModal.querySelector('.modal-body').textContent =
                     'Are you sure you want to re-upload the ' +
