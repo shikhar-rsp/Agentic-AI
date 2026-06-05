@@ -1,7 +1,105 @@
 @layer app {
-    .org-pan-consent{
+    .org-pan-consent {
         display: flex;
         flex-direction: column;
-        gap:8px;
+        gap: 8px;
+    }
+
+    .org-gst-toast-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 16px;
+    }
+
+    .org-gst-toast-content {
+        display: flex;
+        flex-direction: column;
+        gap: 16px !important;
+        justify-content: flex-end;
+        align-items: flex-start;
+        padding: 16px !important;
+        margin: 0px !important;
+        padding: 0px !important;
+    }
+
+    .org-gst-toast-title {
+        font-size: 16px;
+        font-weight: 600 !important;
+        color: #b91c1c !important;
+    }
+
+    .org-gst-toast-description {
+        color: #475569;
+    }
+
+    .toast[hidden] {
+        display: none !important;
+    }
+
+    .form-field.is-verification-failed .form-error {
+        display: none !important;
+    }
+
+    .org-gst-submit-row {
+        width: 100%;
+    }
+
+    .org-gst-failure-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .org-gst-failure-actions[hidden] {
+        display: none !important;
+    }
+
+    .org-gst-failure-actions .btn {
+        flex: 1;
+    }
+
+    .org-gst-doc-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .org-gst-doc-upload-wrapper {
+        margin-top: 16px;
+    }
+
+    .atlas-calendar-input__icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--color-neutral-500);
+        font-size: 20px;
+    }
+
+    .org-gst-calendar-input{
+        width: 100%;
+    }
+
+    .org-gst-calendar-field {
+        border-radius: 8px!important;
+        width: 100%!important;
+    }
+
+    .org-gst-calendar-input-field {
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        width: 100%;
+        background: transparent;
+    }
+
+    @media (max-width: 768px) {
+
+        .org-gst-doc-grid {
+            grid-template-columns: 1fr;
+        }
     }
 }

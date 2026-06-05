@@ -629,19 +629,33 @@
               Back
             </a>
 
+            <div class="toast toast-success verify-success-toast" id="org-poi-success-toast">
+              <span class="toast-icon">
+                <i class="ph-fill ph-check-circle ph-md"></i>
+              </span>
+
+              <div class="toast-body">
+                <div class="toast-content">
+                  <p class="toast-title">
+                    POI verified successfully
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <div class="toast toast-danger org-gst-toast" id="org-gst-error-toast" hidden>
               <span class="toast-icon">
                 <i class="ph ph-warning-circle" style="font-size: 24px;"></i>
               </span>
 
-              <div class="toast-body">
-                <div class="toast-content">
+              <div class="toast-body org-gst-toast-body">
+                <div class="toast-content org-gst-toast-content">
 
-                  <p class="toast-title">
+                  <p class="toast-title org-gst-toast-title">
                     GSTIN verification failed
                   </p>
 
-                  <p class="toast-description">
+                  <p class="toast-description org-gst-toast-description">
                     We could not verify the GSTIN entered.
                     Please check the GSTIN details and try again.
                   </p>
@@ -704,10 +718,27 @@
 
             </div>
 
-            <!-- Submit -->
-            <button type="button" class="btn btn-primary pan-submit" id="org-gst-submit" disabled>
-              Verify Details
-            </button>
+            <div class="org-gst-submit-row" id="org-gst-submit-row">
+
+              <button type="button" class="btn btn-primary pan-submit" id="org-gst-submit" disabled>
+                Verify Details
+              </button>
+
+              <div class="org-gst-failure-actions" id="org-gst-failure-actions" hidden>
+
+                <button type="button" class="btn btn-primary" id="org-gst-retry-btn">
+                  Retry Verification
+                </button>
+
+                <button type="button" class="btn btn-secondary-gray" id="org-gst-doc-btn">
+                  Verify using GSTIN Document
+
+                  <i class="ph ph-arrow-right"></i>
+                </button>
+
+              </div>
+
+            </div>
 
           </div>
 
@@ -752,6 +783,221 @@
         </div>
 
       </div>
+    </section>
+
+    <section class="ekyc-screen" id="screen-org-pan-gst-doc" data-screen="org-pan-gst-doc" hidden>
+
+      <div class="pan-page">
+
+        <div class="pan-bg" aria-hidden="true"></div>
+
+        <!-- Header -->
+        <header class="kyc-header">
+
+          <div class="kyc-header__row">
+
+            <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+
+            <div class="kyc-header__agent">
+
+              <div class="kyc-agent-info">
+                <span class="kyc-agent-name">
+                  Rajesh Chaurasia
+                </span>
+
+                <span class="kyc-agent-id">
+                  BA786314
+                </span>
+              </div>
+
+              <div class="kyc-avatar">
+                <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
+
+                <span class="kyc-avatar__dot" aria-hidden="true"></span>
+              </div>
+
+            </div>
+
+          </div>
+
+          <span class="badge badge-sm badge-light badge-red">
+            <i class="ph ph-warning-circle ph-sm"></i>
+            Link expires in 12hr 32mins
+          </span>
+
+        </header>
+
+        <!-- Body -->
+        <div class="pan-body">
+
+          <div class="pan-card">
+
+            <!-- Top -->
+            <div class="pan-head">
+
+              <img class="pan-logo" src="assets/img/ashoka-emblem.png" alt="pan" />
+
+              <h1 class="pan-title">
+                Verify with PAN card
+              </h1>
+
+              <p class="pan-subtitle">
+                Please follow the instructions below to complete KYC.
+                This will only take a while.
+              </p>
+
+            </div>
+
+            <!-- Back -->
+            <a class="pan-back" id="org-gst-doc-back" data-action="open-modal:org-gst-doc-leave-modal">
+              <i class="ph ph-arrow-left ph-md-20"></i>
+              Back
+            </a>
+
+            <!-- Card -->
+            <div class="pan-sub-card">
+
+              <div class="pan-details__head">
+
+                <h3 class="pan-details__title">
+                  Verify Using GST Document
+                </h3>
+
+                <p class="pan-details__hint">
+                  Upload the GSTIN document to continue verification.
+                </p>
+
+              </div>
+
+              <!-- Top Row -->
+              <div class="org-gst-doc-grid">
+
+                <!-- GSTIN -->
+                <div class="form-field pan-field">
+
+                  <label class="form-label" for="org-gst-doc-num">
+                    GSTIN number
+                  </label>
+
+                  <div class="form-input-wrapper">
+
+                    <input class="form-input" id="org-gst-doc-num" type="text" maxlength="15"
+                      placeholder="Enter GSTIN number" />
+
+                  </div>
+
+                </div>
+
+                <!-- Expiry -->
+                <div class="form-field pan-field">
+
+                  <label class="form-label" for="org-gst-doc-expiry">
+                    Document Expiry Date (Optional)
+                  </label>
+
+                  <div class="atlas-calendar-input org-gst-calendar-input">
+
+                    <div class="atlas-calendar-input__field org-gst-calendar-field">
+
+                      <input type="text" id="org-gst-doc-expiry" placeholder="dd/mm/yyyy"
+                        class="atlas-calendar-input__input org-gst-calendar-input-field" />
+
+                      <span class="atlas-calendar-input__icon">
+
+                        <i class="ph ph-calendar-dots"></i>
+
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <!-- Upload -->
+              <div class="atlas-drag-drop-wrapper org-gst-doc-upload-wrapper">
+
+                <label class="atlas-drag-drop-label">
+                  GST Document
+                </label>
+
+                <input type="file" id="org-gst-doc-file" accept=".pdf,.jpg,.jpeg,.png" hidden />
+
+                <div class="atlas-drag-drop" id="org-gst-doc-dropzone">
+
+                  <div class="upload-preview" id="org-gst-doc-preview">
+                    <img id="org-gst-doc-preview-image" alt="Uploaded document" />
+                  </div>
+
+                  <div class="atlas-drag-drop-content" id="org-gst-doc-placeholder">
+
+                    <div class="atlas-drag-drop-icon-container">
+                      <i class="ph ph-upload-simple ph-md"></i>
+                    </div>
+
+                    <div class="atlas-drag-drop-text-container">
+
+                      <div class="atlas-drag-drop-header">
+                        Click or drag to upload
+                      </div>
+
+                      <div class="atlas-drag-drop-support">
+                        PDF, JPG or PNG (Max 10MB)
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="upload-success-row" id="org-gst-doc-success-row" hidden>
+
+                  <span class="upload-success-name" id="org-gst-doc-file-name"></span>
+
+                  <button type="button" class="btn-link" id="org-gst-doc-reupload-btn">
+                    Re-upload
+                  </button>
+
+                </div>
+
+              </div>
+
+              <!-- Security -->
+              <div class="form-field pan-field" style="margin-top: 24px;">
+
+                <label class="form-label" for="org-gst-doc-sec">
+                  What is 5 + 9? (Security question)
+                  <span class="pan-req">*</span>
+                </label>
+
+                <div class="form-input-wrapper">
+
+                  <input class="form-input" id="org-gst-doc-sec" type="tel" maxlength="3" placeholder="Enter answer" />
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- Submit -->
+            <div class="submit-bar-mobile">
+
+              <button type="button" class="btn btn-primary pan-submit" id="org-gst-doc-submit" disabled>
+                Proceed
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
     </section>
 
     <!-- =========================================================================
@@ -1967,7 +2213,7 @@
                   <span class="pan-check__box" aria-hidden="true"></span>
                   <span class="pan-check__label">
                     I accept the CKYC terms and conditions
-                    <span class="pan-readmore__extra" hidden> <br/>
+                    <span class="pan-readmore__extra" hidden> <br />
                       I/We consent to BGIL accessing and updating my/our CKYC records with CERSAI/CKYCR using the CKYC
                       Number (KIN) provided by me/us or by retrieving it based on details shared in this application.
                       I/We also consent to receiving CKYC-related communications from CERSAI via SMS/email on my/our
@@ -2517,12 +2763,12 @@
                     </span>
 
                     <span class="progress-value" id="verify-percent">
-                      50%
+                      0%
                     </span>
                   </div>
 
-                  <div class="progress-track">
-                    <div class="progress-fill" id="verify-progress-fill" style="width:50%"></div>
+                  <div class="progress-track" style="width:100%">
+                    <div class="progress-fill" id="verify-progress-fill"></div>
                   </div>
                 </div>
               </div>
@@ -4114,7 +4360,7 @@
         'initiation', 'send-link', 'send-link-sent',
         'landing', 'aadhaar', 'aadhaar-otp', 'aadhaar-review', 'aadhaar-done',
         'pan', 'pan-otp', 'pan-verifying', 'pan-address-proof',
-        'org-pan', 'org-pan-address',
+        'org-pan', 'org-pan-address', 'org-pan-gst-doc',
         'document-scanning',
         'review-submit', 'pan-done', 'document-upload', 'doc-pan-address-proof', 'document-verifying', 'document-review-submit',
         'face-scan', 'face-scan-verifying', 'face-scan-review', 'face-scan-done'
@@ -4652,7 +4898,7 @@
 
         var timer = setInterval(function () {
 
-          progress += 10;
+          progress += 5;
 
           fill.style.width = progress + '%';
           percent.textContent = progress + '%';
@@ -4699,7 +4945,7 @@
         var progress = 0;
 
         root._progressTimer = setInterval(function () {
-          progress += 10;
+          progress += 5;
 
           fill.style.width = progress + '%';
           percent.textContent = progress + '%';
