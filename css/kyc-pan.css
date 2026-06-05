@@ -75,14 +75,14 @@
         margin: 0;
         font-family: 'Familjen Grotesk', 'Rubik', sans-serif;
         font-weight: 600;
-        font-size: 28px;
-        line-height: 32px;
+        font-size: 32px;
+        line-height: 36px;
         color: var(--color-neutral-800);
     }
 
     .pan-subtitle {
         margin: 0;
-        font: 400 14px/20px 'Rubik', sans-serif;
+        font: 400 16px/24px 'Rubik', sans-serif;
         color: var(--color-neutral-600);
         margin-bottom: 16px;
     }
