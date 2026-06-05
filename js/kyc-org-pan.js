@@ -45,7 +45,7 @@
             '#org-pan-c2'
         );
 
-        
+
 
         var SECURITY_ANSWER = '14';
 
@@ -227,6 +227,10 @@
     };
 
     INITS['org-pan-address'] = function () {
+
+        console.log(
+            'ORG PAN ADDRESS INIT'
+        );
 
         var root = document.getElementById(
             'screen-org-pan-address'
@@ -590,7 +594,7 @@
             '#org-gst-doc-submit'
         );
 
-        
+
 
         var SECURITY_ANSWER = '14';
 

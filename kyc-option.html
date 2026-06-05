@@ -624,7 +624,7 @@
             </div>
 
             <!-- Back -->
-            <a class="pan-back" id="org-pan-back" data-action="open-modal:org-pan-leave-modal">
+            <a class="pan-back" id="org-pan-address-back-btn" data-action="open-modal:org-pan-address-leave-modal">
               <i class="ph ph-arrow-left ph-md-20"></i>
               Back
             </a>
@@ -747,7 +747,7 @@
       </div>
 
       <!-- Leave modal -->
-      <div class="modal-backdrop pan-leave-modal" id="org-pan-leave-modal" role="dialog" aria-modal="true"
+      <div class="modal-backdrop pan-leave-modal" id="org-pan-address-leave-modal" role="dialog" aria-modal="true"
         aria-labelledby="org-pan-leave-title">
 
         <div class="modal modal-confirmation size-md">
@@ -770,7 +770,7 @@
 
           <div class="modal-footer">
 
-            <button type="button" class="btn btn-secondary" data-action="leave-confirm">
+            <button type="button" class="btn btn-secondary" data-action="goto:initiation" data-modal-close>
               Go Back
             </button>
 
@@ -988,6 +988,50 @@
 
               <button type="button" class="btn btn-primary pan-submit" id="org-gst-doc-submit" disabled>
                 Proceed
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Back -->
+        <a class="pan-back" id="org-gst-doc-back" data-action="open-modal:org-gst-doc-leave-modal">
+          <i class="ph ph-arrow-left ph-md-20"></i>
+          Back
+        </a>
+
+        <!-- Leave modal -->
+        <div class="modal-backdrop pan-leave-modal" id="org-gst-doc-leave-modal" role="dialog" aria-modal="true"
+          aria-labelledby="org-gst-doc-leave-title" hidden>
+
+          <div class="modal modal-confirmation size-md">
+
+            <div class="modal-header no-border">
+
+              <div class="modal-header-icon modal-header-icon--warning">
+                <i data-lucide="alert-circle"></i>
+              </div>
+
+              <h2 class="modal-title" id="org-gst-doc-leave-title">
+                Leave this page?
+              </h2>
+
+            </div>
+
+            <div class="modal-body">
+              The details you entered may not be saved.
+            </div>
+
+            <div class="modal-footer">
+
+              <button type="button" class="btn btn-secondary" data-action="goto:org-pan-address" data-modal-close>
+                Go Back
+              </button>
+
+              <button type="button" class="btn btn-primary" data-action="close-modal" data-modal-close>
+                Continue filling KYC
               </button>
 
             </div>
@@ -3006,11 +3050,11 @@
       </div>
     </section>
 
-     <!-- =========================================================================
+    <!-- =========================================================================
      SCREEN: document-upload
      slug: document-upload
      ========================================================================= -->
-     <section class="ekyc-screen" id="screen-document-upload" data-screen="document-upload" hidden>
+    <section class="ekyc-screen" id="screen-document-upload" data-screen="document-upload" hidden>
       <div class="pan-page">
         <div class="document-upload-bg" aria-hidden="true"></div>
 
@@ -3197,7 +3241,8 @@
                 <input type="checkbox" id="document-upload-c1" />
                 <span class="aadhaar-check__box" aria-hidden="true"></span>
                 <span class="aadhaar-check__label">
-                  I/We hereby authorize BGIL to print my/our name on the policy document as received through POI document KYC.
+                  I/We hereby authorize BGIL to print my/our name on the policy document as received through POI
+                  document KYC.
                 </span>
               </label>
 
@@ -3207,7 +3252,8 @@
                 <span class="aadhaar-check__label">
                   I accept the Document upload terms and conditions
                   <span class="aadhaar-readmore__extra" hidden><br />
-                    I/We hereby consent to BGIL verifying the details provided by me/us for the purpose of KYC through independent and/or third-party sources, as may be required.
+                    I/We hereby consent to BGIL verifying the details provided by me/us for the purpose of KYC through
+                    independent and/or third-party sources, as may be required.
                   </span>
                   <a href="#" class="aadhaar-readmore document-readmore-toggle" aria-expanded="false">Read More</a>
                 </span>
@@ -3819,92 +3865,92 @@
        SCREEN: face-scan-verifying (separate section below)
        slug: face-scan-verifying
        ========================================================================= -->
-       <section class="ekyc-screen" id="screen-face-scan" data-screen="face-scan" hidden>
-        <div class="facescan-page" id="facescan-page">
-          <!-- Mobile: full-bleed camera (misaligned screenshot layout) -->
-          <div class="facescan-view facescan-view--mobile">
-            <div class="facescan-camera" id="face-mobile-camera">
-              <div class="facescan-topbar">
-                <a class="facescan-iconbtn" id="face-mobile-close" data-action="back" role="button" tabindex="0"
-                  aria-label="Close">
-                  <i class="ph ph-x ph-md"></i>
-                </a>
-                <button type="button" class="facescan-iconbtn facescan-iconbtn--bordered" id="face-mobile-help"
-                  name="face-mobile-help" aria-label="Help">
-                  <i class="ph ph-question ph-md"></i>
-                </button>
-              </div>
+    <section class="ekyc-screen" id="screen-face-scan" data-screen="face-scan" hidden>
+      <div class="facescan-page" id="facescan-page">
+        <!-- Mobile: full-bleed camera (misaligned screenshot layout) -->
+        <div class="facescan-view facescan-view--mobile">
+          <div class="facescan-camera" id="face-mobile-camera">
+            <div class="facescan-topbar">
+              <a class="facescan-iconbtn" id="face-mobile-close" data-action="back" role="button" tabindex="0"
+                aria-label="Close">
+                <i class="ph ph-x ph-md"></i>
+              </a>
+              <button type="button" class="facescan-iconbtn facescan-iconbtn--bordered" id="face-mobile-help"
+                name="face-mobile-help" aria-label="Help">
+                <i class="ph ph-question ph-md"></i>
+              </button>
+            </div>
 
-              <!-- Pill state: change class on .facescan-pill (see face-scan.css)
+            <!-- Pill state: change class on .facescan-pill (see face-scan.css)
                    (none) = blue — Auto capture is on
                    scanning = amber — while scanning
                    completed = green — scan done -->
-              <span class="facescan-pill">
-                <i class="ph ph-lightning"></i> Auto capture is on
-              </span>
+            <span class="facescan-pill">
+              <i class="ph ph-lightning"></i> Auto capture is on
+            </span>
 
-              <!-- Oval frame state: change class on .facescan-oval (see face-scan.css)
+            <!-- Oval frame state: change class on .facescan-oval (see face-scan.css)
                    (none) = default white ring
                    success-capture = green border (5px)
                    success-error or error-capture = red border (5px, misaligned)
                    Parent #facescan-page.is-misaligned also toggles red/green with error-capture / success-capture -->
-              <div class="facescan-oval success-capture" id="face-mobile-oval">
-                <video class="facescan-oval__feed" id="face-video-mobile" autoplay muted playsinline></video>
-              </div>
-
-              <div class="facescan-bottom">
-                <div class="facescan-guide">
-                  <p class="facescan-title">Face Scan</p>
-                  <p class="facescan-hint" id="face-mobile-hint">
-                    Keep your face centered within frame for a clear scan
-                  </p>
-                </div>
-                <button type="button" class="facescan-flip" id="face-mobile-flip" name="face-mobile-flip"
-                  data-action="face-flip">
-                  <i class="ph ph-camera-rotate ph-md"></i> Flip Camera
-                </button>
-              </div>
+            <div class="facescan-oval success-capture" id="face-mobile-oval">
+              <video class="facescan-oval__feed" id="face-video-mobile" autoplay muted playsinline></video>
             </div>
 
-            <div class="facescan-footer">
-              <div class="toast toast-info" role="status">
-                <span class="toast-icon"><i class="ph ph-info ph-md"></i></span>
-                <div class="toast-body">
-                  <div class="toast-content">
-                    <p class="toast-title">
-                      Look directly at the camera and keep your face within the circle frame
-                    </p>
-                  </div>
-                </div>
+            <div class="facescan-bottom">
+              <div class="facescan-guide">
+                <p class="facescan-title">Face Scan</p>
+                <p class="facescan-hint" id="face-mobile-hint">
+                  Keep your face centered within frame for a clear scan
+                </p>
               </div>
-              <div class="facescan-mobile-bar facescan-mobile-bar--capture">
-                <button type="button" class="btn btn-primary facescan-capture-btn" id="face-capture-mobile"
-                  name="face-capture-mobile" disabled>
-                  Start Face Scan
-                </button>
-                <div class="facescan-scanning" id="face-scanning-mobile" hidden>
-                  <div class="facescan-scanning__head">
-                    <span class="varifying-details__spinner" aria-hidden="true"></span>
-                    <span class="facescan-scanning__title">Scanning</span>
-                  </div>
-                  <div class="facescan-scanning__bar-track">
-                    <div class="facescan-scanning__bar-fill" id="face-scan-progress-mobile"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="facescan-mobile-bar facescan-mobile-bar--misaligned" hidden>
-                <button type="button" class="btn btn-secondary" id="face-mis-retry" name="face-mis-retry"
-                  data-action="face-retry">Retry</button>
-                <button type="button" class="btn btn-primary" id="face-mis-continue" name="face-mis-continue"
-                  data-action="goto:landing">Continue</button>
-              </div>
+              <button type="button" class="facescan-flip" id="face-mobile-flip" name="face-mobile-flip"
+                data-action="face-flip">
+                <i class="ph ph-camera-rotate ph-md"></i> Flip Camera
+              </button>
             </div>
           </div>
 
-          <!-- Desktop: card layout -->
-          <div class="facescan-view facescan-view--desktop">
+          <div class="facescan-footer">
+            <div class="toast toast-info" role="status">
+              <span class="toast-icon"><i class="ph ph-info ph-md"></i></span>
+              <div class="toast-body">
+                <div class="toast-content">
+                  <p class="toast-title">
+                    Look directly at the camera and keep your face within the circle frame
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="facescan-mobile-bar facescan-mobile-bar--capture">
+              <button type="button" class="btn btn-primary facescan-capture-btn" id="face-capture-mobile"
+                name="face-capture-mobile" disabled>
+                Start Face Scan
+              </button>
+              <div class="facescan-scanning" id="face-scanning-mobile" hidden>
+                <div class="facescan-scanning__head">
+                  <span class="varifying-details__spinner" aria-hidden="true"></span>
+                  <span class="facescan-scanning__title">Scanning</span>
+                </div>
+                <div class="facescan-scanning__bar-track">
+                  <div class="facescan-scanning__bar-fill" id="face-scan-progress-mobile"></div>
+                </div>
+              </div>
+            </div>
+            <div class="facescan-mobile-bar facescan-mobile-bar--misaligned" hidden>
+              <button type="button" class="btn btn-secondary" id="face-mis-retry" name="face-mis-retry"
+                data-action="face-retry">Retry</button>
+              <button type="button" class="btn btn-primary" id="face-mis-continue" name="face-mis-continue"
+                data-action="goto:landing">Continue</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop: card layout -->
+        <div class="facescan-view facescan-view--desktop">
           <div class="facescan-bg" aria-hidden="true"></div>
-  
+
           <header class="kyc-header">
             <div class="kyc-header__row">
               <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
@@ -3924,7 +3970,7 @@
               Link expires in 12hr 32mins
             </span>
           </header>
-  
+
           <div class="facescan-body">
             <div class="facescan-card">
               <div class="facescan-head">
@@ -3941,12 +3987,13 @@
                   </div>
                 </div>
               </div>
-  
-  
-              <a class="facescan-back" id="face-back" data-action="open-modal:facescan-leave-modal" role="button" tabindex="0">
+
+
+              <a class="facescan-back" id="face-back" data-action="open-modal:facescan-leave-modal" role="button"
+                tabindex="0">
                 <i class="ph ph-arrow-left ph-md-20"></i> Back
               </a>
-  
+
               <div class="facescan-camera-wrap" id="face-camera">
                 <div class="facescan-camtopbar">
                   <span class="facescan-cam-pill">
@@ -3984,7 +4031,7 @@
                   Make sure you're in well-lit area with plain background
                 </p>
               </div>
-  
+
               <div class="facescan-submit-bar submit-bar-mobile">
                 <button type="button" class="btn btn-primary facescan-capture-btn" id="face-capture" name="face-capture"
                   disabled>
@@ -3992,12 +4039,28 @@
                 </button>
                 <div class="facescan-scanning" id="face-scanning" hidden>
                   <div class="facescan-scanning__head">
-                    <span class="varifying-details__spinner" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <g clip-path="url(#paint0_angular_1997_26124_clip_path)" data-figma-skip-parse="true"><g transform="matrix(0.008 0 0 0.008 8 8)"><foreignObject x="-1083.33" y="-1083.33" width="2166.67" height="2166.67"><div xmlns="http://www.w3.org/1999/xhtml" style="background:conic-gradient(from 90deg,rgba(255, 255, 255, 0.06) 0deg,rgba(51, 65, 85, 1) 360deg);height:100%;width:100%;opacity:1"></div></foreignObject></g></g><path d="M8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0ZM8 1.33301C4.3181 1.33301 1.33301 4.3181 1.33301 8C1.33301 11.6819 4.3181 14.667 8 14.667C11.6819 14.667 14.667 11.6819 14.667 8C14.667 4.3181 11.6819 1.33301 8 1.33301Z" data-figma-gradient-fill="{&#34;type&#34;:&#34;GRADIENT_ANGULAR&#34;,&#34;stops&#34;:[{&#34;color&#34;:{&#34;r&#34;:1.0,&#34;g&#34;:1.0,&#34;b&#34;:1.0,&#34;a&#34;:0.059999998658895493},&#34;position&#34;:0.0},{&#34;color&#34;:{&#34;r&#34;:0.20000000298023224,&#34;g&#34;:0.25490197539329529,&#34;b&#34;:0.33333334326744080,&#34;a&#34;:1.0},&#34;position&#34;:1.0}],&#34;stopsVar&#34;:[{&#34;color&#34;:{&#34;r&#34;:1.0,&#34;g&#34;:1.0,&#34;b&#34;:1.0,&#34;a&#34;:0.059999998658895493},&#34;position&#34;:0.0},{&#34;color&#34;:{&#34;r&#34;:0.20000000298023224,&#34;g&#34;:0.25490197539329529,&#34;b&#34;:0.33333334326744080,&#34;a&#34;:1.0},&#34;position&#34;:1.0}],&#34;transform&#34;:{&#34;m00&#34;:16.0,&#34;m01&#34;:1.5190571985511901e-14,&#34;m02&#34;:-1.4210854715202004e-14,&#34;m10&#34;:-8.0851446279108993e-15,&#34;m11&#34;:16.0,&#34;m12&#34;:-3.5527136788005009e-15},&#34;opacity&#34;:1.0,&#34;blendMode&#34;:&#34;NORMAL&#34;,&#34;visible&#34;:true}"/>
-                      <defs>
-                      <clipPath id="paint0_angular_1997_26124_clip_path"><path d="M8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0ZM8 1.33301C4.3181 1.33301 1.33301 4.3181 1.33301 8C1.33301 11.6819 4.3181 14.667 8 14.667C11.6819 14.667 14.667 11.6819 14.667 8C14.667 4.3181 11.6819 1.33301 8 1.33301Z"/></clipPath></defs>
+                    <span class="varifying-details__spinner" aria-hidden="true"><svg width="16" height="16"
+                        viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#paint0_angular_1997_26124_clip_path)" data-figma-skip-parse="true">
+                          <g transform="matrix(0.008 0 0 0.008 8 8)">
+                            <foreignObject x="-1083.33" y="-1083.33" width="2166.67" height="2166.67">
+                              <div xmlns="http://www.w3.org/1999/xhtml"
+                                style="background:conic-gradient(from 90deg,rgba(255, 255, 255, 0.06) 0deg,rgba(51, 65, 85, 1) 360deg);height:100%;width:100%;opacity:1">
+                              </div>
+                            </foreignObject>
+                          </g>
+                        </g>
+                        <path
+                          d="M8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0ZM8 1.33301C4.3181 1.33301 1.33301 4.3181 1.33301 8C1.33301 11.6819 4.3181 14.667 8 14.667C11.6819 14.667 14.667 11.6819 14.667 8C14.667 4.3181 11.6819 1.33301 8 1.33301Z"
+                          data-figma-gradient-fill="{&#34;type&#34;:&#34;GRADIENT_ANGULAR&#34;,&#34;stops&#34;:[{&#34;color&#34;:{&#34;r&#34;:1.0,&#34;g&#34;:1.0,&#34;b&#34;:1.0,&#34;a&#34;:0.059999998658895493},&#34;position&#34;:0.0},{&#34;color&#34;:{&#34;r&#34;:0.20000000298023224,&#34;g&#34;:0.25490197539329529,&#34;b&#34;:0.33333334326744080,&#34;a&#34;:1.0},&#34;position&#34;:1.0}],&#34;stopsVar&#34;:[{&#34;color&#34;:{&#34;r&#34;:1.0,&#34;g&#34;:1.0,&#34;b&#34;:1.0,&#34;a&#34;:0.059999998658895493},&#34;position&#34;:0.0},{&#34;color&#34;:{&#34;r&#34;:0.20000000298023224,&#34;g&#34;:0.25490197539329529,&#34;b&#34;:0.33333334326744080,&#34;a&#34;:1.0},&#34;position&#34;:1.0}],&#34;transform&#34;:{&#34;m00&#34;:16.0,&#34;m01&#34;:1.5190571985511901e-14,&#34;m02&#34;:-1.4210854715202004e-14,&#34;m10&#34;:-8.0851446279108993e-15,&#34;m11&#34;:16.0,&#34;m12&#34;:-3.5527136788005009e-15},&#34;opacity&#34;:1.0,&#34;blendMode&#34;:&#34;NORMAL&#34;,&#34;visible&#34;:true}" />
+                        <defs>
+                          <clipPath id="paint0_angular_1997_26124_clip_path">
+                            <path
+                              d="M8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0ZM8 1.33301C4.3181 1.33301 1.33301 4.3181 1.33301 8C1.33301 11.6819 4.3181 14.667 8 14.667C11.6819 14.667 14.667 11.6819 14.667 8C14.667 4.3181 11.6819 1.33301 8 1.33301Z" />
+                          </clipPath>
+                        </defs>
                       </svg>
-                      </span>
+                    </span>
                     <span class="facescan-scanning__title">Scanning</span>
                   </div>
                   <div class="facescan-scanning__bar-track">
@@ -4007,30 +4070,30 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div class="modal-backdrop" id="facescan-leave-modal" role="dialog" aria-modal="true"
+        aria-labelledby="facescan-leave-title">
+        <div class="modal modal-confirmation size-md">
+          <div class="modal-header no-border">
+            <div class="modal-header-icon modal-header-icon--warning">
+              <i data-lucide="alert-circle"></i>
+            </div>
+            <h2 class="modal-title" id="facescan-leave-title">Leave this page?</h2>
+          </div>
+          <div class="modal-body">
+            The details you entered may not be saved if you leave this page.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-action="leave-goto:landing" data-modal-close>Go
+              Back</button>
+            <button type="button" class="btn btn-primary" data-action="close-modal" data-modal-close>Continue filling
+              KYC</button>
           </div>
         </div>
-  
-        <div class="modal-backdrop" id="facescan-leave-modal" role="dialog" aria-modal="true"
-          aria-labelledby="facescan-leave-title">
-          <div class="modal modal-confirmation size-md">
-            <div class="modal-header no-border">
-              <div class="modal-header-icon modal-header-icon--warning">
-                <i data-lucide="alert-circle"></i>
-              </div>
-              <h2 class="modal-title" id="facescan-leave-title">Leave this page?</h2>
-            </div>
-            <div class="modal-body">
-              The details you entered may not be saved if you leave this page.
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary"
-                data-action="leave-goto:landing" data-modal-close>Go Back</button>
-              <button type="button" class="btn btn-primary"
-                data-action="close-modal" data-modal-close>Continue filling KYC</button>
-            </div>
-          </div>
-        </div>
-      </section>
+      </div>
+    </section>
 
     <!-- =========================================================================
        SCREEN: face-scan-verifying
@@ -4098,7 +4161,8 @@
             </div>
           </div>
           <p class="facescan-verifying-body-info">
-            Please keep your browser window open. This process usually takes less than 30 seconds to securely extract and verify your information.
+            Please keep your browser window open. This process usually takes less than 30 seconds to securely extract
+            and verify your information.
           </p>
         </div>
       </div>
