@@ -58,10 +58,12 @@
                 -> (back)                -> landing
     aadhaar-otp -> (Verify OTP)          -> face-scan
                 -> (back)                -> aadhaar
-    face-scan   -> (Capture)             -> face-scan-misaligned (first time)
-                                         -> success (subsequent)
-    face-scan-misaligned -> (Retry)      -> face-scan
-                         -> (Continue)   -> success
+    face-scan   -> (Capture)             -> face-scan-verifying
+    face-scan-verifying -> (progress done) -> face-scan-review
+    face-scan-review    -> (Confirm & Submit) -> face-scan-done
+    face-scan-done      -> (Back to Module)   -> initiation
+    face-scan (mobile)  -> camera on -> 2s -> face-scan-verifying (no Start button)
+                        -> Retry (misaligned) -> 2s -> face-scan-verifying
     success     -> (Done)                -> initiation
 
   ALL FORM INPUTS EXPOSED FOR BACKEND BINDING
@@ -95,8 +97,9 @@
     data-action="submit:send-link"   — handled by form-send-link
     data-action="submit:aadhaar"     — handled by form-aadhaar (-> aadhaar-otp)
     data-action="submit:aadhaar-otp" — handled by form-aadhaar-otp (-> face-scan)
-    data-action="face-capture"       — face-scan capture button
-    data-action="face-retry"         — face-scan-misaligned retry
+    data-action="face-capture"       — face-scan capture (js/kyc-face-scan.js)
+    data-action="face-retry"         — face-scan mobile retry (js/kyc-face-scan.js)
+    data-action="face-flip"          — face-scan flip camera (js/kyc-face-scan.js)
     data-action="open-modal:<id>"    — open a modal
     data-action="close-modal"        — close any modal
 
@@ -3558,11 +3561,94 @@
        Purpose: Camera live view — face capture within the KYC card flow.
        Controls:
          id=face-back     data-action="back"
-         id=face-flip     data-action="face-flip"
-         id=face-capture  data-action="face-capture"  -> face-scan-misaligned / success
+         id=face-capture  -> scan progress -> face-scan-verifying
+       SCREEN: face-scan-verifying (separate section below)
+       slug: face-scan-verifying
        ========================================================================= -->
        <section class="ekyc-screen" id="screen-face-scan" data-screen="face-scan" hidden>
-        <div class="facescan-page">
+        <div class="facescan-page" id="facescan-page">
+          <!-- Mobile: full-bleed camera (misaligned screenshot layout) -->
+          <div class="facescan-view facescan-view--mobile">
+            <div class="facescan-camera" id="face-mobile-camera">
+              <div class="facescan-topbar">
+                <a class="facescan-iconbtn" id="face-mobile-close" data-action="back" role="button" tabindex="0"
+                  aria-label="Close">
+                  <i class="ph ph-x ph-md"></i>
+                </a>
+                <button type="button" class="facescan-iconbtn facescan-iconbtn--bordered" id="face-mobile-help"
+                  name="face-mobile-help" aria-label="Help">
+                  <i class="ph ph-question ph-md"></i>
+                </button>
+              </div>
+
+              <!-- Pill state: change class on .facescan-pill (see face-scan.css)
+                   (none) = blue — Auto capture is on
+                   scanning = amber — while scanning
+                   completed = green — scan done -->
+              <span class="facescan-pill">
+                <i class="ph ph-lightning"></i> Auto capture is on
+              </span>
+
+              <!-- Oval frame state: change class on .facescan-oval (see face-scan.css)
+                   (none) = default white ring
+                   success-capture = green border (5px)
+                   success-error or error-capture = red border (5px, misaligned)
+                   Parent #facescan-page.is-misaligned also toggles red/green with error-capture / success-capture -->
+              <div class="facescan-oval success-capture" id="face-mobile-oval">
+                <video class="facescan-oval__feed" id="face-video-mobile" autoplay muted playsinline></video>
+              </div>
+
+              <div class="facescan-bottom">
+                <div class="facescan-guide">
+                  <p class="facescan-title">Face Scan</p>
+                  <p class="facescan-hint" id="face-mobile-hint">
+                    Keep your face centered within frame for a clear scan
+                  </p>
+                </div>
+                <button type="button" class="facescan-flip" id="face-mobile-flip" name="face-mobile-flip"
+                  data-action="face-flip">
+                  <i class="ph ph-camera-rotate ph-md"></i> Flip Camera
+                </button>
+              </div>
+            </div>
+
+            <div class="facescan-footer">
+              <div class="toast toast-info" role="status">
+                <span class="toast-icon"><i class="ph ph-info ph-md"></i></span>
+                <div class="toast-body">
+                  <div class="toast-content">
+                    <p class="toast-title">
+                      Look directly at the camera and keep your face within the circle frame
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="facescan-mobile-bar facescan-mobile-bar--capture">
+                <button type="button" class="btn btn-primary facescan-capture-btn" id="face-capture-mobile"
+                  name="face-capture-mobile" disabled>
+                  Start Face Scan
+                </button>
+                <div class="facescan-scanning" id="face-scanning-mobile" hidden>
+                  <div class="facescan-scanning__head">
+                    <span class="varifying-details__spinner" aria-hidden="true"></span>
+                    <span class="facescan-scanning__title">Scanning</span>
+                  </div>
+                  <div class="facescan-scanning__bar-track">
+                    <div class="facescan-scanning__bar-fill" id="face-scan-progress-mobile"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="facescan-mobile-bar facescan-mobile-bar--misaligned" hidden>
+                <button type="button" class="btn btn-secondary" id="face-mis-retry" name="face-mis-retry"
+                  data-action="face-retry">Retry</button>
+                <button type="button" class="btn btn-primary" id="face-mis-continue" name="face-mis-continue"
+                  data-action="goto:landing">Continue</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop: card layout -->
+          <div class="facescan-view facescan-view--desktop">
           <div class="facescan-bg" aria-hidden="true"></div>
   
           <header class="kyc-header">
@@ -3613,23 +3699,60 @@
                     <i class="ph ph-lightning ph-sm"></i> Auto capture is off
                   </span>
                 </div>
-  
-                <div class="facescan-frame" aria-hidden="true">
-                  <img class="facescan-frame__feed" src="assets/img/face-sample.png" alt="" />
+
+                <!-- No camera error state (shown first) -->
+                <div class="facescan-no-camera" id="face-no-camera">
+                  <div class="facescan-no-camera__icon">
+                    <i class="ph ph-x-circle"></i>
+                  </div>
+                  <p class="facescan-no-camera__title">No camera detected</p>
+                  <p class="facescan-no-camera__desc">
+                    We could not find a camera connected to your device. Connect a camera
+                    or continue with another verification method.
+                  </p>
+                  <div class="facescan-no-camera__actions">
+                    <button type="button" class="btn btn-secondary" id="face-choose-other"
+                      data-action="leave-goto:landing">Choose another KYC method</button>
+                    <button type="button" class="btn btn-primary" id="face-try-again">Try Again</button>
+                  </div>
                 </div>
-  
-                <p class="facescan-hint" id="face-hint">
+
+                <!-- Desktop frame state: change class on .facescan-frame (see face-scan.css)
+                     (none) = default white border
+                     success-capture = green border (5px)
+                     success-error = red border (5px, misaligned)
+                     is-scanning (JS) = green while scan progress runs -->
+                <div class="facescan-frame success-capture" aria-hidden="true" id="face-frame" hidden>
+                  <video class="facescan-frame__feed" id="face-video" autoplay muted playsinline></video>
+                </div>
+
+                <p class="facescan-hint" id="face-hint" hidden>
                   Make sure you're in well-lit area with plain background
                 </p>
               </div>
   
               <div class="facescan-submit-bar submit-bar-mobile">
                 <button type="button" class="btn btn-primary facescan-capture-btn" id="face-capture" name="face-capture"
-                  data-action="face-capture" disabled>
+                  disabled>
                   Start Face Scan
                 </button>
+                <div class="facescan-scanning" id="face-scanning" hidden>
+                  <div class="facescan-scanning__head">
+                    <span class="varifying-details__spinner" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <g clip-path="url(#paint0_angular_1997_26124_clip_path)" data-figma-skip-parse="true"><g transform="matrix(0.008 0 0 0.008 8 8)"><foreignObject x="-1083.33" y="-1083.33" width="2166.67" height="2166.67"><div xmlns="http://www.w3.org/1999/xhtml" style="background:conic-gradient(from 90deg,rgba(255, 255, 255, 0.06) 0deg,rgba(51, 65, 85, 1) 360deg);height:100%;width:100%;opacity:1"></div></foreignObject></g></g><path d="M8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0ZM8 1.33301C4.3181 1.33301 1.33301 4.3181 1.33301 8C1.33301 11.6819 4.3181 14.667 8 14.667C11.6819 14.667 14.667 11.6819 14.667 8C14.667 4.3181 11.6819 1.33301 8 1.33301Z" data-figma-gradient-fill="{&#34;type&#34;:&#34;GRADIENT_ANGULAR&#34;,&#34;stops&#34;:[{&#34;color&#34;:{&#34;r&#34;:1.0,&#34;g&#34;:1.0,&#34;b&#34;:1.0,&#34;a&#34;:0.059999998658895493},&#34;position&#34;:0.0},{&#34;color&#34;:{&#34;r&#34;:0.20000000298023224,&#34;g&#34;:0.25490197539329529,&#34;b&#34;:0.33333334326744080,&#34;a&#34;:1.0},&#34;position&#34;:1.0}],&#34;stopsVar&#34;:[{&#34;color&#34;:{&#34;r&#34;:1.0,&#34;g&#34;:1.0,&#34;b&#34;:1.0,&#34;a&#34;:0.059999998658895493},&#34;position&#34;:0.0},{&#34;color&#34;:{&#34;r&#34;:0.20000000298023224,&#34;g&#34;:0.25490197539329529,&#34;b&#34;:0.33333334326744080,&#34;a&#34;:1.0},&#34;position&#34;:1.0}],&#34;transform&#34;:{&#34;m00&#34;:16.0,&#34;m01&#34;:1.5190571985511901e-14,&#34;m02&#34;:-1.4210854715202004e-14,&#34;m10&#34;:-8.0851446279108993e-15,&#34;m11&#34;:16.0,&#34;m12&#34;:-3.5527136788005009e-15},&#34;opacity&#34;:1.0,&#34;blendMode&#34;:&#34;NORMAL&#34;,&#34;visible&#34;:true}"/>
+                      <defs>
+                      <clipPath id="paint0_angular_1997_26124_clip_path"><path d="M8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0ZM8 1.33301C4.3181 1.33301 1.33301 4.3181 1.33301 8C1.33301 11.6819 4.3181 14.667 8 14.667C11.6819 14.667 14.667 11.6819 14.667 8C14.667 4.3181 11.6819 1.33301 8 1.33301Z"/></clipPath></defs>
+                      </svg>
+                      </span>
+                    <span class="facescan-scanning__title">Scanning</span>
+                  </div>
+                  <div class="facescan-scanning__bar-track">
+                    <div class="facescan-scanning__bar-fill" id="face-scan-progress"></div>
+                  </div>
+                </div>
               </div>
             </div>
+          </div>
           </div>
         </div>
   
@@ -3656,90 +3779,312 @@
       </section>
 
     <!-- =========================================================================
-       SCREEN: face-scan-misaligned
-       slug: face-scan-misaligned
-       Buttons:
-         retry    -> data-action="goto:face-scan"
-         continue -> data-action="goto:success"
+       SCREEN: face-scan-verifying
+       slug: face-scan-verifying
+       Purpose: Post-capture UIDAI-style progress while face biometrics are verified.
        ========================================================================= -->
-    <section class="ekyc-screen" id="screen-face-scan-misaligned" data-screen="face-scan-misaligned" hidden>
-      <div class="facescan-page" data-facescan-state="misaligned">
-        <div class="facescan-camera facescan-camera--error" id="face-mis-camera">
-          <div class="facescan-topbar">
-            <a class="facescan-iconbtn" id="face-mis-close" data-action="back" role="button" tabindex="0"
-              aria-label="Close">
-              <i data-lucide="x"></i>
-            </a>
-            <button type="button" class="facescan-iconbtn facescan-iconbtn--bordered" id="face-mis-help"
-              name="face-mis-help" aria-label="Help">
-              <i data-lucide="help-circle"></i>
-            </button>
-          </div>
+    <section class="ekyc-screen" id="screen-face-scan-verifying" data-screen="face-scan-verifying" hidden>
+      <div class="facescan-page">
+        <div class="facescan-bg" aria-hidden="true"></div>
 
-          <span class="facescan-pill">
-            <i data-lucide="zap"></i> Auto capture is on
-          </span>
-
-          <div class="facescan-oval" aria-hidden="true">
-            <img class="facescan-oval__feed" src="assets/img/face-sample.png" alt="" />
-          </div>
-
-          <div class="facescan-bottom">
-            <div class="facescan-guide">
-              <p class="facescan-title">Face Scan</p>
-              <p class="facescan-hint" id="face-mis-hint">
-                Keep your face centered within frame for a clear scan
-              </p>
-            </div>
-            <button type="button" class="facescan-flip" id="face-mis-flip" name="face-mis-flip" data-action="face-flip">
-              <i data-lucide="switch-camera"></i> Flip Camera
-            </button>
-          </div>
-        </div>
-
-        <div class="facescan-footer">
-          <div class="toast toast-info" role="status">
-            <span class="toast-icon"><i data-lucide="info"></i></span>
-            <div class="toast-body">
-              <div class="toast-content">
-                <p class="toast-title">
-                  Look directly at the camera and keep your face within the circle frame
-                </p>
+        <header class="kyc-header">
+          <div class="kyc-header__row">
+            <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+            <div class="kyc-header__agent">
+              <div class="kyc-agent-info">
+                <span class="kyc-agent-name">Rajesh Chaurasia</span>
+                <span class="kyc-agent-id">BA786314</span>
+              </div>
+              <div class="kyc-avatar">
+                <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
+                <span class="kyc-avatar__dot" aria-hidden="true"></span>
               </div>
             </div>
           </div>
-          <div style="display:flex;gap:8px;margin-top:12px;">
-            <button type="button" class="btn btn-secondary" id="face-mis-retry" name="face-mis-retry"
-              data-action="face-retry" style="flex:1;">
-              Retry
-            </button>
-            <button type="button" class="btn btn-primary" id="face-mis-continue" name="face-mis-continue"
-              data-action="goto:success" style="flex:1;">
-              Continue
-            </button>
+          <span class="badge badge-sm badge-light badge-red">
+            <i class="ph ph-warning-circle ph-sm"></i>
+            Link expires in 12hr 32mins
+          </span>
+        </header>
+
+        <div class="facescan-body facescan-verifying-body">
+          <div class="facescan-card facescan-verifying-card">
+            <div class="facescan-verifying__header">
+              <span class="facescan-verifying__spinner" aria-hidden="true"><svg width="16" height="16"
+                  viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#paint0_angular_face_verify_clip_path)" data-figma-skip-parse="true">
+                    <g transform="matrix(0.008 0 0 0.008 8 8)">
+                      <foreignObject x="-1083.33" y="-1083.33" width="2166.67" height="2166.67">
+                        <div xmlns="http://www.w3.org/1999/xhtml"
+                          style="background:conic-gradient(from 90deg,rgba(255,255,255,0.06) 0deg,rgba(51,65,85,1) 360deg);height:100%;width:100%;opacity:1">
+                        </div>
+                      </foreignObject>
+                    </g>
+                  </g>
+                  <path
+                    d="M8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0ZM8 1.33301C4.3181 1.33301 1.33301 4.3181 1.33301 8C1.33301 11.6819 4.3181 14.667 8 14.667C11.6819 14.667 14.667 11.6819 14.667 8C14.667 4.3181 11.6819 1.33301 8 1.33301Z"
+                    fill="url(#spinner-gradient)" />
+                  <defs>
+                    <clipPath id="paint0_angular_face_verify_clip_path">
+                      <path
+                        d="M8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0ZM8 1.33301C4.3181 1.33301 1.33301 4.3181 1.33301 8C1.33301 11.6819 4.3181 14.667 8 14.667C11.6819 14.667 14.667 11.6819 14.667 8C14.667 4.3181 11.6819 1.33301 8 1.33301Z" />
+                    </clipPath>
+                  </defs>
+                </svg></span>
+              <p class="facescan-verifying__title">Verifying your details</p>
+            </div>
+            <div class="facescan-verifying__progress-wrap">
+              <div class="facescan-verifying__progress-row">
+                <span class="facescan-verifying__label">Processing data...</span>
+                <span class="facescan-verifying__pct" id="face-verify-progress-pct">0%</span>
+              </div>
+              <div class="facescan-verifying__bar-track">
+                <div class="facescan-verifying__bar-fill" id="face-verify-progress-bar"></div>
+              </div>
+            </div>
           </div>
+          <p class="facescan-verifying-body-info">
+            Please keep your browser window open. This process usually takes less than 30 seconds to securely extract and verify your information.
+          </p>
         </div>
       </div>
     </section>
 
     <!-- =========================================================================
-       SCREEN: success
-       slug: success
-       Final "KYC Complete" cap. Done button restarts the journey.
+       SCREEN: face-scan-review
+       slug: face-scan-review
+       Purpose: Review masked data and accept final consents before submit.
+       Inputs:
+         name="face-review-consent-1"  (checkbox, id face-review-c1)
+         name="face-review-consent-2"  (checkbox, id face-review-c2)
+         name="face-review-consent-3"  (checkbox, id face-review-c3)
+       Primary: id=face-review-submit data-action="submit:face-scan-review" -> face-scan-done
        ========================================================================= -->
-    <section class="ekyc-screen" id="screen-success" data-screen="success" hidden>
-      <div class="success-page">
-        <div class="success-tick" aria-hidden="true">
-          <i data-lucide="check"></i>
+    <section class="ekyc-screen" id="screen-face-scan-review" data-screen="face-scan-review" hidden>
+      <div class="facescan-page facescan-page--review">
+        <div class="facescan-bg" aria-hidden="true"></div>
+        <header class="kyc-header">
+          <div class="kyc-header__row">
+            <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+            <div class="kyc-header__agent">
+              <div class="kyc-agent-info">
+                <span class="kyc-agent-name">Rajesh Chaurasia</span>
+                <span class="kyc-agent-id">BA786314</span>
+              </div>
+              <div class="kyc-avatar">
+                <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
+                <span class="kyc-avatar__dot" aria-hidden="true"></span>
+              </div>
+            </div>
+          </div>
+          <span class="badge badge-sm badge-light badge-red">
+            <i class="ph ph-warning-circle ph-sm"></i>
+            Link expires in 12hr 32mins
+          </span>
+        </header>
+
+        <div class="facescan-body facescan-review-body">
+          <form class="facescan-card facescan-review-card" id="form-face-review" novalidate>
+            <div class="facescan-head">
+              <img class="facescan-logo" src="assets/img/ScanSmiley.svg" alt="" aria-hidden="true" />
+              <h1 class="facescan-title">KYC via Face Scan</h1>
+            </div>
+
+            <div class="facescan-details">
+              <h2 class="facescan-review-title">Review &amp; Submit</h2>
+
+              <div class="toast toast-info facescan-review-info-toast" role="note">
+                <span class="toast-icon"><i class="ph ph-info ph-md"></i></span>
+                <div class="toast-body">
+                  <div class="toast-content">
+                    <p class="toast-description">Your data is secured. Sensitive fields are partially masked below.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="facescan-review-section">
+                <div class="facescan-review-section__bar">Personal Details</div>
+                <div class="facescan-review-grid">
+                  <div class="facescan-review-field">
+                    <span class="facescan-review-field__label">Name</span>
+                    <span class="facescan-review-field__value">Ashok Kumar</span>
+                  </div>
+                  <div class="facescan-review-field">
+                    <span class="facescan-review-field__label">Mobile Number</span>
+                    <span class="facescan-review-field__value">98XXXXX768</span>
+                  </div>
+                  <div class="facescan-review-field">
+                    <span class="facescan-review-field__label">DOB</span>
+                    <span class="facescan-review-field__value">XX-XX-1979</span>
+                  </div>
+                  <div class="facescan-review-field">
+                    <span class="facescan-review-field__label">Gender</span>
+                    <span class="facescan-review-field__value">MALE</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="facescan-review-section">
+                <div class="facescan-review-section__bar">Address Details</div>
+                <div class="facescan-review-grid">
+                  <div class="facescan-review-field">
+                    <span class="facescan-review-field__label">Permanent Address</span>
+                    <span class="facescan-review-field__value">5-9/12, XXXX</span>
+                  </div>
+                  <div class="facescan-review-field">
+                    <span class="facescan-review-field__label">City/District</span>
+                    <span class="facescan-review-field__value">Gurugram</span>
+                  </div>
+                  <div class="facescan-review-field">
+                    <span class="facescan-review-field__label">State</span>
+                    <span class="facescan-review-field__value">Haryana</span>
+                  </div>
+                  <div class="facescan-review-field">
+                    <span class="facescan-review-field__label">Pincode</span>
+                    <span class="facescan-review-field__value">XXXX004</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="facescan-review-section">
+                <div class="facescan-review-section__bar">Verification Documents</div>
+                <div class="facescan-review-grid">
+                  <div class="facescan-review-field">
+                    <span class="facescan-review-field__label">Proof of Identity</span>
+                    <span class="facescan-review-field__value">Aadhaar Card<br />(9898 XXXX XXXX)</span>
+                  </div>
+                  <div class="facescan-review-field">
+                    <span class="facescan-review-field__label">Proof of Address</span>
+                    <span class="facescan-review-field__value">Aadhaar Card</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="facescan-review-consent-wrap">
+              <h3 class="facescan-review-consent__title">Please confirm the following to proceed</h3>
+              <label class="facescan-check">
+                <input type="checkbox" id="face-review-c1" name="face-review-consent-1" />
+                <span class="facescan-check__box" aria-hidden="true"></span>
+                <span class="facescan-check__label">I/We hereby consent to BGIL verifying the details provided by me/us
+                  for the purpose of KYC through independent and/or third-party sources, as may be required.</span>
+              </label>
+              <label class="facescan-check">
+                <input type="checkbox" id="face-review-c2" name="face-review-consent-2" />
+                <span class="facescan-check__box" aria-hidden="true"></span>
+                <span class="facescan-check__label">In case of change in KYC documents/status of any of the Applicant,
+                  the Applicant shall immediately inform BGIL regarding the said change and submit the revised KYC
+                  documents/ updated status to BGIL within 30 days of such change, failing which BGIL shall not be held
+                  responsible for any consequences, actions, claims, loss due to the said change in KYC.</span>
+              </label>
+              <label class="facescan-check">
+                <input type="checkbox" id="face-review-c3" name="face-review-consent-3" />
+                <span class="facescan-check__box" aria-hidden="true"></span>
+                <span class="facescan-check__label">I/We consent to BGIL updating/downloading my/our CKYC records with
+                  CERSAI/CKYCR using the CKYC Number (KIN) provided by me/us or shared data. I/We also consent to
+                  receiving CKYC-related communications from CERSAI via SMS/email on my/our registered contact
+                  details.</span>
+              </label>
+            </div>
+
+            <div class="submit-bar-mobile">
+              <button type="button" class="btn btn-primary facescan-submit" id="face-review-submit"
+                name="face-review-submit" data-action="submit:face-scan-review" disabled>
+                Confirm &amp; Submit
+              </button>
+            </div>
+          </form>
         </div>
-        <h1 class="success-title">KYC Complete</h1>
-        <p class="success-sub">
-          Thank you! The customer's KYC has been successfully verified. You can now proceed with the next step.
-        </p>
-        <button type="button" class="btn btn-primary" id="success-done" name="success-done"
-          data-action="goto:initiation">
-          Done
-        </button>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+       SCREEN: face-scan-done
+       slug: face-scan-done
+       Purpose: KYC completion confirmation with BGIL KYC ID and verification summary.
+       Controls:
+         id=fdone-copy  data-action="copy-kyc-id"  — copy KYC ID to clipboard
+         id=fdone-back  data-action="goto:initiation" — restart journey
+       ========================================================================= -->
+    <section class="ekyc-screen" id="screen-face-scan-done" data-screen="face-scan-done" hidden>
+      <div class="facescan-page facescan-page--done">
+        <div class="facescan-bg" aria-hidden="true"></div>
+        <header class="kyc-header">
+          <div class="kyc-header__row">
+            <img class="kyc-logo" src="assets/img/bajaj-logo.png" alt="Bajaj General Insurance" />
+            <div class="kyc-header__agent">
+              <div class="kyc-agent-info">
+                <span class="kyc-agent-name">Rajesh Chaurasia</span>
+                <span class="kyc-agent-id">BA786314</span>
+              </div>
+              <div class="kyc-avatar">
+                <img src="assets/img/agent-avatar.jpg" alt="Support agent" />
+                <span class="kyc-avatar__dot" aria-hidden="true"></span>
+              </div>
+            </div>
+          </div>
+          <span class="badge badge-sm badge-light badge-red">
+            <i class="ph ph-warning-circle ph-sm"></i>
+            Link expires in 12hr 32mins
+          </span>
+        </header>
+
+        <div class="facescan-body facescan-done-body">
+          <div class="facescan-card facescan-done-content">
+            <div class="facescan-done-content-wrap">
+              <img class="facescan-done-illustration" src="assets/img/congo-avtar.png" alt="" aria-hidden="true" />
+              <h1 class="facescan-done-title">Congratulations! Your KYC is done.</h1>
+              <p class="facescan-done-subtitle">
+                You're all set to continue with your transaction. Here's a summary of your verification status:
+              </p>
+            </div>
+            <div class="facescan-done-card-wrap">
+              <div class="facescan-done-card">
+                <div class="facescan-done-id-wrap">
+                  <span class="facescan-done-id-label">Your BGIL KYC ID</span>
+                  <div class="facescan-done-id-row">
+                    <span class="facescan-done-id-value">BGIL-KYC-MNPTT1N6</span>
+                    <button type="button" class="facescan-done-copy-btn" id="fdone-copy" name="fdone-copy"
+                      data-action="copy-kyc-id" aria-label="Copy KYC ID">
+                      <i class="ph ph-copy ph-md-20"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="facescan-done-rows">
+                  <div class="facescan-done-row">
+                    <span class="facescan-done-row__label">eKYC</span>
+                    <span class="facescan-done-row__method">Face Scan</span>
+                    <span class="facescan-done-row__status">
+                      <i class="ph ph-check-circle ph-sm"></i> Success
+                    </span>
+                  </div>
+                  <div class="facescan-done-row">
+                    <span class="facescan-done-row__label">Proof of Identity</span>
+                    <span class="facescan-done-row__method">Face Scan</span>
+                    <span class="facescan-done-row__status">
+                      <i class="ph ph-check-circle ph-sm"></i> Success
+                    </span>
+                  </div>
+                  <div class="facescan-done-row">
+                    <span class="facescan-done-row__label">Proof of Address</span>
+                    <span class="facescan-done-row__method">Aadhaar Card</span>
+                    <span class="facescan-done-row__status">
+                      <i class="ph ph-check-circle ph-sm"></i> Success
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="submit-bar-mobile back-to-module">
+              <button type="button" class="btn btn-primary facescan-done-btn" id="fdone-back" name="fdone-back"
+                data-action="goto:initiation">
+                Back to Module
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -3753,6 +4098,7 @@
   <script src="js/kyc-pan.js"></script>
   <script src="js/kyc-document-upload.js"></script>
   <script src="js/kyc-org-pan.js"></script>
+  <script src="js/kyc-face-scan.js"></script>
 
   <!-- ===== Inline SPA router + per-screen logic =================================
      The router maintains a screen stack, exposes window.ekyc, and dispatches
@@ -3771,14 +4117,12 @@
         'org-pan', 'org-pan-address',
         'document-scanning',
         'review-submit', 'pan-done', 'document-upload', 'doc-pan-address-proof', 'document-verifying', 'document-review-submit',
-        'face-scan', 'face-scan-misaligned', 'success'
+        'face-scan', 'face-scan-verifying', 'face-scan-review', 'face-scan-done'
       ];
 
       /* -------- Router -------- */
       var nav = []; // stack of slugs visited (most recent last)
       var current = null;
-      var firstFaceCaptureDone = false; // first capture -> misaligned; next -> success
-
       function $(sel, root) { return (root || document).querySelector(sel); }
       function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
       function screenEl(slug) { return document.getElementById('screen-' + slug); }
@@ -3917,26 +4261,7 @@
           handleSubmit(slug, t);
           return;
         }
-        // face capture / retry / flip
-        if (action === 'face-capture') {
-          e.preventDefault();
-          if (!firstFaceCaptureDone) {
-            firstFaceCaptureDone = true;
-            goto('face-scan-misaligned');
-          } else {
-            goto('success');
-          }
-          return;
-        }
-        if (action === 'face-retry') {
-          e.preventDefault();
-          goto('face-scan');
-          return;
-        }
-        if (action === 'face-flip') {
-          console.log('[ekyc] flip camera');
-          return;
-        }
+        if (faceScanModule.handleAction(action, e)) return;
         if (action === 'copy-kyc-id') {
           e.preventDefault();
           var idText = 'BGIL-KYC-MNPTT1N6';
@@ -4018,6 +4343,7 @@
           goto('send-link-sent');
           return;
         }
+        if (faceScanModule.handleSubmit(slug, btn)) return;
         // Delegate all aadhaar-flow slugs to the aadhaar module
         aadhaarModule.handleSubmit(slug, btn);
       }
@@ -4031,6 +4357,15 @@
       /* ----- Aadhaar flow (delegated to js/kyc-aadhaar.js) ----- */
       var aadhaarModule = window.ekycAadhaar.init({ goto: goto, openModal: openModal, $: $, $$: $$, screenEl: screenEl });
       Object.keys(aadhaarModule.INITS).forEach(function (k) { INITS[k] = aadhaarModule.INITS[k]; });
+
+      /* ----- Face scan flow (delegated to js/kyc-face-scan.js) ----- */
+      var faceScanModule = window.ekycFaceScan.init({
+        goto: goto,
+        $: $,
+        screenEl: screenEl,
+        getCurrent: function () { return current; }
+      });
+      Object.keys(faceScanModule.INITS).forEach(function (k) { INITS[k] = faceScanModule.INITS[k]; });
 
       /* ---- initScreen_initiation ---- */
       INITS['initiation'] = function () {
@@ -4378,29 +4713,6 @@
           }
         }, 200);
       };
-
-      /* ---- initScreen_face-scan ---- */
-      INITS['face-scan'] = function () {
-        var root = screenEl('face-scan');
-        if (root.dataset.inited) return; root.dataset.inited = '1';
-        var camera = $('#face-camera', root);
-        var hint = $('#face-hint', root);
-        if (camera) camera.classList.remove('facescan-camera--error');
-        if (hint) hint.textContent = "Make sure you're in well-lit area with plain background";
-      };
-
-      /* ---- initScreen_face-scan-misaligned ---- */
-      INITS['face-scan-misaligned'] = function () {
-        var root = screenEl('face-scan-misaligned');
-        if (root.dataset.inited) return; root.dataset.inited = '1';
-        var camera = $('#face-mis-camera', root);
-        var hint = $('#face-mis-hint', root);
-        if (camera) camera.classList.add('facescan-camera--error');
-        if (hint) hint.textContent = 'Keep your face centered within frame for a clear scan';
-      };
-
-      /* ---- initScreen_success ---- */
-      INITS['success'] = function () { /* nothing dynamic */ };
 
       /* -------- Boot -------- */
       function boot() {

@@ -1,7 +1,7 @@
 /* =========================================================================
    Face Scan screens
    - face-scan        : card-based layout (aadhaar-page pattern)
-   - face-scan-misaligned : full-bleed dark camera viewport
+   - face-scan mobile (<=767px): full-bleed camera in same screen
    facescan-* prefix throughout.
    ========================================================================= */
 
@@ -18,19 +18,69 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    gap: 12px;
   }
 
   /* Header sits above the bg banner */
-  .facescan-page > .kyc-header {
+  .facescan-page>.kyc-header {
     position: relative;
     z-index: 2;
   }
 
-  /* Misaligned / old full-bleed variant: tighten to 402px like before */
-  .facescan-page[data-facescan-state] {
-    max-width: 402px;
-    margin-inline: auto;
+  /* Desktop vs mobile layouts inside one face-scan screen */
+  .facescan-view--mobile {
+    display: none;
+    flex-direction: column;
+    flex: 1;
+    min-height: 100vh;
+    width: 100%;
     background: var(--color-neutral-0);
+  }
+
+  .facescan-view--desktop {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    width: 100%;
+    position: relative;
+  }
+
+  .facescan-mobile-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+    width: 100%;
+  }
+
+  .facescan-mobile-bar--misaligned {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .facescan-mobile-bar--misaligned .btn {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .facescan-mobile-bar--capture .facescan-capture-btn {
+    width: 100%;
+  }
+
+  .facescan-mobile-bar[hidden] {
+    display: none !important;
+  }
+
+  /* Live video in mobile oval (always visible when camera is on) */
+  .facescan-oval video.facescan-oval__feed {
+    display: block;
+  }
+
+  .facescan-page.is-misaligned .facescan-oval.success-capture {
+    border: 5px solid var(--color-lime-600);
+  }
+  .facescan-page.is-misaligned .facescan-oval.error-capture {
+    border: 5px solid var(--color-red-600);
   }
 
   /* =========================================================================
@@ -53,8 +103,114 @@
     position: relative;
     z-index: 1;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
     padding: 56px 16px 40px;
+    width: 100%;
+  }
+
+  /* Verifying state (mirrors Aadhaar varifying-details-*) */
+  .facescan-verifying-body {
+    display: flex;
+    flex-direction: column !important;
+    align-items: center !important;
+    padding-top: 130px;
+    width: 100%;
+  }
+
+  .facescan-verifying-card {
+    max-width: 696px;
+    width: 100%;
+    margin-inline: auto;
+    gap: 24px;
+  }
+
+  .facescan-verifying__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+    padding: 24px 0;
+  }
+
+  .facescan-verifying__spinner {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .facescan-verifying__spinner svg {
+    width: 24px;
+    height: 24px;
+    animation: facescan-verify-spin 0.8s linear infinite;
+  }
+
+  @keyframes facescan-verify-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .facescan-verifying__title {
+    margin: 0;
+    font: 500 16px/24px 'Rubik', sans-serif;
+    color: var(--color-neutral-800);
+  }
+
+  .facescan-verifying__progress-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-self: stretch;
+    min-width: 0;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .facescan-verifying__progress-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .facescan-verifying__label {
+    font: 400 13px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-600);
+  }
+
+  .facescan-verifying__pct {
+    font: 500 13px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-800);
+  }
+
+  .facescan-verifying__bar-track {
+    width: 100%;
+    height: 8px;
+    border-radius: 99px;
+    background: var(--color-neutral-200);
+    overflow: hidden;
+  }
+
+  .facescan-verifying__bar-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 99px;
+    background: #22c55e;
+    transition: width 0.05s linear;
+  }
+
+  .facescan-verifying-body-info {
+    max-width: 696px;
+    margin: 56px auto 0;
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: #000000;
+    text-align: center;
+    padding: 10px;
   }
 
   /* White card */
@@ -93,7 +249,10 @@
   }
 
   /* ---- Info toast ---- */
-  .facescan-info { margin: 4px auto 16px; width: fit-content;}
+  .facescan-info {
+    margin: 4px auto 16px;
+    width: fit-content;
+  }
 
   /* ---- Back link ---- */
   .facescan-back {
@@ -105,7 +264,11 @@
     cursor: pointer;
     text-decoration: none;
   }
-  .facescan-back [data-lucide] { width: 16px; height: 16px; }
+
+  .facescan-back [data-lucide] {
+    width: 16px;
+    height: 16px;
+  }
 
   /* ---- Camera viewport inside card ---- */
   .facescan-camera-wrap {
@@ -138,7 +301,11 @@
     border-radius: 256px;
     font: 400 14px/20px 'Rubik', sans-serif;
   }
-  .facescan-cam-pill [data-lucide] { width: 14px; height: 14px; }
+
+  .facescan-cam-pill [data-lucide] {
+    width: 14px;
+    height: 14px;
+  }
 
   /* White rectangular viewfinder frame */
   .facescan-frame {
@@ -146,7 +313,7 @@
     max-width: 480px;
     margin-top: 48px;
     border: 1.5px solid rgba(255, 255, 255, 0.85);
-    border-radius: 4px;
+    border-radius: 0;
     overflow: hidden;
     position: relative;
     flex: 1;
@@ -154,12 +321,80 @@
   }
 
   .facescan-frame__feed {
-    display: none;
+    display: block;
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  /* No camera error state */
+  .facescan-no-camera {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    max-width: 520px;
+    margin-top: 83px;
+    margin-bottom: 120px;
+  }
+
+  .facescan-no-camera__icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #FEF2F2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #DC2626;
+    font-size: 28px;
+    margin-bottom: 4px;
+  }
+
+  .facescan-no-camera__title {
+    margin: 0;
+    font: 600 18px/24px 'Rubik', sans-serif;
+    color: var(--color-neutral-0);
+  }
+
+  .facescan-no-camera__desc {
+    margin: 0;
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 8px;
+  }
+
+  .facescan-no-camera__actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 0;
+    padding: 20px 0;
+  }
+
+  .facescan-no-camera__actions .btn {
+    min-width: 0;
+    padding: 7px 22px !important;
+    min-width: 234px;
+  }
+
+  .facescan-no-camera__actions .btn-secondary {
+    background-color: var(--color-neutral-0);
+    color: var(--color-blue-700);
+  }
+
+  .facescan-no-camera[hidden],
+  .facescan-frame[hidden],
+  .facescan-hint[hidden] {
+    display: none !important;
   }
 
   /* Hint text at bottom of camera wrap */
@@ -175,16 +410,80 @@
   }
 
   /* ---- Submit bar ---- */
-/*   .facescan-submit-bar {
+  /*   .facescan-submit-bar {
     padding: 16px 0 24px;
   } */
+  .facescan-submit-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .facescan-submit-bar .btn {
+    max-width: 360px;
+  }
 
   .facescan-capture-btn {
     width: 100%;
   }
+
   .facescan-capture-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+
+  .facescan-capture-btn[hidden] {
+    display: none !important;
+  }
+
+  /* Scanning progress (replaces button) */
+  .facescan-scanning {
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .facescan-scanning[hidden] {
+    display: none !important;
+  }
+
+  .facescan-scanning__head {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .facescan-scanning__title {
+    font: 600 16px/24px 'Rubik', sans-serif;
+    color: var(--color-neutral-800);
+  }
+
+  .facescan-scanning__bar-track {
+    width: 100%;
+    min-width: 0;
+    height: 8px;
+    background: var(--color-neutral-200, #e2e8f0);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .facescan-scanning__bar-fill {
+    display: block;
+    height: 100%;
+    width: 0%;
+    min-width: 0;
+    background: var(--color-emerald-600, #059669);
+    border-radius: 4px;
+    transition: width 0.05s linear;
+  }
+
+  .facescan-frame.is-scanning {
+    border-color: var(--color-lime-600);
   }
 
 
@@ -217,15 +516,20 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 8px;
+    padding: 7px;
     border-radius: 8px;
     background: transparent;
     border: none;
     color: var(--color-neutral-0);
     cursor: pointer;
   }
+
   .facescan-iconbtn .lucide,
-  .facescan-iconbtn [data-lucide] { width: 24px; height: 24px; }
+  .facescan-iconbtn [data-lucide] {
+    width: 24px;
+    height: 24px;
+  }
+
   .facescan-iconbtn--bordered {
     background: var(--color-neutral-0);
     border: 1px solid var(--color-neutral-300);
@@ -243,19 +547,31 @@
     border-radius: 256px;
     font: 400 14px/20px 'Rubik', sans-serif;
   }
+
+  .facescan-pill.scanning{
+    background: var(--color-amber-600);
+  }
+  .facescan-pill.completed{
+    background: var(--color-lime-600);
+  }
+
   .facescan-pill .lucide,
-  .facescan-pill [data-lucide] { width: 16px; height: 16px; }
+  .facescan-pill [data-lucide] {
+    width: 16px;
+    height: 16px;
+  }
 
   /* Oval face guide */
   .facescan-oval {
     width: 240px;
     height: 300px;
     margin: auto;
-    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    border: 1.5px solid rgba(255, 255, 255);
     border-radius: 50%;
     position: relative;
     overflow: hidden;
   }
+
   .facescan-oval__feed {
     display: none;
     position: absolute;
@@ -266,9 +582,14 @@
     object-position: 72% 35%;
   }
 
-  /* Error state */
-  .facescan-camera--error .facescan-oval { border: 3px solid var(--color-red-600); }
-  .facescan-camera--error .facescan-oval__feed { display: block; }
+  /* Error state — matches .success-error */
+  .facescan-camera--error .facescan-oval {
+    border: 5px solid var(--color-red-600);
+  }
+
+  .facescan-camera--error .facescan-oval__feed {
+    display: block;
+  }
 
   /* Bottom guidance block */
   .facescan-bottom {
@@ -278,7 +599,9 @@
     align-items: center;
     gap: 24px;
     padding-inline: 16px;
+    padding-top: 24px;
   }
+
   .facescan-guide {
     width: 100%;
     display: flex;
@@ -286,12 +609,14 @@
     align-items: center;
     gap: 8px;
   }
+
   .facescan-title {
     margin: 0;
     font: 500 20px/24px 'Rubik', sans-serif;
     color: var(--color-neutral-0);
     text-align: center;
   }
+
   .facescan-guide .facescan-hint {
     background: #1e1e1e;
     color: var(--color-neutral-0);
@@ -302,6 +627,7 @@
     max-width: 100%;
     margin: 0;
   }
+
   .facescan-flip {
     display: inline-flex;
     align-items: center;
@@ -309,30 +635,612 @@
     background: var(--color-neutral-0);
     border: 1px solid var(--color-neutral-300);
     border-radius: 8px;
-    padding: 12px 20px;
+    padding: 11px 19px;
     color: var(--color-neutral-600);
     font: 400 16px/24px 'Rubik', sans-serif;
     cursor: pointer;
   }
+
   .facescan-flip .lucide,
-  .facescan-flip [data-lucide] { width: 24px; height: 24px; }
+  .facescan-flip [data-lucide] {
+    width: 24px;
+    height: 24px;
+  }
 
   /* White footer */
   .facescan-footer {
     background: var(--color-neutral-0);
     padding: 32px 16px;
   }
-  .facescan-footer .toast { align-items: flex-start; }
+
+  .facescan-footer .toast {
+    align-items: flex-start;
+    padding: 16px;
+    gap: 8px;
+  }
+
   .facescan-footer .toast-title {
     font-weight: 500;
-    font-size: 16px;
+    font-size: 20px;
     line-height: 24px;
     color: var(--color-neutral-800);
   }
 
-  @media (max-width: 767px) {
-    .facescan-card{
-      margin-bottom: 96px;
+  .success-capture {
+    border: 5px solid var(--color-lime-600);
+  }
+
+  .success-error {
+    border: 5px solid var(--color-red-600);
+  }
+
+  /* ---- Details box (review screen) ---- */
+  .facescan-details {
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--color-neutral-200);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* ---- Checkbox consent (review screen) ---- */
+  .facescan-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    cursor: pointer;
+  }
+
+  .facescan-check input[type='checkbox'] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .facescan-check__box {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    border: 1.5px solid var(--color-neutral-400);
+    border-radius: 3px;
+    background: var(--color-neutral-0);
+    position: relative;
+  }
+
+  .facescan-check input[type='checkbox']:checked + .facescan-check__box {
+    background: var(--color-blue-600);
+    border-color: var(--color-blue-600);
+  }
+
+  .facescan-check input[type='checkbox']:checked + .facescan-check__box::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>") center / 12px no-repeat;
+  }
+
+  .facescan-check__label {
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-600);
+  }
+
+  .facescan-submit {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .facescan-submit:disabled {
+    background: var(--color-neutral-100);
+    color: var(--color-neutral-300);
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  /* ---- Review page shell (mirrors .aadhaar-page + .review-body) ---- */
+  .facescan-page--review {
+    width: 100%;
+    max-width: 402px;
+    margin-inline: auto;
+    min-height: 100vh;
+    gap: 12px;
+  }
+
+  .facescan-page--review > .facescan-bg {
+    inset: 0 0 auto 0;
+    height: 280px;
+  }
+
+  .facescan-page--review .toast-description{
+    font-size: 14px;
+    line-height: 20px;
+    color: #2E2B2B;
+  }
+
+  .facescan-review-body {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 0 16px 24px;
+    width: 100%;
+  }
+
+  .facescan-review-card {
+    width: 100%;
+    max-width: 1000px;
+    margin-inline: auto;
+    gap: 20px;
+    overflow: visible;
+    box-shadow: 0 1px 4px rgba(10, 13, 18, 0.1), 0 1px 2px rgba(10, 13, 18, 0.06);
+    padding: 24px;
+  }
+
+  .facescan-review-body .facescan-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .facescan-review-body .facescan-logo {
+    height: 48px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .facescan-review-body .facescan-title {
+    margin: 0;
+    font-family: 'Familjen Grotesk', 'Rubik', sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 32px;
+    color: var(--color-neutral-800);
+  }
+
+  .facescan-review-title {
+    margin: 0 0 4px 0;
+    padding: 0;
+    font: 500 20px/24px 'Rubik', sans-serif;
+    color: var(--color-neutral-800);
+  }
+
+  .facescan-review-section {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .facescan-review-section__bar {
+    padding: 12px;
+    font: 500 16px/24px 'Rubik', sans-serif;
+    color: var(--color-neutral-700);
+    background: linear-gradient(90deg, #EFF6FF 0%, #DBEAFE 100%);
+    border-radius: 8px;
+  }
+
+  .facescan-review-card .facescan-review-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px !important;
+    padding: 12px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .facescan-review-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0;
+  }
+
+  .facescan-review-field__label {
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-500);
+  }
+
+  .facescan-review-field__value {
+    font: 500 14px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-800);
+  }
+
+  .facescan-review-consent-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid var(--color-neutral-200);
+    border-radius: 8px;
+  }
+
+  .facescan-review-consent__title {
+    margin: 0 0 4px 0;
+    font: 600 16px/24px 'Rubik', sans-serif;
+    color: var(--color-neutral-800);
+  }
+
+  .facescan-review-body .facescan-details {
+    padding: 20px;
+    gap: 8px;
+  }
+  .facescan-review-info-toast{
+    margin-bottom: 8px;
+  }
+
+  @media (min-width: 768px) {
+    .facescan-page--review {
+      max-width: none;
+      gap: 0;
+    }
+
+    .facescan-review-body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 56px 16px 48px;
+    }
+
+    .facescan-review-card {
+      padding: 32px;
+    }
+
+    .facescan-review-body .facescan-title {
+      font-size: 32px;
+      line-height: 36px;
     }
   }
+
+  /* ---- Done / success screen (mirrors kyc-success.css adone-*) ---- */
+  .facescan-page--done {
+    width: 100%;
+    max-width: 402px;
+    margin-inline: auto;
+    min-height: 100vh;
+    gap: 12px;
+  }
+
+  .facescan-page--done > .facescan-bg {
+    inset: 0 0 auto 0;
+    height: 280px;
+    background: url('../assets/img/Tabs.png') center / cover no-repeat;
+  }
+
+  .facescan-done-body {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 0 16px 24px;
+    width: 100%;
+  }
+
+  .facescan-done-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 32px;
+    width: 100%;
+    max-width: 800px;
+    margin-inline: auto;
+    overflow: visible;
+    box-shadow: 0 1px 4px rgba(10, 13, 18, 0.1), 0 1px 2px rgba(10, 13, 18, 0.06);
+  }
+
+  .facescan-done-content-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+  }
+
+  .facescan-done-illustration {
+    width: auto;
+    height: 124px;
+  }
+
+  .facescan-done-title {
+    margin: 0;
+    font: 600 32px/36px 'Rubik', sans-serif;
+    color: var(--color-neutral-900);
+  }
+
+  .facescan-done-subtitle {
+    margin: 0;
+    font: 400 16px/24px 'Rubik', sans-serif;
+    color: var(--color-text-label);
+  }
+
+  .facescan-done-card-wrap {
+    width: 100%;
+    padding: 12px;
+    background: var(--color-lime-50);
+    border-radius: 8px;
+  }
+
+  .facescan-done-card {
+    width: 100%;
+    border: 1.5px solid var(--color-lime-600);
+    border-radius: 16px;
+    background: var(--color-neutral-0);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    gap: 24px;
+  }
+
+  .facescan-done-id-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .facescan-done-id-label {
+    font: 400 13px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-500);
+  }
+
+  .facescan-done-id-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background: var(--color-blue-50);
+    border-radius: 8px;
+  }
+
+  .facescan-done-id-value {
+    font: 700 20px/28px 'Familjen Grotesk', 'Rubik', sans-serif;
+    color: var(--color-blue-700, #1d4ed8);
+    letter-spacing: 0.02em;
+  }
+
+  .facescan-done-copy-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px;
+    color: var(--color-blue-600, #005dac);
+  }
+
+  .facescan-done-rows {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .facescan-done-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 0;
+    border-top: 1px solid var(--color-neutral-200);
+  }
+
+  .facescan-done-row:first-child {
+    border-top: none;
+  }
+
+  .facescan-done-row__label {
+    flex: 1;
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-700);
+    text-align: left;
+  }
+
+  .facescan-done-row__method {
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: var(--color-neutral-600);
+  }
+
+  .facescan-done-row__status {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font: 400 14px/20px 'Rubik', sans-serif;
+    color: #4D7C0F;
+    white-space: nowrap;
+    background: var(--color-lime-50);
+    padding: 4px 8px;
+    border-radius: 16px;
+  }
+
+  .facescan-done-btn {
+    width: 100%;
+  }
+
+  .facescan-page--done .back-to-module {
+    width: 100%;
+    margin-top: 0 !important;
+  }
+
+  @media (min-width: 768px) {
+    .facescan-page--done {
+      max-width: none;
+      gap: 0;
+    }
+
+    .facescan-done-body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 56px 16px 48px;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  #screen-face-scan .facescan-page {
+    max-width: none;
+    background: var(--color-neutral-0);
+    gap: 0;
+  }
+
+  #screen-face-scan .facescan-view--mobile {
+    display: flex;
+  }
+
+  #screen-face-scan .facescan-view--desktop {
+    display: none !important;
+  }
+
+  /* Mobile: no Start Face Scan — auto-advances after 2s in JS */
+  .facescan-mobile-bar--capture {
+    display: none !important;
+  }
+
+  .facescan-card {
+    margin-bottom: 96px;
+  }
+
+  .facescan-verifying-body .facescan-card {
+    margin-bottom: 0;
+  }
+
+  .facescan-verifying-body {
+    padding-top: 0;
+  }
+
+  .facescan-verifying-body-info {
+    margin-top: 16px;
+  }
+
+  .facescan-bg {
+    height: 240px;
+  }
+
+  .facescan-page--review {
+    max-width: none;
+  }
+
+  .facescan-review-card {
+    padding: 16px !important;
+    margin-bottom: 96px;
+  }
+
+  .facescan-review-body .facescan-details {
+    padding: 16px;
+  }
+
+  .facescan-review-card .facescan-review-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .facescan-review-field {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .facescan-review-body .facescan-head {
+    gap: 2px;
+    margin-bottom: 8px;
+  }
+
+  .facescan-review-body .facescan-logo {
+    margin-bottom: 6px;
+  }
+
+  .facescan-review-info-toast {
+    margin-bottom: 8px;
+  }
+
+  .facescan-review-field__value {
+    text-align: right;
+  }
+
+  .facescan-review-consent-wrap {
+    gap: 8px;
+  }
+
+  .facescan-page--done {
+    max-width: none;
+  }
+
+  .facescan-done-content {
+    padding: 16px;
+    margin-bottom: 96px;
+  }
+
+  .facescan-done-title {
+    font-size: 24px;
+    line-height: 28px;
+  }
+
+  .facescan-done-subtitle {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .facescan-done-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+    gap: 2px 8px;
+  }
+
+  .facescan-done-row__label {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .facescan-done-row__method {
+    grid-column: 1;
+    grid-row: 2;
+    text-align: left;
+  }
+
+  .facescan-done-row__status {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    align-self: center;
+  }
+}
+
+/* Review card beats generic .facescan-card cap (800px) and padding */
+.facescan-page--review .facescan-review-card {
+  max-width: 1000px;
+  width: 100%;
+}
+
+/* Progress bar always fills card width */
+.facescan-verifying-card {
+  width: 100%;
+  max-width: 696px;
+}
+
+.facescan-verifying__progress-wrap {
+  width: 100%;
+  min-width: 0;
+}
+
+.facescan-verifying__bar-track {
+  width: 100%;
+}
+
+/* Progress bar — unlayered so fill color and width are not overridden */
+.facescan-submit-bar .facescan-scanning {
+  width: 100%;
+  max-width: 360px;
+}
+
+.facescan-submit-bar .facescan-scanning__bar-track {
+  width: 100%;
+  min-width: 0;
+}
+
+.facescan-submit-bar .facescan-scanning__bar-fill {
+  display: block;
+  height: 100%;
+  background: var(--color-lime-600);
+  border-radius: 4px;
 }
